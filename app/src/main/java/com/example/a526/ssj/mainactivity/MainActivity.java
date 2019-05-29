@@ -1,5 +1,6 @@
 package com.example.a526.ssj.mainactivity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,9 +13,9 @@ import com.example.a526.ssj.listener.OnTouchListenerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity  extends FragmentActivity {
+public class MainActivity  extends FragmentActivity implements AlarmFragment.OnFragmentInteractionListener{
     private RadioGroup mainRadioGroup;//主界面的radio group
-    private List<BaseFragment> mainFragmentList; //主界面的fragment集合
+    private List<Fragment> mainFragmentList; //主界面的fragment集合
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,11 @@ public class MainActivity  extends FragmentActivity {
         //添加手势锁监听
         mainRadioGroup.setOnTouchListener(new OnTouchListenerAdapter(this,0));
         switchFragment(0);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
     class MyOnCheckedChangeListener implements RadioGroup.OnCheckedChangeListener{

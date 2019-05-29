@@ -1,9 +1,10 @@
 package com.example.a526.ssj.mainactivity;
 
-import android.app.Fragment;
+
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import org.w3c.dom.Text;
  * Created by 10902 on 2019/5/28.
  */
 
-public class NoteFragment extends BaseFragment {
+public class NoteFragment extends Fragment {
 
     private Button noteFragmentButton;
     TextView noteTextView;
@@ -38,9 +39,6 @@ public class NoteFragment extends BaseFragment {
         return view;
     }
 
-    @Override
-    protected View initView() {
-        return noteTextView;
-    }
+
 
 }
