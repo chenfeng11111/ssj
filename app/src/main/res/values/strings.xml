@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">随手记</string>
+    <string name="note">笔记</string>
+    <string name="alarm">闹钟</string>
+    <string name="square">广场</string>
+    <string name="mine">我的</string>
+</resources>
