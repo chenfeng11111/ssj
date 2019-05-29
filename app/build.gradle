@@ -29,6 +29,7 @@ android {
                             'src/main/res/layout/lock_activity',
                             'src/main/res/layout/main_activity',
                             'src/main/res/layout/welcome_activity',
+                            'src/main/res/layout/createnote_activity',
                             //下面两个是固定兼容写法
                             'src/main/res/layout',
                             'src/main/res'

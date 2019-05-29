@@ -8,4 +8,6 @@
     <color name="blue">#0000ff</color>
     <color name="green">#f0f0</color>
     <color name="yellow">#ffffff00</color>
+
+    <color name="button_enabled">#333333</color>
 </resources>
