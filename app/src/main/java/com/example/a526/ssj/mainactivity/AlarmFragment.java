@@ -14,7 +14,6 @@ public class AlarmFragment extends BaseFragment  {
 
     private TextView textView;
 
-    @Override
     protected View initView() {
         textView = new TextView(mContext);
         textView.setTextSize(20);

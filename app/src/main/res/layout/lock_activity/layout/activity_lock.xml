@@ -1,0 +1,41 @@
+<?xml version="1.8" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.a526.ssj.lockactivity.LockActivity">
+
+    <com.wangnan.library.GestureLockView
+        android:id="@+id/glv_lock"
+        android:layout_width="301dp"
+        android:layout_height="291dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="85dp"
+        android:layout_marginEnd="42dp"
+        android:layout_marginStart="42dp"
+
+        app:error_color="#C0C0C0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_lock_tip"
+        app:line_thickness="6dp"
+        app:normal_color="#F46F21"
+        app:press_color="#F46F21" />
+
+    <TextView
+        android:id="@+id/text_lock_tip"
+        android:layout_width="227dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="29dp"
+        android:layout_marginTop="78dp"
+        android:gravity="center"
+        android:text="请绘制解锁图案"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/glv_lock"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

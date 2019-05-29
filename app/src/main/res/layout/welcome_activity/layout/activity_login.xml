@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.a526.ssj.welcomeactivity.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/input_bg"
+        android:gravity="left|center_horizontal"
+        android:orientation="horizontal"
+        android:paddingBottom="0dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="0dp">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:text="账号"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/account"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:hint="请输入账号"
+            android:paddingLeft="2dp"
+            android:textSize="20sp"
+
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/account_line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:clickable="true"
+        android:src="@drawable/input_selector" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/input_bg"
+        android:gravity="left|center_horizontal"
+        android:orientation="horizontal"
+        android:paddingBottom="0dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="0dp">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:text="密码"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@null"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            android:paddingLeft="2dp"
+            android:textSize="20sp" />
+
+        />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/password_line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:clickable="true"
+        android:src="@drawable/input_selector" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/login_ripple"
+        android:text="登陆"
+        android:textColor="#FFF"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="250dp">
+
+        <TextView
+            android:id="@+id/find_password"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="115dp"
+            android:layout_marginRight="20dp"
+            android:text="找回密码"
+            android:textColor="@color/not_selected" />
+
+        <ImageView
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:src="@color/not_selected" />
+
+        <TextView
+            android:id="@+id/sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:text="注册账号"
+            android:textColor="@color/not_selected" />
+    </LinearLayout>
+</LinearLayout>

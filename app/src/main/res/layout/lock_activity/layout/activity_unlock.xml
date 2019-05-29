@@ -1,0 +1,68 @@
+<?xml version="1.8" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.a526.ssj.lockactivity.UnlockActivity">
+
+    <com.wangnan.library.GestureLockView
+        android:id="@+id/glv_lock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+
+        android:layout_marginBottom="13dp"
+        android:layout_marginEnd="42dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="145dp"
+        app:error_color="#C0C0C0"
+        app:layout_constraintBottom_toTopOf="@+id/btn_unlock_forget"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:line_thickness="6dp"
+        app:normal_color="#F46F21"
+        app:press_color="#F46F21" />
+
+    <TextView
+        android:id="@+id/text_unlock_tip"
+        android:layout_width="235dp"
+        android:layout_height="27dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="94dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/glv_lock"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/text_unlock_caption"
+        android:layout_width="233dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="27dp"
+        android:gravity="center"
+        android:text="请输入手势密码"
+        android:textColor="#949494"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_unlock_forget"
+        android:layout_width="124dp"
+        android:layout_height="38dp"
+        android:layout_marginBottom="16dp"
+        android:text="忘记手势密码?"
+        style="?android:attr/borderlessButtonStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/glv_lock"
+        app:layout_constraintTop_toBottomOf="@+id/glv_lock" />
+
+</android.support.constraint.ConstraintLayout>

@@ -32,8 +32,7 @@ public class MainActivity  extends FragmentActivity {
         mainRadioGroup.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
         //添加手势锁监听
         mainRadioGroup.setOnTouchListener(new OnTouchListenerAdapter(this,0));
-        //设置默认选中框架页面
-        mainRadioGroup.check(R.id.note_fragment);
+        switchFragment(0);
     }
 
     class MyOnCheckedChangeListener implements RadioGroup.OnCheckedChangeListener{

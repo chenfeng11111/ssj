@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import com.example.a526.ssj.UnlockActivity;
+import com.example.a526.ssj.lockactivity.UnlockActivity;
 
 
 /**
