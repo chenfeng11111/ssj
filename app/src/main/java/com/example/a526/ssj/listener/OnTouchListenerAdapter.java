@@ -25,6 +25,10 @@ public class OnTouchListenerAdapter implements View.OnTouchListener{
                 mGestureDetector=new GestureDetector( new LongPressListener(activity));
                 return mGestureDetector.onTouchEvent(event);
             }
+            case 1:{
+                mGestureDetector=new GestureDetector(new TopSlideListener(activity));
+                return mGestureDetector.onTouchEvent(event);
+            }
             default:{
                 return false;
             }

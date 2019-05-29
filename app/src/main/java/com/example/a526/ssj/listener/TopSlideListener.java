@@ -1,5 +1,6 @@
 package com.example.a526.ssj.listener;
 
+import android.app.Activity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -7,11 +8,14 @@ import android.view.MotionEvent;
  * Created by 姜益昭 on 2019/5/29.
  */
 
-public class LeftSlideListener implements GestureDetector.OnGestureListener {
+public class TopSlideListener implements GestureDetector.OnGestureListener {
     private float mPosX, mPosY, mCurPosX, mCurPosY;
     private static final int FLING_MIN_DISTANCE = 20;// 移动最小距离
-    private static final int FLING_MIN_VELOCITY = 200;// 移动最大速度
-
+    private static final int FLING_MAX_SHIFTING=10;//上下最大偏移距离
+    private Activity activity;
+    public TopSlideListener(Activity activity){
+        this.activity = activity;
+    }
     @Override
     public boolean onDown(MotionEvent e) {
         return false;
@@ -48,14 +52,16 @@ public class LeftSlideListener implements GestureDetector.OnGestureListener {
 
         // X轴的坐标位移大于FLING_MIN_DISTANCE，且移动速度大于FLING_MIN_VELOCITY个像素/秒
         //向
-        if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE){
-//                     && Math.abs(velocityX) > FLING_MIN_VELOCITY) {
+        // e1：第1个ACTION_DOWN MotionEvent
+        // e2：最后一个ACTION_MOVE MotionEvent
+        // velocityX：X轴上的移动速度（像素/秒）
+        // velocityY：Y轴上的移动速度（像素/秒）
 
-        }
-        //向上
-        if (e2.getY() - e1.getY() > FLING_MIN_DISTANCE
-                && Math.abs(velocityX) > FLING_MIN_VELOCITY) {
-
+        // X轴的坐标位移大于FLING_MIN_DISTANCE，且移动速度大于FLING_MIN_VELOCITY个像素/秒
+        //向
+        if ((Math.abs(e1.getX() - e2.getX()) < FLING_MAX_SHIFTING)&&(e2.getY()-e1.getY()>FLING_MIN_DISTANCE)){
+            //此处跳转到新建笔记页面
+            /***************************/
         }
         return false;
     }
