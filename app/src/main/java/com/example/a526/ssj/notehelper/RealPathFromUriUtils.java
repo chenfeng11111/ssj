@@ -1,4 +1,4 @@
-package com.example.a526.ssj.createactivity.utils;
+package com.example.a526.ssj.notehelper;
 
 /**
  * Created by 姜益昭 on 2019/5/29.

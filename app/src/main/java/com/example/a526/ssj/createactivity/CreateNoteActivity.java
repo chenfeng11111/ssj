@@ -22,11 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a526.ssj.R;
-import com.example.a526.ssj.createactivity.utils.RealPathFromUriUtils;
 import com.example.a526.ssj.createactivity.view.ColorPickerView;
 import com.example.a526.ssj.createactivity.view.RichEditor;
-
-import java.util.ArrayList;
 
 
 public class CreateNoteActivity extends AppCompatActivity implements View.OnClickListener {
