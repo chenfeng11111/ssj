@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 
 import com.example.a526.ssj.R;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by ZQiong on 2018/3/20.
@@ -19,7 +22,7 @@ import com.example.a526.ssj.R;
 
 public class WebDataActivity extends AppCompatActivity {
 
-
+    private String dataStr;//根据富文本生成的HTML文件
     //自己制造的一些假数据。外加筛选图片样式
     /****  3333333333 ***************************************************/
 //    private String dataStr="<html><body><style>img{ width:100% !important;}</style>"+"<img src=\"https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/dd9d1d686cdc814db9653b254e00402e_259_194.jpg\" alt=\"\" /> \r<p style=\"text-align:right;\">\r\t品类定位的思考\r</p>\r<h3>\r\t<strong><span style=\"color:#00D5FF;\">品类定</span></strong>\n" +
@@ -35,8 +38,8 @@ public class WebDataActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_note);
-        final String dataStr = getIntent().getStringExtra("diarys");
+        setContentView(R.layout.activity_show_diarys);
+        dataStr = getIntent().getStringExtra("diarys");
         initWebView(dataStr);
     }
 
@@ -58,7 +61,7 @@ public class WebDataActivity extends AppCompatActivity {
 
 
 /******  22222222  ***********************************************************************/
-        data = "</Div><head><style>img{ width:100% !important;}</style></head>" + data;//给图片设置一个样式，宽满屏
+       // data = "</Div><head><style>img{ width:100% !important;}</style></head>" + data;//给图片设置一个样式，宽满屏
 /******  2222222222  ***********************************************************************/
 
         mWebView.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);

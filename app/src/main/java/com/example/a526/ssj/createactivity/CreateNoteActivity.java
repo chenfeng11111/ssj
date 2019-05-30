@@ -1,11 +1,17 @@
 package com.example.a526.ssj.createactivity;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -13,10 +19,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.createactivity.utils.RealPathFromUriUtils;
 import com.example.a526.ssj.createactivity.view.ColorPickerView;
 import com.example.a526.ssj.createactivity.view.RichEditor;
+
+import java.util.ArrayList;
 
 
 public class CreateNoteActivity extends AppCompatActivity implements View.OnClickListener {
@@ -94,7 +104,13 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
     //折叠视图的宽高
     private int mFoldedViewMeasureHeight;
 
-
+    //动态申请权限
+    String[] mPermissionList = new String[]{
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+    };
+    public static final int REQUEST_PICK_IMAGE = 11101;
+    /*************************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,6 +150,8 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         mEditor.setPlaceholder("请输入编辑内容");
         //是否允许输入
         //mEditor.setInputEnabled(false);
+        //所有图片默认全屏展示
+        mEditor.setHtml("</Div><head><style>img{ width:100% !important;}</style></head>");
         //文本输入框监听事件
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override
@@ -254,13 +272,15 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                 //关闭动画
                 animateClose(llColorView);
             }
-        } else if (id == R.id.button_image) {//插入图片
+        } else if (id == R.id.button_image) {/// /插入图片
             //这里的功能需要根据需求实现，通过insertImage传入一个URL或者本地图片路径都可以，这里用户可以自己调用本地相
             //或者拍照获取图片，传图本地图片路径，也可以将本地图片路径上传到服务器（自己的服务器或者免费的七牛服务器），
             //返回在服务端的URL地址，将地址传如即可（我这里传了一张写死的图片URL，如果你插入的图片不现实，请检查你是否添加
             // 网络请求权限<uses-permission android:name="android.permission.INTERNET" />）
+            ActivityCompat.requestPermissions(CreateNoteActivity.this, mPermissionList, 100);
+            /*
             mEditor.insertImage("http://www.1honeywan.com/dachshund/image/7.21/7.21_3_thumb.JPG",
-                    "dachshund");
+                    "dachshund");*/
         } else if (id == R.id.button_list_ol) {
             if (isListOl) {
                 mListOL.setImageResource(R.mipmap.list_ol);
@@ -371,6 +391,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         else if (id == R.id.tv_main_preview) {//预览
             Intent intent = new Intent(CreateNoteActivity.this, WebDataActivity.class);
             intent.putExtra("diarys", mEditor.getHtml());
+
             startActivity(intent);
         }
     }
@@ -430,5 +451,44 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
             }
         });
         return animator;
+    }
+    //打开相册响应
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 100:
+                boolean writeExternalStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                boolean readExternalStorage = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                if (grantResults.length > 0 && writeExternalStorage && readExternalStorage) {
+                    getImage();
+                } else {
+                    Toast.makeText(this, "请设置必要权限", Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+        }
+    }
+    private void getImage() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            startActivityForResult(new Intent(Intent.ACTION_GET_CONTENT).setType("image/*"),
+                    REQUEST_PICK_IMAGE);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/*");
+            startActivityForResult(intent, REQUEST_PICK_IMAGE);
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode){
+            case REQUEST_PICK_IMAGE:{
+                Uri uri=data.getData();
+                //将图片添加到富文本编辑器显示
+                mEditor.insertImage(uri.toString(),"picture");
+            }break;
+            default:break;
+        }
     }
 }
