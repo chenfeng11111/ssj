@@ -1,32 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:context="com.example.a526.ssj.mainactivity.NoteFragment">
 
-    <Button
-        android:id="@+id/id_fragment_one_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="404dp"
-        android:layout_marginStart="16dp"
-        android:text="submit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/note_fragment_textview" />
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary"
+        >
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:id="@+id/note_edit"
+            android:text="编辑"
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:gravity="center"
+            />
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:text="笔记"
+            android:textColor="#FFF"
+            android:textSize="24sp"
+            android:layout_marginLeft="110dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            />
+        <ImageView
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:id="@+id/note_plus"
+            android:src="@drawable/plus"
+            android:layout_marginLeft="110dp"
+            />
+    </android.support.v7.widget.Toolbar>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/note_list"
+        />
 
-    <TextView
-        android:id="@+id/note_fragment_textview"
-        android:layout_width="158dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:text="note fragment"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@+id/id_fragment_one_btn"
-        app:layout_constraintStart_toStartOf="@+id/id_fragment_one_btn"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
