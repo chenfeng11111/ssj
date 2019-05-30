@@ -9,5 +9,9 @@
             <enum name="vertical" value="1" />
         </attr>
     </declare-styleable>
-
+    <declare-styleable name="clockListItem">
+        <attr name="left_width" format="integer"/>
+        <attr name="right_width" format="integer"/>
+        <attr name="move_range" format="integer"/>
+    </declare-styleable>
 </resources>

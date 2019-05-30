@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -18,8 +20,10 @@ import com.bigkoo.pickerview.TimePickerView;
 import com.example.a526.ssj.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;;
+import java.util.Date;
+import java.util.List;;
 /**
  * Created by 10902 on 2019/5/28.
  */
@@ -38,10 +42,11 @@ public class AlarmFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private TextView edit;
     private ImageView plus;
     private RecyclerView clock_list;
     private TimePickerView pvTime1;
+    private clockListAdapter adapter;
+    private List<String> clockList = new ArrayList<String>();
 
     public AlarmFragment() {
         // Required empty public constructor
@@ -82,7 +87,6 @@ public class AlarmFragment extends Fragment {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.clockTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View rootView = localInflater.inflate(R.layout.alarm_fragment, container, false);
-        edit = (TextView)rootView.findViewById(R.id.edit);
         plus = (ImageView)rootView.findViewById(R.id.plus);
         clock_list = (RecyclerView)rootView.findViewById(R.id.clock_list);
         plus.setOnClickListener(new View.OnClickListener() {
@@ -91,15 +95,19 @@ public class AlarmFragment extends Fragment {
                 pvTime1.show();
             }
         });
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        initClockList();
         return rootView;
     }
 
+    private void initClockList()
+    {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        clock_list.setLayoutManager(linearLayoutManager);
+        adapter = new clockListAdapter(getContext(),clockList);
+        clock_list.setAdapter(adapter);
+        clock_list.setItemAnimator(new DefaultItemAnimator());
+        clock_list.addItemDecoration(new clockListItemDecoration(getContext(), clockListItemDecoration.VERTICAL_LIST));
+    }
     private void initTimePicker1() {//选择出生年月日
         //控制时间范围(如果不设置范围，则使用默认时间1900-2100年，此段代码可注释)
         //因为系统Calendar的月份是从0-11的,所以如果是调用Calendar的set方法来设置时间,月份的范围也要是从0-11
@@ -129,8 +137,8 @@ public class AlarmFragment extends Fragment {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调
                 // 这里回调过来的v,就是show()方法里面所添加的 View 参数，如果show的时候没有添加参数，v则为null
-
-
+                //clockList.add(getTime(date));
+                 adapter.addData(clockList.size(),getTime(date));
             }
         })
 
