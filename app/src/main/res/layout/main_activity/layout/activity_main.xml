@@ -14,6 +14,7 @@
         android:orientation="horizontal"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
+
         app:layout_constraintBottom_toBottomOf="@+id/main_frame_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
