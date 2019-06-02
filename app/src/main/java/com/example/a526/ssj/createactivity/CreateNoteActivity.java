@@ -4,6 +4,7 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -12,18 +13,32 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.pickerview.TimePickerView;
 import com.example.a526.ssj.R;
 import com.example.a526.ssj.createactivity.view.ColorPickerView;
 import com.example.a526.ssj.createactivity.view.RichEditor;
+import com.example.a526.ssj.entity.GlobalVariable;
+import com.example.a526.ssj.entity.Note;
+import com.example.a526.ssj.notehelper.NoteHelper;
+import com.example.a526.ssj.notehelper.NoteUtils;
+
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class CreateNoteActivity extends AppCompatActivity implements View.OnClickListener {
@@ -36,8 +51,6 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
     private TextView mTextColor;
     //显示显示View
     private LinearLayout llColorView;
-    //预览按钮
-    private TextView mPreView;
     //图片按钮
     private TextView mImage;
     //按序号排列（ol）
@@ -101,6 +114,10 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
     //折叠视图的宽高
     private int mFoldedViewMeasureHeight;
 
+    //选择按钮
+    private Button mSelect;
+    private String operation = getIntent().getStringExtra("operation");
+    private Date relativeData = null;
     //动态申请权限
     String[] mPermissionList = new String[]{
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -147,8 +164,15 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         mEditor.setPlaceholder("请输入编辑内容");
         //是否允许输入
         //mEditor.setInputEnabled(false);
-        //所有图片默认全屏展示
-        mEditor.setHtml("</Div><head><style>img{ width:100% !important;}</style></head>");
+        //如果不是，所有图片默认全屏展示
+        if(operation == null || operation.equalsIgnoreCase("create"))
+        {
+            mEditor.setHtml("</Div><head><style>img{ width:100% !important;}</style></head>");
+        }
+        //如果当前是编辑状态，需要把原HTML加载到编辑器中
+        else{
+            mEditor.setHtml(getIntent().getStringExtra("edit"));
+        }
         //文本输入框监听事件
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override
@@ -189,7 +213,6 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         mBold = findViewById(R.id.button_bold);
         mTextColor = findViewById(R.id.button_text_color);
         llColorView = findViewById(R.id.ll_main_color);
-        mPreView = findViewById(R.id.tv_main_preview);
         mImage = findViewById(R.id.button_image);
         mListOL = findViewById(R.id.button_list_ol);
         mListUL = findViewById(R.id.button_list_ul);
@@ -204,6 +227,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         mStrikethrough = findViewById(R.id.action_strikethrough);
         mSuperscript = findViewById(R.id.action_superscript);
         mSubscript = findViewById(R.id.action_subscript);
+        mSelect = findViewById(R.id.btn_create_select);
         getViewMeasureHeight();
     }
 
@@ -226,7 +250,6 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
     private void initClickListener() {
         mBold.setOnClickListener(this);
         mTextColor.setOnClickListener(this);
-        mPreView.setOnClickListener(this);
         mImage.setOnClickListener(this);
         mListOL.setOnClickListener(this);
         mListUL.setOnClickListener(this);
@@ -241,6 +264,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         mStrikethrough.setOnClickListener(this);
         mSuperscript.setOnClickListener(this);
         mSubscript.setOnClickListener(this);
+        mSelect.setOnClickListener(this);
     }
 
     @Override
@@ -384,13 +408,130 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
             mEditor.setSubscript();
         }
         //H1--H6省略，需要的自己添加
-
-        else if (id == R.id.tv_main_preview) {//预览
-            Intent intent = new Intent(CreateNoteActivity.this, WebDataActivity.class);
-            intent.putExtra("diarys", mEditor.getHtml());
-
-            startActivity(intent);
+        //此处自定义BUTTON 用于执行编辑完成后的各种功能
+        else if (id == R.id.btn_create_select) {
+            //弹出选择菜单
+            showPopupMenu(mSelect);
         }
+    }
+    //选择菜单监听
+    //弹出选择按钮
+    private void showPopupMenu(View view){
+        //View当前PopupMenu显示相对View的位置
+        PopupMenu mPopupMenu = new PopupMenu(this,view);
+        //menu布局
+        mPopupMenu.getMenuInflater().inflate(R.menu.note_help_menu,mPopupMenu.getMenu());
+        //menu中的item点击事件
+        mPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch(menuItem.getItemId()){
+                    case R.id.menu_action_preview:{
+                        Intent intent = new Intent(CreateNoteActivity.this,WebDataActivity.class);
+                        intent.putExtra("html",mEditor.getHtml());
+                        startActivity(intent);
+                    }break;
+                    case R.id.menu_action_clock:{
+                        //关联闹钟
+
+                         final TimePickerView tvTime = new TimePickerView.Builder(CreateNoteActivity.this, new TimePickerView.OnTimeSelectListener() {
+                            @Override
+                            public void onTimeSelect(Date date, View v) {
+                                relativeData = date;
+                            }
+                        }).build();
+                         tvTime.setDate(Calendar.getInstance());
+                         tvTime.show();
+                    }break;
+                    case R.id.menu_action_save:{
+                        //弹出文件保存对话框
+                        AlertDialog.Builder builder =new AlertDialog.Builder(CreateNoteActivity.this);
+                        builder.setTitle("请输入保存的文件名");
+                        //通过LayoutInflater来加载一个XML的布局文件作为一个View对象
+                        View view = LayoutInflater.from(CreateNoteActivity.this).inflate(R.layout.save_file_dialog,null);
+                        //设置自定义布局为弹出框的Content
+                        builder.setView(view);
+
+                        final EditText mFileName = (EditText) view.findViewById(R.id.save_file_name);
+
+                        builder.setPositiveButton("保存", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                              String fileName = mFileName.getText().toString().trim();
+                              String fileContent = mEditor.getHtml();
+                              //创建文件对象
+                                Note note = new Note();
+                                note.setTitle(fileName);
+                                note.setSaveTime(new Date());
+                                note.setShare(false);
+                                note.setUpload(false);
+                                note.setUserId(GlobalVariable.getCurrentUserId());
+                              //调用保存图片的接口
+                                String transHtml = NoteUtils.savePicAndTransferHtml(getApplicationContext(),fileName,fileContent);
+                                note.setContent(transHtml);
+                                //调用数据库接口
+                                int noteId;
+                                if(operation.equalsIgnoreCase("create"))
+                                {
+                                    noteId = GlobalVariable.getNoteDatabaseHolder().insertNote(note);
+                                }
+                                else{
+                                        noteId = getIntent().getIntExtra("noteID",0);
+                                      GlobalVariable.getNoteDatabaseHolder().updateNote(note);
+                                }
+                                //如果Date不为空 调用闹钟创建接口
+                                if(relativeData!=null)
+                                {
+                                    //新建一个闹钟
+                                }
+                            }
+                        });
+                    }break;
+                    case R.id.menu_action_upload:{
+                        //上传文件到服务器
+                        //弹出文件保存对话框
+                        AlertDialog.Builder builder =new AlertDialog.Builder(CreateNoteActivity.this);
+                        builder.setTitle("请输入的文件名");
+                        //通过LayoutInflater来加载一个XML的布局文件作为一个View对象
+                        View view = LayoutInflater.from(CreateNoteActivity.this).inflate(R.layout.save_file_dialog,null);
+                        //设置自定义布局为弹出框的Content
+                        builder.setView(view);
+
+                        final EditText mFileName = (EditText) view.findViewById(R.id.save_file_name);
+
+                        builder.setPositiveButton("上传", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String fileName = mFileName.getText().toString().trim();
+                                String fileContent = mEditor.getHtml();
+                                Note note = new Note();
+                                note.setTitle(fileName);
+                                note.setSaveTime(new Date());
+                                note.setUpload(true);
+                                note.setShare(false);
+                                //本地保存
+                                //图片转移
+                                String localTransferHtml = NoteUtils.savePicAndTransferHtml(getApplicationContext(),fileName,fileContent);
+                                //数据库存储
+                                note.setContent(localTransferHtml);
+                                //创建还是更新
+                                if(operation.equalsIgnoreCase("create"))
+                                {
+                                    GlobalVariable.getNoteDatabaseHolder().insertNote(note);
+                                }
+                                else{
+                                    GlobalVariable.getNoteDatabaseHolder().updateNote(note);
+                                }
+                                //服务器上传
+                                NoteHelper.uploadFileToServer(note);
+                            }
+                        });
+                    }break;
+                }
+                return false;
+            }
+        });
+        mPopupMenu.show();
     }
     /**
      * 开启动画

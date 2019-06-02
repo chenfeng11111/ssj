@@ -2,6 +2,7 @@ package com.example.a526.ssj.mainactivity;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.createactivity.CreateNoteActivity;
 import com.example.a526.ssj.entity.Note;
 
 import java.util.ArrayList;
@@ -51,6 +53,9 @@ public class NoteFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //跳转到创建笔记界面
+                Intent intent = new Intent(getActivity(), CreateNoteActivity.class);
+                intent.putExtra("operation","create");
+                startActivity(intent);
             }
         });
     }

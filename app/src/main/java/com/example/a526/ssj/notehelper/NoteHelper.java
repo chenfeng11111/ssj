@@ -2,6 +2,8 @@ package com.example.a526.ssj.notehelper;
 
 import android.util.Log;
 
+import com.example.a526.ssj.entity.Note;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,17 +21,10 @@ import java.io.FileNotFoundException;
 public class NoteHelper {
     private static  String allNotePath = "../storefiles";
     //传入文件所在文件夹路径 将文件上传到服务器端
-    public static void uploadFileToServer(String fileName){
+    public static void uploadFileToServer(Note note){
         //打开路径下的html文件
-        String htmlPath = allNotePath + File.separator+fileName+File.separator+fileName+".html";
+        String htmlDocument = note.getContent();
         try {
-            //读取文件转化为字节流
-            FileInputStream inputStream = new FileInputStream(htmlPath);
-            byte bytes[]=new byte[inputStream.available()];
-            inputStream.read(bytes);
-            inputStream.close();
-            //字节流转化为字符串
-            String htmlDocument = bytes.toString();
             //使用jsoup解析HTML文件
             Document jsoupDocument = Jsoup.parse(htmlDocument);
             Elements imageSrc = jsoupDocument.select("img[src]");
@@ -49,8 +44,10 @@ public class NoteHelper {
             }
             //所有标签替换完成后，将Document转化为字节流 发送到服务器端
             String serverHtml = jsoupDocument.toString();
+            note.setContent(serverHtml);
             //此处调用网络接口将HTML文本发送到服务器
             /***********************************************/
+
         } catch (Exception e) {
             Log.d("ERROR:上传文件","打开文件失败");
         }

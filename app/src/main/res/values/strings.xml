@@ -4,4 +4,9 @@
     <string name="alarm">闹钟</string>
     <string name="square">广场</string>
     <string name="mine">我的</string>
+
+    <string name="note_save">保存到本地</string>
+    <string name="relative_clock">关联闹钟</string>
+    <string name="note_preview">笔记预览</string>
+    <string name="note_upload">保存并上传</string>
 </resources>

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.example.a526.ssj.entity.Note;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -24,6 +26,13 @@ public class NoteUtils {
     //fileName图片
     //函数返回当前文件所在路径
     private static String copyImageFromBlum(Context context,Uri uri,String fileName){
+
+        String uriToString = uri.toString();
+        //判断当前路径是否是项目目录 如果是 直接返回
+        if((allNotePath+File.separator+fileName).equalsIgnoreCase(uriToString.substring(0,uriToString.lastIndexOf('/'))))
+        {
+            return uri.toString();
+        }
         String originPath = RealPathFromUriUtils.getRealPathFromUri(context,uri);
         //解析文件名称 最后一个/之后
         String picName = originPath.substring(originPath.lastIndexOf("/")+1);
@@ -51,8 +60,8 @@ public class NoteUtils {
         }
         return picPath;
     }
-    //保存富文本编辑器中内容到本地
-    public static void saveFile(Context context, String fileName, String fileContext){
+    //保存富文本编辑器图片到本地
+    public static String savePicAndTransferHtml(Context context, String fileName, String fileContext){
         //主文件夹是否存在 如果不存在 则创建
         File appFilePath=new File(allNotePath);
         if(!appFilePath.exists()){
@@ -60,8 +69,12 @@ public class NoteUtils {
         }
         //创建保存文件的文件夹
         File noteFilePath =new File(allNotePath+"/"+fileName);
-        noteFilePath.mkdirs();
-
+        if(!noteFilePath.exists())
+        {
+            noteFilePath.mkdirs();
+        }
+        //修改后的Html文档
+        String transferHtml = "";
         try {
             //jsoup解析HTML文本
             org.jsoup.nodes.Document mDocument = Jsoup.parse(fileContext);
@@ -71,40 +84,14 @@ public class NoteUtils {
                 //根据地址获取Uri
                 Uri uri = Uri.parse(element.attr("src"));
                 //将所有图片文件拷贝到指定文件夹下
-                String storePath = copyImageFromBlum(context,uri,fileName);
+                String storePath = copyImageFromBlum(context,uri,fileContext);
                 //使用新路径替换当前路径
                 element.attr("src",storePath);
             }
-            /************修改后的文件直接保存到数据库中，不通过文件保存 此处应该调用数据库接口**********/
-            //打开文件输出流
-         /*   FileOutputStream outputStream=new FileOutputStream(new File(allNotePath+File.separator+fileName+File.separator+fileName+".html"));
-            //将替换完成的Docunment写入到文件中
-            outputStream.write(mDocument.toString().getBytes());
-            outputStream.flush();
-            outputStream.close();*/
+            transferHtml = mDocument.toString();
         } catch (Exception e) {
             Log.d("ERROR","打开文件失败！"+e.toString());
         }
-    }
-    /***********无用 从数据库中读取**********************/
-    /*
-    public static String loadFile(Context context,String fileName) {
-        String fileOriPath = allNotePath + File.separator + fileName + File.separator + fileName + ".html";
-        try {
-            //打开html文件读取输入流
-            FileInputStream inputStream = new FileInputStream(fileOriPath);
-            byte []bytes=new byte[inputStream.available()];
-            inputStream.read(bytes);
-            //将输入流转化为字符串
-            return bytes.toString();
-        } catch (Exception e) {
-            Log.d("ERROR", "读取文件失败!!"+e.toString());
-            return "";
-        }
-    }*/
-    public static ArrayList<String> loadAllFiles(Context context){
-
-        //调用数据库接口返回
-        return null;
+        return transferHtml;
     }
 }

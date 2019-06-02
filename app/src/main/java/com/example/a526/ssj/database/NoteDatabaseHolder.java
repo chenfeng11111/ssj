@@ -28,7 +28,7 @@ public class NoteDatabaseHolder {
         noteDatabase = noteDatabaseHelper.getWritableDatabase();
     }
 
-    public void insertNote(Note note) {
+    public int insertNote(Note note) {
         ContentValues values = new ContentValues();
         values.put("title", note.getTitle());
         values.put("content", note.getContent());
@@ -39,6 +39,7 @@ public class NoteDatabaseHolder {
         values.put("userId", note.getUserId());
         //数据库执行插入命令
         noteDatabase.insert(noteDatabaseName, null, values);
+        return searchNote(1,0).get(0).getId();
     }
 
     public void deleteNote(int noteId) {
