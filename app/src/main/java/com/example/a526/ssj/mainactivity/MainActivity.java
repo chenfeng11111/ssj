@@ -34,6 +34,7 @@ public class MainActivity extends FragmentActivity implements AlarmFragment.OnFr
         mainRadioGroup.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
         //添加手势锁监听
         mainRadioGroup.setOnTouchListener(new OnTouchListenerAdapter(this, 0));
+        //首次启动默认显示笔记界面
         switchFragment(0);
     }
 
@@ -64,7 +65,7 @@ public class MainActivity extends FragmentActivity implements AlarmFragment.OnFr
                     position = 0;
                     break;
             }
-            //替换到Fragment
+            //切换对应的界面
             switchFragment(position);
         }
     }

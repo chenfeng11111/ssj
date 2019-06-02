@@ -23,7 +23,6 @@ import java.util.ArrayList;
  */
 
 public class NoteFragment extends Fragment {
-    private TextView edit;
     private ImageView plus;
     private RecyclerView noteListView;
     private ArrayList<Note> noteList;
@@ -42,7 +41,6 @@ public class NoteFragment extends Fragment {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.clockTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View rootView = localInflater.inflate(R.layout.note_fragment, container, false);
-        edit=rootView.findViewById(R.id.note_edit);
         plus=rootView.findViewById(R.id.note_plus);
         noteListView = rootView.findViewById(R.id.note_list);
         setListener();
@@ -50,12 +48,6 @@ public class NoteFragment extends Fragment {
     }
     private void setListener() {
         plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //跳转到创建笔记界面
-            }
-        });
-        edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //跳转到创建笔记界面

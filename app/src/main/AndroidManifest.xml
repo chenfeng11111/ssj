@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".mainactivity.MainActivity">
+        <activity android:name=".welcomeactivity.EnterinActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -19,6 +19,10 @@
         </activity>
         <activity android:name=".lockactivity.LockActivity" />
         <activity android:name=".lockactivity.UnlockActivity" />
+        <activity android:name=".welcomeactivity.BaseActivity" />
+        <activity android:name=".welcomeactivity.LoginActivity" />
+        <activity android:name=".welcomeactivity.InstructActivity" />
+        <activity android:name=".mainactivity.MainActivity" />
     </application>
 
 </manifest>

@@ -19,7 +19,7 @@ import java.util.Map;
  */
 
 public class LogUtil {
-    private String hostAndPort = "localhost:8080";
+    private String hostAndPort = "10.120.174.168:8080";
     private String loginUrl = "/login";
     private String registerUrl = "/rigister";
 
@@ -27,7 +27,7 @@ public class LogUtil {
     {
         try {
             URL url = new URL(loginUrl);
-            String data = "email=" + email + "&password=" + password;
+
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
             // 设置连接
@@ -42,6 +42,7 @@ public class LogUtil {
             conn.connect();
 
             // 输入数据
+            String data = "email=" + email + "&password=" + password;
             DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
             dos.writeBytes(data);
             dos.flush();
@@ -86,7 +87,6 @@ public class LogUtil {
     {
         try {
             URL url = new URL(loginUrl);
-            String data = "name=" + name + "&password=" + password + "&email=" + email;
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
             // 设置连接
@@ -101,6 +101,7 @@ public class LogUtil {
             conn.connect();
 
             // 输入数据
+            String data = "name=" + name + "&password=" + password + "&email=" + email;
             DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
             dos.writeBytes(data);
             dos.flush();
@@ -139,5 +140,7 @@ public class LogUtil {
         }
         return true;
     }
+
+
 }
 // {"state":"success","message":"登陆成功","user":{"id":1,"name":"user001","password":"123456","email":"123@qq.com","state":1}}

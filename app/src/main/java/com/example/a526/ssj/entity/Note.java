@@ -8,11 +8,13 @@ import java.util.Date;
 
 public class Note {
     Integer id;//文件ID
+    String title;//文件标题
     String content;//文件内容
     Boolean isUpload;//是否上传到服务器
     Boolean isShare;//文件是否分享
     Date saveTime;//文件创建时间
     Integer userId;//上传者
+
     public Integer getId() {
         return id;
     }
@@ -60,5 +62,13 @@ public class Note {
 
     public void setSaveTime(Date saveTime) {
         this.saveTime = saveTime;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }

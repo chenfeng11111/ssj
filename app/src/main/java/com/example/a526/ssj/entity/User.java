@@ -51,8 +51,7 @@ public class User {
         this.email = email;
     }
 
-    public void setState(Integer state)
-    {
+    public void setState(Integer state) {
         this.state = state;
     }
 
