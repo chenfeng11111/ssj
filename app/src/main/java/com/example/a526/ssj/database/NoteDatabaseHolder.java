@@ -38,8 +38,7 @@ public class NoteDatabaseHolder {
         values.put("saveTime", time);
         values.put("userId", note.getUserId());
         //数据库执行插入命令
-        noteDatabase.insert(noteDatabaseName, null, values);
-        return searchNote(1,0).get(0).getId();
+        return (int) noteDatabase.insert(noteDatabaseName, null, values);
     }
 
     public void deleteNote(int noteId) {

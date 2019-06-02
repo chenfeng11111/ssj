@@ -33,13 +33,13 @@ public class ClockDatabaseHolder {
         clockDatabase = clockDatabaseHelper.getWritableDatabase();
     }
 
-    public void insertClock(Clock clock) {
+    public int insertClock(Clock clock) {
         ContentValues values = new ContentValues();
         values.put("relatedNoteID", clock.getRelatedNoteId());
         String time = simpleDateFormat.format(clock.getTime());
         values.put("time", time);
         //数据库执行插入命令
-        clockDatabase.insert(clockDatabaseName, null, values);
+        return (int)clockDatabase.insert(clockDatabaseName, null, values);
     }
 
     public void deleteClock(int clockID) {
