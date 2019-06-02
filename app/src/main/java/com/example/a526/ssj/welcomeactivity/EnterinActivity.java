@@ -39,6 +39,7 @@ public class EnterinActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(EnterinActivity.this,InstructActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

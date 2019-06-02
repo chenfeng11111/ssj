@@ -107,7 +107,7 @@ public class InstructActivity extends BaseActivity implements View.OnClickListen
         Log.d("123123113","45646546565465456465456465");
         Intent intent = new Intent(InstructActivity.this,LoginActivity.class);
         startActivity(intent);
-        //finish();
+        finish();
     }
     private class PageChangeListener implements ViewPager.OnPageChangeListener
     {
