@@ -24,29 +24,14 @@ import java.util.ArrayList;
  */
 
 public class SquareFragment extends Fragment {
-
-    private RecyclerView noteListView;
-    private ArrayList<Note> noteList;
-    public SquareFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.clockTheme);
-        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
-        View rootView = localInflater.inflate(R.layout.square_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.square_fragment, container, false);
         //noteListView = rootView.findViewById(R.id.square_list);
         setListener();
         return rootView;
     }
     private void setListener() {
-
     }
 }

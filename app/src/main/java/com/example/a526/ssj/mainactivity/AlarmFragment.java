@@ -19,6 +19,7 @@ import com.bigkoo.pickerview.TimePickerView;
 import com.example.a526.ssj.R;
 import com.example.a526.ssj.database.ClockDatabaseHolder;
 import com.example.a526.ssj.entity.Clock;
+import com.example.a526.ssj.entity.GlobalVariable;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -109,7 +110,7 @@ public class AlarmFragment extends Fragment {
         clock_list.setAdapter(adapter);
         clock_list.setItemAnimator(new DefaultItemAnimator());
         clock_list.addItemDecoration(new clockListItemDecoration(getContext(), clockListItemDecoration.VERTICAL_LIST));
-        clockList = databaseHolder.searchClock(0,0);
+        clockList = GlobalVariable.getClockDatabaseHolder().searchClock(0,0);
     }
     private void initTimePicker1() {//选择出生年月日
         //控制时间范围(如果不设置范围，则使用默认时间1900-2100年，此段代码可注释)
@@ -145,9 +146,8 @@ public class AlarmFragment extends Fragment {
                 //clock.setId(clockList.size());
                 clock.setRelatedNoteId(-1);
                 clock.setTime(date);
-                databaseHolder = new ClockDatabaseHolder(getContext());
                  adapter.addData(clockList.size(),clock);
-                databaseHolder.insertClock(clock);
+                GlobalVariable.getClockDatabaseHolder().insertClock(clock);
             }
         })
 
