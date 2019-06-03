@@ -21,7 +21,7 @@ import java.io.FileNotFoundException;
 public class NoteHelper {
     private static  String allNotePath = "../storefiles";
     //传入文件所在文件夹路径 将文件上传到服务器端
-    public static void uploadFileToServer(Note note){
+    public static void uploadFileToServer(Note note,int status){
         //打开路径下的html文件
         String htmlDocument = note.getContent();
         try {

@@ -37,6 +37,7 @@ import com.example.a526.ssj.entity.Note;
 import com.example.a526.ssj.notehelper.NoteHelper;
 import com.example.a526.ssj.notehelper.NoteUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -116,7 +117,9 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
 
     //选择按钮
     private Button mSelect;
+    private boolean isCreator;//是否新建
     private String operation = getIntent().getStringExtra("operation");
+    private Note originNote = getIntent().getParcelableExtra("note");
     private Date relativeData = null;
     //动态申请权限
     String[] mPermissionList = new String[]{
@@ -130,6 +133,15 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
 
+        //判断当前编辑器是新建笔记还是编辑笔记状态
+        if(operation == null || operation.equalsIgnoreCase("create"))
+        {
+            isCreator = true;
+        }
+        else
+        {
+            isCreator = false;
+        }
         initView();
         initClickListener();
     }
@@ -164,14 +176,14 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         mEditor.setPlaceholder("请输入编辑内容");
         //是否允许输入
         //mEditor.setInputEnabled(false);
-        //如果不是，所有图片默认全屏展示
-        if(operation == null || operation.equalsIgnoreCase("create"))
+        //如果是新建，所有图片默认全屏展示
+        if(isCreator)
         {
             mEditor.setHtml("</Div><head><style>img{ width:100% !important;}</style></head>");
         }
         //如果当前是编辑状态，需要把原HTML加载到编辑器中
         else{
-            mEditor.setHtml(getIntent().getStringExtra("edit"));
+            mEditor.setHtml(originNote.getContent());
         }
         //文本输入框监听事件
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
@@ -444,88 +456,115 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                          tvTime.show();
                     }break;
                     case R.id.menu_action_save:{
-                        //弹出文件保存对话框
-                        AlertDialog.Builder builder =new AlertDialog.Builder(CreateNoteActivity.this);
-                        builder.setTitle("请输入保存的文件名");
-                        //通过LayoutInflater来加载一个XML的布局文件作为一个View对象
-                        View view = LayoutInflater.from(CreateNoteActivity.this).inflate(R.layout.save_file_dialog,null);
-                        //设置自定义布局为弹出框的Content
-                        builder.setView(view);
+                        if(isCreator)
+                        {
+                            //弹出文件保存对话框
+                            AlertDialog.Builder builder =new AlertDialog.Builder(CreateNoteActivity.this);
+                            builder.setTitle("请输入保存的文件名");
+                            //通过LayoutInflater来加载一个XML的布局文件作为一个View对象
+                            View view = LayoutInflater.from(CreateNoteActivity.this).inflate(R.layout.save_file_dialog,null);
+                            //设置自定义布局为弹出框的Content
+                            builder.setView(view);
 
-                        final EditText mFileName = (EditText) view.findViewById(R.id.save_file_name);
+                            final EditText mFileName = (EditText) view.findViewById(R.id.save_file_name);
 
-                        builder.setPositiveButton("保存", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                              String fileName = mFileName.getText().toString().trim();
-                              String fileContent = mEditor.getHtml();
-                              //创建文件对象
-                                Note note = new Note();
-                                note.setTitle(fileName);
-                                note.setSaveTime(new Date());
-                                note.setShare(false);
-                                note.setUpload(false);
-                                note.setUserId(GlobalVariable.getCurrentUserId());
-                              //调用保存图片的接口
-                                String transHtml = NoteUtils.savePicAndTransferHtml(getApplicationContext(),fileName,fileContent);
-                                note.setContent(transHtml);
-                                //调用数据库接口
-                                int noteId;
-                                if(operation.equalsIgnoreCase("create"))
-                                {
+                            mFileName.setText(getIntent().getStringExtra("fileName"));
+                            builder.setPositiveButton("保存", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    String fileName = mFileName.getText().toString().trim();
+                                    String fileContent = mEditor.getHtml();
+                                    //创建文件对象
+                                    Note note = new Note();
+                                    note.setTitle(fileName);
+                                    note.setShare(false);
+                                    note.setUpload(false);
+                                    int userId = GlobalVariable.getCurrentUserId();
+                                    Date curDate = new Date();
+                                    note.setUserId(userId);
+                                    note.setSaveTime(curDate);
+                                    note.setCode(String.valueOf(userId)+curDate);
+                                    note.setVersion(0);
+                                    //调用保存图片的接口
+                                    String transHtml = NoteUtils.savePicAndTransferHtml(getApplicationContext(),fileName,fileContent);
+                                    note.setContent(transHtml);
+                                    //调用数据库接口
+                                    int noteId;
                                     noteId = GlobalVariable.getNoteDatabaseHolder().insertNote(note);
                                 }
-                                else{
-                                        noteId = getIntent().getIntExtra("noteID",0);
-                                      GlobalVariable.getNoteDatabaseHolder().updateNote(note);
-                                }
-                                //如果Date不为空 调用闹钟创建接口
-                                if(relativeData!=null)
-                                {
-                                    //新建一个闹钟
-                                }
-                            }
-                        });
+                            });
+                        }
+                        else{
+                            //保存修改后的文件到本地
+                            String transferHtml = NoteUtils.savePicAndTransferHtml(getApplicationContext(),originNote.getTitle(),mEditor.getHtml());
+                            originNote.setContent(transferHtml);
+                            originNote.setVersion(originNote.getVersion()+1);
+                            //数据库内容修改
+                            GlobalVariable.getNoteDatabaseHolder().updateNote(originNote);
+                        }
+                        if(relativeData!=null)
+                        {
+                            //新建一个闹钟
+                        }
                     }break;
                     case R.id.menu_action_upload:{
-                        //上传文件到服务器
-                        //弹出文件保存对话框
-                        AlertDialog.Builder builder =new AlertDialog.Builder(CreateNoteActivity.this);
-                        builder.setTitle("请输入的文件名");
-                        //通过LayoutInflater来加载一个XML的布局文件作为一个View对象
-                        View view = LayoutInflater.from(CreateNoteActivity.this).inflate(R.layout.save_file_dialog,null);
-                        //设置自定义布局为弹出框的Content
-                        builder.setView(view);
+                        if(isCreator)
+                        {
+                            //上传文件到服务器
+                            //弹出文件保存对话框
+                            AlertDialog.Builder builder =new AlertDialog.Builder(CreateNoteActivity.this);
+                            builder.setTitle("请输入的文件名");
+                            //通过LayoutInflater来加载一个XML的布局文件作为一个View对象
+                            View view = LayoutInflater.from(CreateNoteActivity.this).inflate(R.layout.save_file_dialog,null);
+                            //设置自定义布局为弹出框的Content
+                            builder.setView(view);
 
-                        final EditText mFileName = (EditText) view.findViewById(R.id.save_file_name);
+                            final EditText mFileName = (EditText) view.findViewById(R.id.save_file_name);
 
-                        builder.setPositiveButton("上传", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                String fileName = mFileName.getText().toString().trim();
-                                String fileContent = mEditor.getHtml();
-                                Note note = new Note();
-                                note.setTitle(fileName);
-                                note.setSaveTime(new Date());
-                                note.setUpload(true);
-                                note.setShare(false);
-                                //本地保存
-                                //图片转移
-                                String localTransferHtml = NoteUtils.savePicAndTransferHtml(getApplicationContext(),fileName,fileContent);
-                                //数据库存储
-                                note.setContent(localTransferHtml);
-                                //创建还是更新
-                                if(operation.equalsIgnoreCase("create"))
-                                {
+                            builder.setPositiveButton("上传", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    String fileName = mFileName.getText().toString().trim();
+                                    String fileContent = mEditor.getHtml();
+                                    Note note = new Note();
+                                    note.setTitle(fileName);
+                                    note.setSaveTime(new Date());
+                                    note.setUpload(true);
+                                    note.setShare(false);
+                                    int userId = GlobalVariable.getCurrentUserId();
+                                    Date curDate = new Date();
+                                    note.setUserId(userId);
+                                    note.setSaveTime(curDate);
+                                    note.setCode(String.valueOf(userId)+curDate);
+                                    note.setVersion(0);
+                                    //本地保存
+                                    //图片转移
+                                    String localTransferHtml = NoteUtils.savePicAndTransferHtml(getApplicationContext(),fileName,fileContent);
+                                    //数据库存储
+                                    note.setContent(localTransferHtml);
+                                    //创建
                                     GlobalVariable.getNoteDatabaseHolder().insertNote(note);
+                                    //服务器上传 status 0
+                                    NoteHelper.uploadFileToServer(note,0);
                                 }
-                                else{
-                                    GlobalVariable.getNoteDatabaseHolder().updateNote(note);
-                                }
-                                //服务器上传
-                                NoteHelper.uploadFileToServer(note);
-                            }
-                        });
+                            });
+                        }
+                        else{//修改后上传服务器
+                            //保存修改后的文件到本地
+                            String transferHtml = NoteUtils.savePicAndTransferHtml(getApplicationContext(),originNote.getTitle(),mEditor.getHtml());
+                            originNote.setContent(transferHtml);
+                            originNote.setVersion(originNote.getVersion()+1);
+                            //本地数据库内容修改
+                            GlobalVariable.getNoteDatabaseHolder().updateNote(originNote);
+                            //服务器更新 status 1
+                            NoteHelper.uploadFileToServer(originNote,1);
+                        }
+
+                        if(relativeData!=null)
+                        {
+                            //创建闹钟
+
+                        }
                     }break;
                 }
                 return false;
