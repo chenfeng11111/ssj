@@ -34,7 +34,8 @@ public class ClockUtil {
             } else {//ID等于-1表示无笔记关联，无消息传递
                 intent.putExtra("title", "no message");
             }
-            PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
+            intent.putExtra("ID", clock.getId());//将闹钟ID传入，用于删除闹钟
+            PendingIntent sender = PendingIntent.getBroadcast(context, clock.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
             Calendar c = Calendar.getInstance();
             c.setTime(clock.getTime());
             // Schedule the alarm!
@@ -49,6 +50,19 @@ public class ClockUtil {
     //将闹钟存到数据库中并同时创建闹钟
     public static void saveAlarm(Context context, Clock clock) {
         GlobalVariable.getClockDatabaseHolder().insertClock(clock);
+        setAlarm(context, clock);
+    }
+
+    //取消闹钟
+    public void cancelAlarm(Context context, Clock clock) {
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, clock.getId(), new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        am.cancel(pendingIntent);
+    }
+
+    //更新闹钟
+    public void updateAlarm(Context context, Clock clock) {
+        GlobalVariable.getClockDatabaseHolder().updateClock(clock);
         setAlarm(context, clock);
     }
 }
