@@ -23,6 +23,7 @@ import com.example.a526.ssj.entity.Note;
 
 import java.util.ArrayList;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -92,6 +93,13 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+                Map<Integer,Boolean> selectState = adapter.getMap();
+                for(int i=0;i<selectState.size();i++) {
+                    if (selectState.get(i))
+                    {
+                        adapter.removeData(i);
+                    }
+                }
             }
         });
 

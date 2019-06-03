@@ -1,51 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.a526.ssj.mainactivity.clockListItem
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/note_list_item"
-    android:scrollbars="none"
-    app:move_range="20"
-    app:right_width="200"
-    android:layout_height="wrap_content">
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/note_title"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        >
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="400dp"
-            android:orientation="vertical"
-            android:id="@+id/content_layout"
-            >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/note_text"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:id="@+id/item_right_layout"
-            android:orientation="horizontal"
-            android:layout_alignTop="@id/content_layout"
-            android:layout_alignBottom="@id/content_layout"
-            android:layout_toEndOf="@id/content_layout"
-            android:gravity="center"
-            android:background="#FF0000"
-            >
-            <TextView
-                android:id="@+id/note_del_item"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="删除"
-                android:textSize="26sp"
-                android:textColor="#FFF"
-                />
-        </LinearLayout>
-    </RelativeLayout>
-</com.example.a526.ssj.mainactivity.clockListItem>
+        android:layout_weight="1"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/note_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <CheckBox
+        android:id="@+id/cb"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginRight="10dp"
+        android:visibility="invisible" />
+</LinearLayout>
+

@@ -1,38 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:weightSum="1"
     tools:context="com.example.a526.ssj.mainactivity.NoteFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorPrimary">
-
+        android:background="@color/colorPrimary"
+        >
         <TextView
-            android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="155dp"
+            android:layout_width="50dp"
+            android:id="@+id/note_edit"
+            android:text="编辑"
+            android:textSize="18sp"
+            android:textColor="#000"
             android:gravity="center"
+            />
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_width="50dp"
             android:text="笔记"
             android:textColor="#FFF"
             android:textSize="24sp"
-            android:textStyle="bold" />
-
+            android:layout_marginLeft="110dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            />
         <ImageView
-            android:id="@+id/note_plus"
-            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="115dp"
-            android:src="@drawable/plus" />
+            android:layout_width="wrap_content"
+            android:id="@+id/note_plus"
+            android:src="@drawable/plus"
+            android:layout_marginLeft="110dp"
+            />
     </android.support.v7.widget.Toolbar>
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        >
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/note_list"
         />
+        <LinearLayout
+            android:id="@+id/menu_layout"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:background="#FFF"
+            android:gravity="center"
+            android:visibility="gone"
+            android:orientation="vertical"
+            >
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimary"
+                />
+            <include layout="@layout/note_list_longclick_menu"
+                />
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

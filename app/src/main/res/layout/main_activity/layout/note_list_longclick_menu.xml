@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal">
+<Button
+    android:layout_height="50dp"
+    android:layout_width="70dp"
+    android:id="@+id/menu_del"
+    android:text="删除"
+    android:gravity="center"
+    android:textColor="#000"
+    android:layout_marginLeft="20dp"
+
+    />
+    <Button
+        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:id="@+id/menu_update"
+        android:text="修改"
+        android:gravity="center"
+        android:textColor="#000"
+        android:layout_marginLeft="20dp"
+        />
+    <Button
+        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:id="@+id/menu_share"
+        android:text="分享"
+        android:gravity="center"
+        android:textColor="#000"
+        android:layout_marginLeft="20dp"
+        />
+    <Button
+    android:layout_height="50dp"
+    android:layout_width="70dp"
+    android:id="@+id/menu_sync"
+    android:text="同步"
+    android:gravity="center"
+    android:textColor="#000"
+    android:layout_marginLeft="20dp"
+    />
+
+</LinearLayout>
