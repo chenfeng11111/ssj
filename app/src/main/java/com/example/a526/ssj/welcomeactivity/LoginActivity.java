@@ -93,7 +93,7 @@ public class LoginActivity extends BaseActivity {
                         //进行访问网络操作
                         Message msg = Message.obtain();
                         Bundle data = new Bundle();
-                        boolean successful = loginUtil.login(account.getText().toString(), password.getText().toString(), data);
+//                        boolean successful = loginUtil.login(account.getText().toString(), password.getText().toString(), data);
 //                         data.putString("successful", successful? "1" : "0");
                         data.putString("successful", "1");  //实际使用的时候使用上一行代码
                         msg.setData(data);
@@ -118,7 +118,8 @@ public class LoginActivity extends BaseActivity {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
-                GlobalVariable.setCurrentUserId(Integer.parseInt(data.getStringArrayList("user").get(0)));
+//                GlobalVariable.setCurrentUserId(Integer.parseInt(data.getStringArrayList("user").get(0)));
+                GlobalVariable.setCurrentUserId(1);
             } else {
                 Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_LONG).show();
             }
