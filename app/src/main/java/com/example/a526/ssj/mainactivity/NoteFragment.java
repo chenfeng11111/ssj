@@ -2,6 +2,7 @@ package com.example.a526.ssj.mainactivity;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.createactivity.CreateNoteActivity;
 import com.example.a526.ssj.entity.Note;
 
 import java.util.ArrayList;
@@ -121,6 +123,14 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+            }
+        });
+        plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CreateNoteActivity.class);
+                intent.putExtra("operation","create");
+                startActivity(intent);
             }
         });
         return rootView;

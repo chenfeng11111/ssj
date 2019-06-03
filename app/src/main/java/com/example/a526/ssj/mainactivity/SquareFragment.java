@@ -42,7 +42,7 @@ public class SquareFragment extends Fragment {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.clockTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View rootView = localInflater.inflate(R.layout.square_fragment, container, false);
-        noteListView = rootView.findViewById(R.id.square_list);
+        //noteListView = rootView.findViewById(R.id.square_list);
         setListener();
         return rootView;
     }
