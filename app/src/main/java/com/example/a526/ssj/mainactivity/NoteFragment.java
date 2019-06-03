@@ -76,7 +76,6 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
         note_edit = (Button)rootView.findViewById(R.id.menu_edit);
         databaseHolder = new NoteDatabaseHolder(getContext());
         initData();
-        //adapter.notifyDataSetChanged();
         //布局管理器
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         noteListView.setLayoutManager(manager);
@@ -106,7 +105,10 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+                adapter.setisshowBox(false);
+                adapter.notifyDataSetChanged();
                 Map<Integer,Boolean> selectState = adapter.getMap();
+                ArrayList<Integer> noteid = new ArrayList<>();
                 for(int i=0;i<selectState.size();i++) {
                     if (selectState.get(i))
                     {
@@ -119,6 +121,19 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
                         //从列表中移除
                         noteList.remove(i);
                         Toast.makeText(getContext(),"删除成功",Toast.LENGTH_SHORT).show();
+                        noteid.add(noteList.get(i).getId());
+                    }
+                }
+                for(int i=0;i<noteid.size();i++)
+                {
+                    int n = noteList.size();
+                    for(int j=0;j<n;j++)
+                    {
+                        if(noteList.get(j).getId()==noteid.get(i))
+                        {
+                            adapter.removeData(j);
+                            break;
+                        }
                     }
                 }
             }
@@ -128,6 +143,8 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+                adapter.setisshowBox(false);
+                adapter.notifyDataSetChanged();
                 Map<Integer,Boolean> selectState = adapter.getMap();
                 for(int i=0;i<selectState.size();i++) {
                     if (selectState.get(i))
@@ -145,6 +162,8 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+                adapter.setisshowBox(false);
+                adapter.notifyDataSetChanged();
                 Map<Integer,Boolean> selectState = adapter.getMap();
                 for(int i=0;i<selectState.size();i++) {
                 if (selectState.get(i))
@@ -162,6 +181,8 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+                adapter.setisshowBox(false);
+                adapter.notifyDataSetChanged();
                 Map<Integer,Boolean> selectState = adapter.getMap();
                 for(int i=0;i<selectState.size();i++) {
                     if (selectState.get(i))
@@ -243,6 +264,7 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
     public void onStart()
     {
         super.onStart();
+
     }
 
 }
