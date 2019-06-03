@@ -39,7 +39,7 @@ public class ClockDatabaseHolder {
         String time = simpleDateFormat.format(clock.getTime());
         values.put("time", time);
         //数据库执行插入命令
-        return (int)clockDatabase.insert(clockDatabaseName, null, values);
+        return (int) clockDatabase.insert(clockDatabaseName, null, values);
     }
 
     public void deleteClock(int clockID) {
@@ -51,8 +51,26 @@ public class ClockDatabaseHolder {
         clockDatabase.delete(clockDatabaseName, whereClause, whereArgs);
     }
 
-    public void searchClock() {
-
+    //按clockID单独查询
+    public Clock searchClock(int clockId) {
+        Cursor cursor = clockDatabase.query(clockDatabaseName, null, "clockId=?", new String[]{String.valueOf(clockId)},
+                null, null, null, null);
+        Clock clock = null;
+        //判断游标是否为空
+        if (cursor.moveToFirst()) {
+            clock = new Clock();
+            clock.setId(cursor.getInt(0));
+            String str = cursor.getString(1);
+            Date date = new Date();
+            try {
+                date = simpleDateFormat.parse(str);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            clock.setTime(date);
+            clock.setRelatedNoteId(cursor.getInt(2));
+        }
+        return clock;
     }
 
     //第一个参数传入需要查询的数量，第二个参数传入从第几个开始查询，返回值按时间由晚到早排列

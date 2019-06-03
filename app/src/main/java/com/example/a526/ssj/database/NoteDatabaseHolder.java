@@ -52,11 +52,11 @@ public class NoteDatabaseHolder {
         noteDatabase.delete(noteDatabaseName, whereClause, whereArgs);
     }
 
-    //单独查询一个note，如果没有查询到结果，返回值的note的String字段是null
+    //单独查询一个note，如果没有查询到结果，返回null
     public Note searchNote(int noteId) {
         Cursor cursor = noteDatabase.query(noteDatabaseName, null, "noteId=?", new String[]{String.valueOf(noteId)},
                 null, null, "noteId desc", null);
-        Note note = new Note();
+        Note note = null;
         if (cursor.moveToFirst()) {
             note = new Note();
             note.setId(cursor.getInt(0));
