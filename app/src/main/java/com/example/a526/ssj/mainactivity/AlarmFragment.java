@@ -17,6 +17,8 @@ import android.widget.ImageView;
 
 import com.bigkoo.pickerview.TimePickerView;
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.database.ClockDatabaseHolder;
+import com.example.a526.ssj.entity.Clock;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,7 +47,8 @@ public class AlarmFragment extends Fragment {
     private RecyclerView clock_list;
     private TimePickerView pvTime1;
     private clockListAdapter adapter;
-    private List<String> clockList = new ArrayList<String>();
+            private List<Clock> clockList = new ArrayList<Clock>();
+    ClockDatabaseHolder databaseHolder;
 
     public AlarmFragment() {
         // Required empty public constructor
@@ -106,6 +109,7 @@ public class AlarmFragment extends Fragment {
         clock_list.setAdapter(adapter);
         clock_list.setItemAnimator(new DefaultItemAnimator());
         clock_list.addItemDecoration(new clockListItemDecoration(getContext(), clockListItemDecoration.VERTICAL_LIST));
+        clockList = databaseHolder.searchClock(0,0);
     }
     private void initTimePicker1() {//选择出生年月日
         //控制时间范围(如果不设置范围，则使用默认时间1900-2100年，此段代码可注释)
@@ -137,7 +141,13 @@ public class AlarmFragment extends Fragment {
             public void onTimeSelect(Date date, View v) {//选中事件回调
                 // 这里回调过来的v,就是show()方法里面所添加的 View 参数，如果show的时候没有添加参数，v则为null
                 //clockList.add(getTime(date));
-                 adapter.addData(clockList.size(),getTime(date));
+                Clock clock = new Clock();
+                //clock.setId(clockList.size());
+                clock.setRelatedNoteId(-1);
+                clock.setTime(date);
+                databaseHolder = new ClockDatabaseHolder(getContext());
+                 adapter.addData(clockList.size(),clock);
+                databaseHolder.insertClock(clock);
             }
         })
 

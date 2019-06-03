@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.TimePickerView;
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.database.ClockDatabaseHolder;
+import com.example.a526.ssj.entity.Clock;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,11 +24,12 @@ import java.util.List;
 
 public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.clockListViewHolder>{
     private Context context;
-    private List<String> clockList;
+    private List<Clock> clockList;
     private TimePickerView pvTime1;
     private int mPosition;
+    private ClockDatabaseHolder databaseHolder;
 
-    public clockListAdapter(Context context,List<String> clockList)
+    public clockListAdapter(Context context,List<Clock> clockList)
     {
         this.context = context;
         this.clockList = clockList;
@@ -34,6 +37,7 @@ public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.cloc
     @Override
     public clockListViewHolder onCreateViewHolder(ViewGroup parent,int viewType)
     {
+        databaseHolder = new ClockDatabaseHolder(context);
         initTimePicker1();
         clockListViewHolder holder = new clockListViewHolder(LayoutInflater.from(context).inflate(R.layout.clock_list_item,parent,false));
         return holder;
@@ -43,7 +47,7 @@ public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.cloc
     public void onBindViewHolder(clockListViewHolder holder,final int position)
     {
         holder.itemView.apply();
-        holder.clockText.setText(clockList.get(position));
+        holder.clockText.setText(clockList.get(position).getTime().toString());
         holder.delItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,9 +70,9 @@ public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.cloc
         return clockList.size();
     }
 
-    public void addData(int position,String clockText)
+    public void addData(int position,Clock clock)
     {
-        clockList.add(position,clockText);
+        clockList.add(position,clock);
         notifyItemInserted(position);
     }
 
@@ -108,9 +112,14 @@ public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.cloc
             public void onTimeSelect(Date date, View v) {//选中事件回调
                 // 这里回调过来的v,就是show()方法里面所添加的 View 参数，如果show的时候没有添加参数，v则为null
                 //clockList.add(getTime(date));
-                SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                //SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");\
+                clockList = databaseHolder.searchClock(0,0);
+                Clock clock = clockList.get(mPosition);
                 removeData(mPosition);
-                addData(mPosition,timeFormat.format(date));
+                clock.setTime(date);
+                clock.setRelatedNoteId(-1);
+                addData(mPosition,clock);
+                databaseHolder.updateClock(clock);
             }
         })
 
