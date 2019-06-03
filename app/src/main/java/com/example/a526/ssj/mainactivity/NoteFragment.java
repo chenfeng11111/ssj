@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import com.example.a526.ssj.R;
 import com.example.a526.ssj.createactivity.CreateNoteActivity;
 import com.example.a526.ssj.database.NoteDatabaseHolder;
+import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ import java.util.Map;
 public class NoteFragment extends Fragment implements View.OnClickListener{
     private ImageView plus;
     private RecyclerView noteListView;
-    private List<Note> noteList;
+    private List<Note> noteList = new ArrayList<Note>();
     private NoteListAdapter adapter;
     private LinearLayout menu;
     private Button note_del;
@@ -99,11 +100,26 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+                adapter.setisshowBox(false);
+                adapter.notifyDataSetChanged();
                 Map<Integer,Boolean> selectState = adapter.getMap();
+                ArrayList<Integer> noteid = new ArrayList<>();
                 for(int i=0;i<selectState.size();i++) {
                     if (selectState.get(i))
                     {
-                        adapter.removeData(i);
+                        noteid.add(noteList.get(i).getId());
+                    }
+                }
+                for(int i=0;i<noteid.size();i++)
+                {
+                    int n = noteList.size();
+                    for(int j=0;j<n;j++)
+                    {
+                        if(noteList.get(j).getId()==noteid.get(i))
+                        {
+                            adapter.removeData(j);
+                            break;
+                        }
                     }
                 }
             }
@@ -113,7 +129,8 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
-
+                adapter.setisshowBox(false);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -121,6 +138,8 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+                adapter.setisshowBox(false);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -128,6 +147,8 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+                adapter.setisshowBox(false);
+                adapter.notifyDataSetChanged();
             }
         });
         plus.setOnClickListener(new View.OnClickListener() {
@@ -185,18 +206,14 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
      * 为列表添加测试数据
      */
     private void initData() {
-        noteList=new ArrayList<>();
-        for (int i=0;i<100;i++) {
-            //noteList.add("当前条目是"+i);
-        }
+        noteList = GlobalVariable.getNoteDatabaseHolder().searchNote(0,0);
     }
 
     @Override
     public void onStart()
     {
         super.onStart();
-        noteList = databaseHolder.searchNote(0,0);
-        adapter.notifyDataSetChanged();
+
     }
 
 }
