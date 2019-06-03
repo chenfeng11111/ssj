@@ -94,7 +94,8 @@ public class LoginActivity extends BaseActivity {
                         Message msg = Message.obtain();
                         Bundle data = new Bundle();
                         boolean successful = loginUtil.login(account.getText().toString(), password.getText().toString(), data);
-                        data.putString("successful", successful? "1" : "0");
+//                         data.putString("successful", successful? "1" : "0");
+                        data.putString("successful", "1");  //实际使用的时候使用上一行代码
                         msg.setData(data);
                         handler.sendMessage(msg);
                     }
@@ -113,7 +114,6 @@ public class LoginActivity extends BaseActivity {
             String val = data.getString("value");
             //将数据进行显示到界面等操作
             boolean successful = data.getString("successful").equals("1");
-            successful = true;  // 实际使用的时候删除
             if (successful) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);

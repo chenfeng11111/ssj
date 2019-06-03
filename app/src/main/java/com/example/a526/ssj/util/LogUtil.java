@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -103,7 +104,7 @@ public class LogUtil {
         return true;
     }
 
-    public boolean register(String name, String password, String email, Map<String, Object> map) {
+    public boolean register(String name, String password, String email, Bundle bundle) {
         try {
             URL url = new URL(hostAndPort + loginUrl);
             System.out.println(url.toString());
@@ -139,8 +140,8 @@ public class LogUtil {
                 responseReader.close();
                 System.out.println(sb.toString());
                 JSONObject jsonObject = new JSONObject(sb.toString());
-                map.put("state", jsonObject.get("state"));
-                map.put("message", jsonObject.get("message"));
+                bundle.putString("state", jsonObject.get("state").toString());
+                bundle.putString("message", jsonObject.get("message").toString());
                 if (jsonObject.has("user")) {
                     JSONObject userObject = new JSONObject(jsonObject.getString("user"));
                     User user = new User();
@@ -149,7 +150,13 @@ public class LogUtil {
                     user.setPassword(userObject.getString("password"));
                     user.setEmail(userObject.getString("email"));
                     user.setState(userObject.getInt("state"));
-                    map.put("user", user);
+                    ArrayList<String> userData = new ArrayList<>();
+                    userData.add(user.getId().toString());
+                    userData.add(user.getName());
+                    userData.add(user.getPassword());
+                    userData.add(user.getEmail());
+                    userData.add(user.getState().toString());
+                    bundle.putStringArrayList("user", userData);
                 }
             }
         } catch (Exception e) {
