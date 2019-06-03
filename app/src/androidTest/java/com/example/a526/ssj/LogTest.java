@@ -1,26 +1,22 @@
 package com.example.a526.ssj;
 
+import android.os.Bundle;
+import android.support.test.runner.AndroidJUnit4;
+
 import com.example.a526.ssj.entity.User;
 import com.example.a526.ssj.util.LogUtil;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-public class ExampleUnitTest {
+@RunWith(AndroidJUnit4.class)
+public class LogTest {
 
     @Test
     public void helloServer()
@@ -64,10 +60,9 @@ public class ExampleUnitTest {
         user.setName("user123");
         user.setPassword("123456");
         user.setState(1);
-//        HashMap<String, Object> map = new HashMap<>();
-//        logUtil.login(user.getEmail(), user.getPassword(), map);
-//        User serverUser = (User) map.get("user");
-//        System.out.println(serverUser);
+        Bundle bundle = new Bundle();
+        logUtil.login(user.getEmail(), user.getPassword(), bundle);
+        System.out.println("//todo");
     }
 
     @Test
@@ -79,9 +74,9 @@ public class ExampleUnitTest {
         user.setName("user123");
         user.setPassword("123456");
         user.setState(1);
-//        HashMap<String, Object> map = new HashMap<>();
-//        logUtil.register(user.getName(), user.getPassword(), user.getEmail(), map);
-//        User serverUser = (User) map.get("user");
-//        System.out.println(serverUser);
+        HashMap<String, Object> map = new HashMap<>();
+        logUtil.register(user.getName(), user.getPassword(), user.getEmail(), map);
+        User serverUser = (User) map.get("user");
+        System.out.println(serverUser);
     }
 }

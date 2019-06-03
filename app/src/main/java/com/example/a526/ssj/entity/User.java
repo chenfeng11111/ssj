@@ -19,6 +19,11 @@ public class User {
     public User() {
     }
 
+    @Override
+    public String toString() {
+        return email + " : " + name;
+    }
+
     public Integer getId() {
         return id;
     }

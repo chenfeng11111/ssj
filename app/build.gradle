@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -55,4 +54,8 @@ android {
         compile 'com.contrarywind:Android-PickerView:3.2.7'
         compile 'de.hdodenhof:circleimageview:2.1.0'
     }
+}
+dependencies {
+//    testCompile files('libs/json.jar')
+
 }
