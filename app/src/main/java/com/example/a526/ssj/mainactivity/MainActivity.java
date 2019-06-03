@@ -133,5 +133,4 @@ public class MainActivity extends FragmentActivity implements AlarmFragment.OnFr
         setContentView(R.layout.activity_main);
         mainRadioGroup = findViewById(R.id.main_radio_group);
     }
-
 }

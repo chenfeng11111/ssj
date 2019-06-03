@@ -1,6 +1,7 @@
 package com.example.a526.ssj.mainactivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.createactivity.WebDataActivity;
 import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
 
@@ -90,11 +92,20 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.noteLi
                 map.put(position, isChecked);
             }
         });
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Note note = noteList.get(position);
+                Intent intent = new Intent(context, WebDataActivity.class);
+                intent.putExtra("html",note.getContent());
+                context.startActivity(intent);
+            }
+        });
         // 设置CheckBox的状态
         if (map.get(position) == null) {
             map.put(position, false);
         }
-        holder.checkbox.setChecked(map.get(position));
+        holder.checkbox.setChecked(map.get(position)) ;
     }
 
     @Override

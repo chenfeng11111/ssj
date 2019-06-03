@@ -17,8 +17,8 @@
         <TextView
             android:layout_height="match_parent"
             android:layout_width="50dp"
-            android:id="@+id/note_edit"
-            android:text="编辑"
+            android:id="@+id/note_sync"
+            android:text="同步"
             android:textSize="18sp"
             android:textColor="#000"
             android:gravity="center"
@@ -29,7 +29,7 @@
             android:text="笔记"
             android:textColor="#FFF"
             android:textSize="24sp"
-            android:layout_marginLeft="110dp"
+            android:layout_marginLeft="120dp"
             android:gravity="center"
             android:textStyle="bold"
             />

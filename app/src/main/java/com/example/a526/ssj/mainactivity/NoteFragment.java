@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a526.ssj.R;
@@ -43,6 +44,7 @@ import java.util.Map;
 
 public class NoteFragment extends Fragment implements View.OnClickListener{
     private ImageView plus;
+    private TextView note_sync;
     private RecyclerView noteListView;
     private List<Note> noteList=new ArrayList<Note>();
     private NoteListAdapter adapter;
@@ -68,6 +70,7 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View rootView = localInflater.inflate(R.layout.note_fragment, container, false);
         plus=(ImageView) rootView.findViewById(R.id.note_plus);
+        note_sync = (TextView) rootView.findViewById(R.id.note_sync);
         noteListView = (RecyclerView) rootView.findViewById(R.id.note_list);
         menu = (LinearLayout)rootView.findViewById(R.id.menu_layout);
         note_del = (Button) rootView.findViewById(R.id.menu_del);
@@ -207,21 +210,19 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent);
             }
         });
+        note_sync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //同步方法 调用同步接口
+
+
+            }
+        });
         return rootView;
     }
 
     @Override
     public void onClick(View v) {
-        //获取你选中的item
-        Map<Integer, Boolean> map = adapter.getMap();
-        for (int i = 0; i < map.size(); i++) {
-            if (map.get(i)) {
-                Note note = noteList.get(i);
-                Intent intent = new Intent(getActivity(), WebDataActivity.class);
-                intent.putExtra("html",note.getContent());
-                startActivity(intent);
-            }
-        }
     }
 
     @Override
