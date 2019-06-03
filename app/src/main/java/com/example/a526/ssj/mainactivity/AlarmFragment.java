@@ -141,8 +141,8 @@ public class AlarmFragment extends Fragment {
             }
         })
 
-                .setType(new boolean[]{ false, false, false,true,true,false}) //年月日时分秒 的显示与否，不设置则默认全部显示
-                .setLabel("", "", "", "时", "分", "")//默认设置为年月日时分秒
+                .setType(new boolean[]{ true, true, true,true,true,false}) //年月日时分秒 的显示与否，不设置则默认全部显示
+                .setLabel("年", "月", "日", "时", "分", "")//默认设置为年月日时分秒
                 .isCenterLabel(false)
                 .setDividerColor(Color.RED)
                 .setTextColorCenter(Color.RED)//设置选中项的颜色
@@ -153,7 +153,7 @@ public class AlarmFragment extends Fragment {
                 .setContentSize(21)
                 .setDate(selectedDate)
                 .setLineSpacingMultiplier(1.2f)
-                .setTextXOffset(0, 0,0, -3, 3, 0)//设置X轴倾斜角度[ -90 , 90°]
+                .setTextXOffset(-10, -5,0, -5, 10, 0)//设置X轴倾斜角度[ -90 , 90°]
                 .setRangDate(startDate, endDate)
 //                .setBackgroundId(0x00FFFFFF) //设置外部遮罩颜色
                 .setDecorView(null)
@@ -161,7 +161,7 @@ public class AlarmFragment extends Fragment {
     }
 
     private String getTime(Date date) {//可根据需要自行截取数据显示
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
     }

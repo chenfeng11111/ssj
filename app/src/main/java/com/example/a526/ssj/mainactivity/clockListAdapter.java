@@ -108,14 +108,14 @@ public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.cloc
             public void onTimeSelect(Date date, View v) {//选中事件回调
                 // 这里回调过来的v,就是show()方法里面所添加的 View 参数，如果show的时候没有添加参数，v则为null
                 //clockList.add(getTime(date));
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 removeData(mPosition);
                 addData(mPosition,timeFormat.format(date));
             }
         })
 
-                .setType(new boolean[]{ false, false, false,true,true,false}) //年月日时分秒 的显示与否，不设置则默认全部显示
-                .setLabel("", "", "", "时", "分", "")//默认设置为年月日时分秒
+                .setType(new boolean[]{ true, true, true,true,true,false}) //年月日时分秒 的显示与否，不设置则默认全部显示
+                .setLabel("年", "月", "日", "时", "分", "")//默认设置为年月日时分秒
                 .isCenterLabel(false)
                 .setDividerColor(Color.RED)
                 .setTextColorCenter(Color.RED)//设置选中项的颜色
@@ -126,7 +126,7 @@ public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.cloc
                 .setContentSize(21)
                 .setDate(selectedDate)
                 .setLineSpacingMultiplier(1.2f)
-                .setTextXOffset(0, 0,0, -3, 3, 0)//设置X轴倾斜角度[ -90 , 90°]
+                .setTextXOffset(-10, -5,0, 5, 10, 0)//设置X轴倾斜角度[ -90 , 90°]
                 .setRangDate(startDate, endDate)
 //                .setBackgroundId(0x00FFFFFF) //设置外部遮罩颜色
                 .setDecorView(null)
