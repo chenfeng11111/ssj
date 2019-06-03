@@ -19,23 +19,22 @@ import java.util.Map;
  */
 
 public class LogUtil {
-    private String hostAndPort = "10.120.174.168:8080";
+    private String hostAndPort = "http://10.120.174.168:8080";
     private String loginUrl = "/login";
     private String registerUrl = "/rigister";
 
-    public boolean login(String email, String password, Map<String, Object> map)
-    {
+    public boolean login(String email, String password, Map<String, Object> map) {
         try {
-            URL url = new URL(loginUrl);
+            URL url = new URL(hostAndPort + loginUrl);
 
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             // 设置连接
             conn.setDoInput(true);
             conn.setDoOutput(true);
             conn.setUseCaches(false);
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("User-Agent","Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; KB974487)");
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; KB974487)");
             conn.setRequestProperty("Charset", "UTF-8");
 
             // 建立连接
@@ -49,13 +48,12 @@ public class LogUtil {
             dos.close();
 
             int code = conn.getResponseCode();
-            if(code == HttpURLConnection.HTTP_OK)
-            {
+            if (code == HttpURLConnection.HTTP_OK) {
                 // 读取数据
-                StringBuffer sb=new StringBuffer();
+                StringBuffer sb = new StringBuffer();
                 String readLine;
-                BufferedReader responseReader=new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
-                while((readLine=responseReader.readLine())!=null){
+                BufferedReader responseReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                while ((readLine = responseReader.readLine()) != null) {
                     sb.append(readLine).append("\n");
                 }
                 responseReader.close();
@@ -63,8 +61,7 @@ public class LogUtil {
                 JSONObject jsonObject = new JSONObject(sb.toString());
                 map.put("state", jsonObject.get("state"));
                 map.put("message", jsonObject.get("message"));
-                if(jsonObject.has("user"))
-                {
+                if (jsonObject.has("user")) {
                     JSONObject userObject = new JSONObject(jsonObject.getString("user"));
                     User user = new User();
                     user.setId(userObject.getInt("id"));
@@ -83,18 +80,17 @@ public class LogUtil {
         return true;
     }
 
-    public boolean register(String name, String password, String email, Map<String, Object> map)
-    {
+    public boolean register(String name, String password, String email, Map<String, Object> map) {
         try {
             URL url = new URL(loginUrl);
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             // 设置连接
             conn.setDoInput(true);
             conn.setDoOutput(true);
             conn.setUseCaches(false);
             conn.setRequestMethod("POST");
-            conn.setRequestProperty("User-Agent","Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; KB974487)");
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; KB974487)");
             conn.setRequestProperty("Charset", "UTF-8");
 
             // 建立连接
@@ -108,13 +104,12 @@ public class LogUtil {
             dos.close();
 
             int code = conn.getResponseCode();
-            if(code == HttpURLConnection.HTTP_OK)
-            {
+            if (code == HttpURLConnection.HTTP_OK) {
                 // 读取数据
-                StringBuffer sb=new StringBuffer();
+                StringBuffer sb = new StringBuffer();
                 String readLine;
-                BufferedReader responseReader=new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
-                while((readLine=responseReader.readLine())!=null){
+                BufferedReader responseReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+                while ((readLine = responseReader.readLine()) != null) {
                     sb.append(readLine).append("\n");
                 }
                 responseReader.close();
@@ -122,8 +117,7 @@ public class LogUtil {
                 JSONObject jsonObject = new JSONObject(sb.toString());
                 map.put("state", jsonObject.get("state"));
                 map.put("message", jsonObject.get("message"));
-                if(jsonObject.has("user"))
-                {
+                if (jsonObject.has("user")) {
                     JSONObject userObject = new JSONObject(jsonObject.getString("user"));
                     User user = new User();
                     user.setId(userObject.getInt("id"));

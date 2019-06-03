@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.a526.ssj">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -23,6 +24,14 @@
         <activity android:name=".welcomeactivity.LoginActivity" />
         <activity android:name=".welcomeactivity.InstructActivity" />
         <activity android:name=".mainactivity.MainActivity" />
+        <activity
+            android:name=".clockservice.ClockActivity"
+            android:theme="@style/transparent_activity" />
+        <receiver android:name=".clockservice.ClockReceiver">
+            <intent-filter>
+                <action android:name="alarm" />
+            </intent-filter>
+        </receiver>
         <activity android:name=".createactivity.CreateNoteActivity"/>
         <activity android:name=".createactivity.WebDataActivity"/>
     </application>

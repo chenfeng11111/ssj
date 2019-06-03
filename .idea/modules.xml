@@ -4,8 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/ssj.iml" filepath="$PROJECT_DIR$/ssj.iml" />
-      <module fileurl="file://F:\AndroidProjects\withnotes\ssj.iml" filepath="F:\AndroidProjects\withnotes\ssj.iml" />
-      <module fileurl="file://D:\AndriodWS\ssj\withnotes.iml" filepath="D:\AndriodWS\ssj\withnotes.iml" />
     </modules>
   </component>
 </project>

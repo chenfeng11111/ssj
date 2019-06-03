@@ -18,6 +18,12 @@
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/button_enabled</item>
     </style>
+    <style name="transparent_activity" parent="AppTheme">
+        <item name="android:windowBackground">@color/transparent_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+    </style>
     最外层样式
     <style name="wrap_layout">
         <item name="android:orientation">vertical</item>

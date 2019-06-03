@@ -12,10 +12,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.entity.Clock;
+import com.example.a526.ssj.entity.GlobalVariable;
+import com.example.a526.ssj.entity.Note;
 import com.example.a526.ssj.mainactivity.MainActivity;
 import com.example.a526.ssj.util.LogUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class LoginActivity extends BaseActivity {

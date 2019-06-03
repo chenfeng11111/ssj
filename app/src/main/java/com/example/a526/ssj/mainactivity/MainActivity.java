@@ -1,5 +1,8 @@
 package com.example.a526.ssj.mainactivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,9 +11,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.widget.RadioGroup;
 
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.clockservice.ClockReceiver;
+import com.example.a526.ssj.clockservice.ClockUtil;
+import com.example.a526.ssj.entity.Clock;
+import com.example.a526.ssj.entity.GlobalVariable;
+import com.example.a526.ssj.entity.Note;
 import com.example.a526.ssj.listener.OnTouchListenerAdapter;
 
+import java.nio.charset.MalformedInputException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity implements AlarmFragment.OnFragmentInteractionListener {
@@ -28,6 +40,17 @@ public class MainActivity extends FragmentActivity implements AlarmFragment.OnFr
         setListener();
         //设置控件在最上层
         mainRadioGroup.bringToFront();
+        //读取数据库中的所有闹钟并创建，
+        setAllAlarm();
+    }
+
+    private void setAllAlarm() {
+        List<Clock> clocks = GlobalVariable.getClockDatabaseHolder().searchClock(10000, 0);
+        Date curtime = new Date();
+        for (int i = 0; i < clocks.size(); i++) {
+            Clock clock = clocks.get(i);
+            new ClockUtil().setAlarm(MainActivity.this, clock);
+        }
     }
 
     private void setListener() {
