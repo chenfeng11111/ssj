@@ -37,9 +37,8 @@ public class NoteDatabaseHolder {
         String time = simpleDateFormat.format(note.getSaveTime());
         values.put("saveTime", time);
         values.put("userId", note.getUserId());
-        String code = note.getId() + time;
-        values.put("code", code);
-        values.put("version", 0);
+        values.put("code", note.getCode());
+        values.put("version", note.getVersion());
         //数据库执行插入命令
         return (int) noteDatabase.insert(noteDatabaseName, null, values);
     }
@@ -53,8 +52,31 @@ public class NoteDatabaseHolder {
         noteDatabase.delete(noteDatabaseName, whereClause, whereArgs);
     }
 
-    public void searchNote() {
-
+    //单独查询一个note，如果没有查询到结果，返回值的note的String字段是null
+    public Note searchNote(int noteId) {
+        Cursor cursor = noteDatabase.query(noteDatabaseName, null, "noteId=?", new String[]{String.valueOf(noteId)},
+                null, null, "noteId desc", null);
+        Note note = new Note();
+        if (cursor.moveToFirst()) {
+            note = new Note();
+            note.setId(cursor.getInt(0));
+            note.setTitle(cursor.getString(1));
+            note.setContent(cursor.getString(2));
+            note.setUpload(cursor.getInt(3) == 1);
+            note.setShare(cursor.getInt(4) == 1);
+            String str = cursor.getString(5);
+            Date date = new Date();
+            try {
+                date = simpleDateFormat.parse(str);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            note.setSaveTime(date);
+            note.setUserId(cursor.getInt(6));
+            note.setCode(cursor.getString(7));
+            note.setVersion(cursor.getInt(8));
+        }
+        return note;
     }
 
     //第一个参数传入需要查询的数量，第二个参数传入从第几个开始查询，返回值按时间由晚到早排列
@@ -99,13 +121,8 @@ public class NoteDatabaseHolder {
         String time = simpleDateFormat.format(note.getSaveTime());
         values.put("saveTime", time);
         values.put("userId", note.getUserId());
-        if (note.getCode() != null)
-            values.put("code", note.getCode());
-        else {
-            String code = note.getId() + time;
-            values.put("code", code);
-        }
-        values.put("version", note.getVersion() + 1);
+        values.put("code", note.getCode());
+        values.put("version", note.getVersion());
         //数据库执行插入位置
         String whereClause = "noteId=?";
         String[] whereArgs = {String.valueOf(note.getId())};
