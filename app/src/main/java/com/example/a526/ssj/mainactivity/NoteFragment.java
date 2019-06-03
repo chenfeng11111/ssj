@@ -21,11 +21,13 @@ import android.widget.LinearLayout;
 
 import com.example.a526.ssj.R;
 import com.example.a526.ssj.createactivity.CreateNoteActivity;
+import com.example.a526.ssj.database.NoteDatabaseHolder;
 import com.example.a526.ssj.entity.Note;
 
 import java.util.ArrayList;
 
-import java.util.HashMap;
+
+import java.util.List;
 import java.util.Map;
 
 
@@ -36,13 +38,14 @@ import java.util.Map;
 public class NoteFragment extends Fragment implements View.OnClickListener{
     private ImageView plus;
     private RecyclerView noteListView;
-    private ArrayList<Note> noteList;
+    private List<Note> noteList;
     private NoteListAdapter adapter;
     private LinearLayout menu;
     private Button note_del;
     private Button note_update;
     private Button note_share;
     private Button note_sync;
+    private NoteDatabaseHolder databaseHolder;
     public NoteFragment() {
         // Required empty public constructor
     }
@@ -65,6 +68,7 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
         note_update = (Button)rootView.findViewById(R.id.menu_update);
         note_share = (Button)rootView.findViewById(R.id.menu_share);
         note_sync = (Button)rootView.findViewById(R.id.menu_sync);
+        databaseHolder = new NoteDatabaseHolder(getContext());
         initData();
         //布局管理器
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -187,5 +191,12 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        noteList = databaseHolder.searchNote(0,0);
+        adapter.notifyDataSetChanged();
+    }
 
 }
