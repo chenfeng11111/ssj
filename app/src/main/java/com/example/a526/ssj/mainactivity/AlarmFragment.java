@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+
 /**
  * Created by 10902 on 2019/5/28.
  */
@@ -48,7 +50,7 @@ public class AlarmFragment extends Fragment {
     private RecyclerView clock_list;
     private TimePickerView pvTime1;
     private clockListAdapter adapter;
-            private List<Clock> clockList = new ArrayList<Clock>();
+    private List<Clock> clockList = new ArrayList<Clock>();
     ClockDatabaseHolder databaseHolder;
 
     public AlarmFragment() {
@@ -90,8 +92,8 @@ public class AlarmFragment extends Fragment {
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.clockTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View rootView = localInflater.inflate(R.layout.alarm_fragment, container, false);
-        plus = (ImageView)rootView.findViewById(R.id.plus);
-        clock_list = (RecyclerView)rootView.findViewById(R.id.clock_list);
+        plus = (ImageView) rootView.findViewById(R.id.plus);
+        clock_list = (RecyclerView) rootView.findViewById(R.id.clock_list);
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,39 +104,42 @@ public class AlarmFragment extends Fragment {
         return rootView;
     }
 
-    private void initClockList()
-    {
+    private void initClockList() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         clock_list.setLayoutManager(linearLayoutManager);
-        adapter = new clockListAdapter(getContext(),clockList);
+        adapter = new clockListAdapter(getContext(), clockList);
         clock_list.setAdapter(adapter);
         clock_list.setItemAnimator(new DefaultItemAnimator());
         clock_list.addItemDecoration(new clockListItemDecoration(getContext(), clockListItemDecoration.VERTICAL_LIST));
-        clockList = GlobalVariable.getClockDatabaseHolder().searchClock(0,0);
+        clockList = GlobalVariable.getClockDatabaseHolder().searchClock(0, 0);
     }
+
     private void initTimePicker1() {//选择出生年月日
         //控制时间范围(如果不设置范围，则使用默认时间1900-2100年，此段代码可注释)
         //因为系统Calendar的月份是从0-11的,所以如果是调用Calendar的set方法来设置时间,月份的范围也要是从0-11
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
         SimpleDateFormat formatter_year = new SimpleDateFormat("yyyy ");
+        formatter_year.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         String year_str = formatter_year.format(curDate);
         int year_int = (int) Double.parseDouble(year_str);
 
 
         SimpleDateFormat formatter_mouth = new SimpleDateFormat("MM ");
+        formatter_mouth.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         String mouth_str = formatter_mouth.format(curDate);
         int mouth_int = (int) Double.parseDouble(mouth_str);
 
         SimpleDateFormat formatter_day = new SimpleDateFormat("dd ");
+        formatter_day.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         String day_str = formatter_day.format(curDate);
         int day_int = (int) Double.parseDouble(day_str);
 
 
-        Calendar selectedDate = Calendar.getInstance();//系统当前时间
+        Calendar selectedDate = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));//系统当前时间
         Calendar startDate = Calendar.getInstance();
         startDate.set(1900, 0, 1);
         Calendar endDate = Calendar.getInstance();
-        endDate.set(year_int, mouth_int - 1, day_int);
+        endDate.set(year_int + 1, mouth_int - 1, day_int);
 
         //时间选择器
         pvTime1 = new TimePickerView.Builder(getContext(), new TimePickerView.OnTimeSelectListener() {
@@ -145,13 +150,14 @@ public class AlarmFragment extends Fragment {
                 Clock clock = new Clock();
                 //clock.setId(clockList.size());
                 clock.setRelatedNoteId(-1);
+                date = new Date(date.getTime() - 8 * 60 * 60 * 1000);//转换为东八区时间
                 clock.setTime(date);
-                 adapter.addData(clockList.size(),clock);
+                adapter.addData(clockList.size(), clock);
                 GlobalVariable.getClockDatabaseHolder().insertClock(clock);
             }
         })
 
-                .setType(new boolean[]{ true, true, true,true,true,false}) //年月日时分秒 的显示与否，不设置则默认全部显示
+                .setType(new boolean[]{true, true, true, true, true, false}) //年月日时分秒 的显示与否，不设置则默认全部显示
                 .setLabel("年", "月", "日", "时", "分", "")//默认设置为年月日时分秒
                 .isCenterLabel(false)
                 .setDividerColor(Color.RED)
@@ -163,7 +169,7 @@ public class AlarmFragment extends Fragment {
                 .setContentSize(21)
                 .setDate(selectedDate)
                 .setLineSpacingMultiplier(1.2f)
-                .setTextXOffset(-10, -5,0, -5, 10, 0)//设置X轴倾斜角度[ -90 , 90°]
+                .setTextXOffset(-10, -5, 0, -5, 10, 0)//设置X轴倾斜角度[ -90 , 90°]
                 .setRangDate(startDate, endDate)
 //                .setBackgroundId(0x00FFFFFF) //设置外部遮罩颜色
                 .setDecorView(null)
@@ -175,6 +181,7 @@ public class AlarmFragment extends Fragment {
         //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
     }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
