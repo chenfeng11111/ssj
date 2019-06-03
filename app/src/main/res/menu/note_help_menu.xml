@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_action_preview"
-        android:orderInCategory="10"
+        android:orderInCategory="7"
         android:title="@string/note_preview"
         app:showAsAction="never"/>
   <item
     android:id="@+id/menu_action_clock"
-    android:orderInCategory="9"
+    android:orderInCategory="8"
     android:title="@string/relative_clock"
     app:showAsAction="never"/>
     <item
         android:id="@+id/menu_action_save"
-        android:orderInCategory="8"
+        android:orderInCategory="9"
         android:title="@string/note_save"
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_action_upload"
-        android:orderInCategory="8"
+        android:orderInCategory="10"
         android:title="@string/note_upload"
         app:showAsAction="never"/>
 </menu>

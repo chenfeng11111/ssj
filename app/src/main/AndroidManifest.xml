@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.a526.ssj">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -14,7 +14,6 @@
         <activity android:name=".welcomeactivity.EnterinActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -24,10 +23,8 @@
         <activity android:name=".welcomeactivity.LoginActivity" />
         <activity android:name=".welcomeactivity.InstructActivity" />
         <activity android:name=".mainactivity.MainActivity" />
-        <activity android:name=".createactivity.CreateNoteActivity" />
-        <activity android:name=".createactivity.WebDataActivity" />
-        <activity android:name=".mainactivity.myinformationActivity" />
-        <activity android:name=".mainactivity.passwordchangeActivity"></activity>
+        <activity android:name=".createactivity.CreateNoteActivity"/>
+        <activity android:name=".createactivity.WebDataActivity"/>
     </application>
 
 </manifest>

@@ -74,6 +74,7 @@ public class LockActivity extends AppCompatActivity {
                              * **************************
                              *
                              */
+                            finish();
 
                         }
                     }
