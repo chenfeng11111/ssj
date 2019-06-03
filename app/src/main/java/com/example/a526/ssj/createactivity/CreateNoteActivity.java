@@ -37,7 +37,6 @@ import com.example.a526.ssj.entity.Note;
 import com.example.a526.ssj.notehelper.NoteHelper;
 import com.example.a526.ssj.notehelper.NoteUtils;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -118,8 +117,8 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
     //选择按钮
     private Button mSelect;
     private boolean isCreator;//是否新建
-    private String operation = getIntent().getStringExtra("operation");
-    private Note originNote = getIntent().getParcelableExtra("note");
+    private String operation = null;
+    private Note originNote = null;//getIntent().getParcelableExtra("note")
     private Date relativeData = null;
     //动态申请权限
     String[] mPermissionList = new String[]{
@@ -133,10 +132,12 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
 
+        operation = getIntent().getStringExtra("operation");
         //判断当前编辑器是新建笔记还是编辑笔记状态
         if(operation == null || operation.equalsIgnoreCase("create"))
         {
             isCreator = true;
+            originNote = getIntent().getParcelableExtra("note");
         }
         else
         {
@@ -456,6 +457,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                          tvTime.show();
                     }break;
                     case R.id.menu_action_save:{
+                        Toast.makeText(getApplication(),"保存文件"+String.valueOf(isCreator),Toast.LENGTH_SHORT).show();
                         if(isCreator)
                         {
                             //弹出文件保存对话框
@@ -493,6 +495,13 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                                     noteId = GlobalVariable.getNoteDatabaseHolder().insertNote(note);
                                 }
                             });
+                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            });
+                            builder.show();
                         }
                         else{
                             //保存修改后的文件到本地
@@ -548,6 +557,13 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                                     NoteHelper.uploadFileToServer(note,0);
                                 }
                             });
+                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            });
+                            builder.show();
                         }
                         else{//修改后上传服务器
                             //保存修改后的文件到本地
@@ -660,10 +676,13 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(requestCode){
-            case REQUEST_PICK_IMAGE:{
+            case REQUEST_PICK_IMAGE: {
+                if (data == null){
+                    return;
+                }
                 Uri uri=data.getData();
                 //将图片添加到富文本编辑器显示
-                mEditor.insertImage(uri.toString(),"picture");
+                    mEditor.insertImage(uri.toString(),"picture");
             }break;
             default:break;
         }

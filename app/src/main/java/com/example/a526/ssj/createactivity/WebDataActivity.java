@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -12,8 +11,6 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.example.a526.ssj.R;
-
-import java.util.ArrayList;
 
 
 /**

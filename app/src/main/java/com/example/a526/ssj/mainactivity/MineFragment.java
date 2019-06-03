@@ -30,7 +30,7 @@ public class MineFragment extends Fragment {
             public void onClick(View v)
             {
                 Intent intent = new Intent();
-                intent.setClass(getContext(),myinformationActivity.class);
+                //intent.setClass(getContext(),myinformationActiqvity.class);
                 startActivity(intent);
             }
         });
@@ -39,7 +39,7 @@ public class MineFragment extends Fragment {
             public void onClick(View v)
             {
                 Intent intent = new Intent();
-                intent.setClass(getContext(),passwordchangeActivity.class);
+                //intent.setClass(getContext(),passwordchangeActivity.class);
                 startActivity(intent);
             }
         });

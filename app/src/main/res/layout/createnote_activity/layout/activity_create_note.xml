@@ -5,7 +5,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <com.example.zhouqiong.richeditotandroid.view.RichEditor
+    <com.example.a526.ssj.createactivity.view.RichEditor
         android:id="@+id/re_main_editor"
         android:layout_width="match_parent"
         android:layout_height="372dp"
@@ -18,7 +18,7 @@
         android:background="#f2f1f6"
         android:visibility="gone">
 
-        <com.example.zhouqiong.richeditotandroid.view.ColorPickerView
+        <com.example.a526.ssj.createactivity.view.ColorPickerView
             android:id="@+id/cpv_main_color"
             android:layout_width="match_parent"
             android:layout_height="8dp"
