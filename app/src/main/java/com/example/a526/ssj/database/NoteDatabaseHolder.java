@@ -79,8 +79,9 @@ public class NoteDatabaseHolder {
         return note;
     }
 
-    //第一个参数传入需要查询的数量，第二个参数传入从第几个开始查询，返回值按时间由晚到早排列
+    //第一个参数传入需要查询的数量，0为查询所有，第二个参数传入从第几个开始查询，返回值按时间由晚到早排列
     public List<Note> searchNote(int number, int offest) {
+        boolean all = number == 0;
         Cursor cursor = noteDatabase.query(noteDatabaseName, null, null,
                 null, null, null, "noteId desc", null);
         List<Note> list = new ArrayList<>();
@@ -107,7 +108,7 @@ public class NoteDatabaseHolder {
                 note.setVersion(cursor.getInt(8));
                 list.add(note);
                 number--;
-            } while (cursor.moveToNext() && number > 0);
+            } while (cursor.moveToNext() && (number > 0 || all));
         }
         return list;
     }
