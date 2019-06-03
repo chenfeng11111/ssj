@@ -16,6 +16,8 @@ import android.database.sqlite.SQLiteOpenHelper;
   isShare integer 0表示未分享，1表示已分享
   saveTime varchar 表示时间，格式是yyyy-MM-dd HH:mm:ss
   userId integer 创建者
+  code varchar 笔记的唯一标识符，生成规则是userID+savetime
+  version integer 笔记的版本
  */
 public class NoteDatabaseHelper extends SQLiteOpenHelper {
 
@@ -33,7 +35,9 @@ public class NoteDatabaseHelper extends SQLiteOpenHelper {
                 "isUpload integer," +
                 "isShare integer," +
                 "saveTime vatchar(100)," +
-                "userId integer)");
+                "userId integer," +
+                "code varchar(100)," +
+                "version integer)");
     }
 
     @Override

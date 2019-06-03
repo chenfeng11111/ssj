@@ -37,6 +37,9 @@ public class NoteDatabaseHolder {
         String time = simpleDateFormat.format(note.getSaveTime());
         values.put("saveTime", time);
         values.put("userId", note.getUserId());
+        String code = note.getId() + time;
+        values.put("code", code);
+        values.put("version", 0);
         //数据库执行插入命令
         return (int) noteDatabase.insert(noteDatabaseName, null, values);
     }
@@ -78,6 +81,8 @@ public class NoteDatabaseHolder {
                 }
                 note.setSaveTime(date);
                 note.setUserId(cursor.getInt(6));
+                note.setCode(cursor.getString(7));
+                note.setVersion(cursor.getInt(8));
                 list.add(note);
                 number--;
             } while (cursor.moveToNext() && number > 0);
@@ -94,7 +99,14 @@ public class NoteDatabaseHolder {
         String time = simpleDateFormat.format(note.getSaveTime());
         values.put("saveTime", time);
         values.put("userId", note.getUserId());
-        //数据库执行插入命令
+        if (note.getCode() != null)
+            values.put("code", note.getCode());
+        else {
+            String code = note.getId() + time;
+            values.put("code", code);
+        }
+        values.put("version", note.getVersion() + 1);
+        //数据库执行插入位置
         String whereClause = "noteId=?";
         String[] whereArgs = {String.valueOf(note.getId())};
         noteDatabase.update(noteDatabaseName, values, whereClause, whereArgs);

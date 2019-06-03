@@ -14,6 +14,24 @@ public class Note {
     Boolean isShare;//文件是否分享
     Date saveTime;//文件创建时间
     Integer userId;//上传者
+    String code;//笔记的唯一标识符，生成规则是userID+savetime，由数据库工具自动生成
+    int version;//笔记的版本，由数据库工具自动生成
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public Integer getId() {
         return id;
