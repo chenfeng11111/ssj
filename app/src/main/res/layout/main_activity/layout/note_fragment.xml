@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:id="@+id/note_plus"
             android:src="@drawable/plus"
-            android:layout_marginLeft="110dp"
+            android:layout_marginLeft="120dp"
             />
     </android.support.v7.widget.Toolbar>
     <RelativeLayout
