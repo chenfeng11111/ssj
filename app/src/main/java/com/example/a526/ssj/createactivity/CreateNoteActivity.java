@@ -30,8 +30,10 @@ import android.widget.Toast;
 
 import com.bigkoo.pickerview.TimePickerView;
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.clockservice.ClockUtil;
 import com.example.a526.ssj.createactivity.view.ColorPickerView;
 import com.example.a526.ssj.createactivity.view.RichEditor;
+import com.example.a526.ssj.entity.Clock;
 import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
 import com.example.a526.ssj.notehelper.NoteHelper;
@@ -120,6 +122,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
     private String operation = null;
     private Note originNote = null;//getIntent().getParcelableExtra("note")
     private Date relativeData = null;
+    private int noteId = -1;
     //动态申请权限
     String[] mPermissionList = new String[]{
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -446,18 +449,17 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                     }break;
                     case R.id.menu_action_clock:{
                         //关联闹钟
-
                          final TimePickerView tvTime = new TimePickerView.Builder(CreateNoteActivity.this, new TimePickerView.OnTimeSelectListener() {
                             @Override
                             public void onTimeSelect(Date date, View v) {
                                 relativeData = date;
+                              //  Toast.makeText(getApplication(),date.toString(),Toast.LENGTH_SHORT).show();
                             }
                         }).build();
                          tvTime.setDate(Calendar.getInstance());
                          tvTime.show();
                     }break;
                     case R.id.menu_action_save:{
-                        Toast.makeText(getApplication(),"保存文件"+String.valueOf(isCreator),Toast.LENGTH_SHORT).show();
                         if(isCreator)
                         {
                             //弹出文件保存对话框
@@ -491,8 +493,19 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                                     String transHtml = NoteUtils.savePicAndTransferHtml(getApplicationContext(),fileName,fileContent);
                                     note.setContent(transHtml);
                                     //调用数据库接口
-                                    int noteId;
                                     noteId = GlobalVariable.getNoteDatabaseHolder().insertNote(note);
+                                    //提示保存状态
+                                    if(noteId>0)
+                                    {
+                                        //关闭当前页面
+                                        Toast.makeText(getApplicationContext(),"成功",Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+                                    else{
+                                        Toast.makeText(getApplicationContext(),"成功",Toast.LENGTH_SHORT).show();
+                                    }
+
+
                                 }
                             });
                             builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -508,12 +521,18 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                             String transferHtml = NoteUtils.savePicAndTransferHtml(getApplicationContext(),originNote.getTitle(),mEditor.getHtml());
                             originNote.setContent(transferHtml);
                             originNote.setVersion(originNote.getVersion()+1);
+                            noteId = originNote.getUserId();
                             //数据库内容修改
                             GlobalVariable.getNoteDatabaseHolder().updateNote(originNote);
+                            Toast.makeText(getApplicationContext(),"成功",Toast.LENGTH_SHORT).show();
                         }
                         if(relativeData!=null)
                         {
-                            //新建一个闹钟
+                            //创建一个闹钟
+                            Clock clock = new Clock();
+                            clock.setRelatedNoteId(noteId);
+                            clock.setTime(relativeData);
+                            ClockUtil.saveAlarm(getApplicationContext(),clock);
                         }
                     }break;
                     case R.id.menu_action_upload:{
@@ -552,9 +571,10 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                                     //数据库存储
                                     note.setContent(localTransferHtml);
                                     //创建
-                                    GlobalVariable.getNoteDatabaseHolder().insertNote(note);
+                                    noteId = GlobalVariable.getNoteDatabaseHolder().insertNote(note);
                                     //服务器上传 status 0
-                                    NoteHelper.uploadFileToServer(note,0);
+                                    String result = NoteHelper.uploadFileToServer(note,0);
+                                    Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
                                 }
                             });
                             builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -570,16 +590,21 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                             String transferHtml = NoteUtils.savePicAndTransferHtml(getApplicationContext(),originNote.getTitle(),mEditor.getHtml());
                             originNote.setContent(transferHtml);
                             originNote.setVersion(originNote.getVersion()+1);
+                            noteId = originNote.getId();
                             //本地数据库内容修改
                             GlobalVariable.getNoteDatabaseHolder().updateNote(originNote);
                             //服务器更新 status 1
-                            NoteHelper.uploadFileToServer(originNote,1);
+                            String result = NoteHelper.uploadFileToServer(originNote,1);
+                            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
                         }
 
                         if(relativeData!=null)
                         {
-                            //创建闹钟
-
+                            //创建一个闹钟
+                            Clock clock = new Clock();
+                            clock.setRelatedNoteId(noteId);
+                            clock.setTime(relativeData);
+                            ClockUtil.saveAlarm(getApplicationContext(),clock);
                         }
                     }break;
                 }

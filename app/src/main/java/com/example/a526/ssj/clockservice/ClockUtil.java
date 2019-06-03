@@ -23,7 +23,7 @@ import static android.content.Context.ALARM_SERVICE;
 
 public class ClockUtil {
     //创建闹钟
-    public void setAlarm(Context context, Clock clock) {
+    public static void setAlarm(Context context, Clock clock) {
         Date curtime = new Date();
         if (clock.getTime().after(curtime)) {//如果闹钟时间晚于当前时间则创建闹钟
             Intent intent = new Intent(context, ClockReceiver.class);
@@ -47,7 +47,7 @@ public class ClockUtil {
     }
 
     //将闹钟存到数据库中并同时创建闹钟
-    public void saveAlarm(Context context, Clock clock) {
+    public static void saveAlarm(Context context, Clock clock) {
         GlobalVariable.getClockDatabaseHolder().insertClock(clock);
         setAlarm(context, clock);
     }

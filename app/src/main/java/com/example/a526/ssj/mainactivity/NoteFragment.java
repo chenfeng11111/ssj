@@ -109,6 +109,7 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+
             }
         });
 
