@@ -51,7 +51,7 @@ public class AlarmFragment extends Fragment {
     private TimePickerView pvTime1;
     private clockListAdapter adapter;
     private List<Clock> clockList = new ArrayList<Clock>();
-    ClockDatabaseHolder databaseHolder;
+    //ClockDatabaseHolder databaseHolder;
 
     public AlarmFragment() {
         // Required empty public constructor
@@ -107,11 +107,11 @@ public class AlarmFragment extends Fragment {
     private void initClockList() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         clock_list.setLayoutManager(linearLayoutManager);
+        clockList = GlobalVariable.getClockDatabaseHolder().searchClock(0, 0);
         adapter = new clockListAdapter(getContext(), clockList);
         clock_list.setAdapter(adapter);
         clock_list.setItemAnimator(new DefaultItemAnimator());
         clock_list.addItemDecoration(new clockListItemDecoration(getContext(), clockListItemDecoration.VERTICAL_LIST));
-        clockList = GlobalVariable.getClockDatabaseHolder().searchClock(0, 0);
     }
 
     private void initTimePicker1() {//选择出生年月日
