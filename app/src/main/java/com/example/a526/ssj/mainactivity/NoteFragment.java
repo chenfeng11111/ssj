@@ -18,11 +18,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a526.ssj.R;
 import com.example.a526.ssj.createactivity.CreateNoteActivity;
+import com.example.a526.ssj.createactivity.WebDataActivity;
 import com.example.a526.ssj.database.NoteDatabaseHolder;
+import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
+import com.example.a526.ssj.notehelper.NoteHelper;
+import com.example.a526.ssj.notehelper.NoteUtils;
+import com.example.a526.ssj.util.UploadUtil;
 
 import java.util.ArrayList;
 
@@ -37,14 +44,15 @@ import java.util.Map;
 
 public class NoteFragment extends Fragment implements View.OnClickListener{
     private ImageView plus;
+    private TextView note_sync;
     private RecyclerView noteListView;
-    private List<Note> noteList;
+    private List<Note> noteList=new ArrayList<Note>();
     private NoteListAdapter adapter;
     private LinearLayout menu;
     private Button note_del;
     private Button note_update;
     private Button note_share;
-    private Button note_sync;
+    private Button note_edit;
     private NoteDatabaseHolder databaseHolder;
     public NoteFragment() {
         // Required empty public constructor
@@ -62,12 +70,13 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View rootView = localInflater.inflate(R.layout.note_fragment, container, false);
         plus=(ImageView) rootView.findViewById(R.id.note_plus);
+        note_sync = (TextView) rootView.findViewById(R.id.note_sync);
         noteListView = (RecyclerView) rootView.findViewById(R.id.note_list);
         menu = (LinearLayout)rootView.findViewById(R.id.menu_layout);
         note_del = (Button) rootView.findViewById(R.id.menu_del);
         note_update = (Button)rootView.findViewById(R.id.menu_update);
         note_share = (Button)rootView.findViewById(R.id.menu_share);
-        note_sync = (Button)rootView.findViewById(R.id.menu_sync);
+        note_edit = (Button)rootView.findViewById(R.id.menu_edit);
         databaseHolder = new NoteDatabaseHolder(getContext());
         initData();
         //布局管理器
@@ -99,11 +108,35 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+                adapter.setisshowBox(false);
+                adapter.notifyDataSetChanged();
                 Map<Integer,Boolean> selectState = adapter.getMap();
+                ArrayList<Integer> noteid = new ArrayList<>();
                 for(int i=0;i<selectState.size();i++) {
                     if (selectState.get(i))
                     {
                         adapter.removeData(i);
+                        Note note = noteList.get(i);
+                        //删除文件夹
+                        NoteUtils.deleteFile(getContext(),note.getTitle());
+                        //删除数据库文件
+                        GlobalVariable.getNoteDatabaseHolder().deleteNote(note.getId());
+                        //从列表中移除
+                        noteList.remove(i);
+                        Toast.makeText(getContext(),"删除成功",Toast.LENGTH_SHORT).show();
+                        noteid.add(noteList.get(i).getId());
+                    }
+                }
+                for(int i=0;i<noteid.size();i++)
+                {
+                    int n = noteList.size();
+                    for(int j=0;j<n;j++)
+                    {
+                        if(noteList.get(j).getId()==noteid.get(i))
+                        {
+                            adapter.removeData(j);
+                            break;
+                        }
                     }
                 }
             }
@@ -113,21 +146,60 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
-
+                adapter.setisshowBox(false);
+                adapter.notifyDataSetChanged();
+                Map<Integer,Boolean> selectState = adapter.getMap();
+                for(int i=0;i<selectState.size();i++) {
+                    if (selectState.get(i))
+                    {
+                        Note note = noteList.get(i);
+                        note.setUpload(true);
+                        //调用上传接口
+                        String result = NoteHelper.uploadFileToServer(note,0);
+                        Toast.makeText(getContext(),result,Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
-
         note_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+                adapter.setisshowBox(false);
+                adapter.notifyDataSetChanged();
+                Map<Integer,Boolean> selectState = adapter.getMap();
+                for(int i=0;i<selectState.size();i++) {
+                if (selectState.get(i))
+                {
+                    Note note = noteList.get(i);
+                    note.setShare(true);
+                    String result = NoteHelper.uploadFileToServer(note,2);
+                    Toast.makeText(getContext(),result,Toast.LENGTH_SHORT).show();
+                }
             }
+        }
         });
 
-        note_sync.setOnClickListener(new View.OnClickListener() {
+        note_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+                adapter.setisshowBox(false);
+                adapter.notifyDataSetChanged();
+                Map<Integer,Boolean> selectState = adapter.getMap();
+                for(int i=0;i<selectState.size();i++) {
+                    if (selectState.get(i))
+                    {
+                        //获取当前note
+                        Note note = noteList.get(i);
+                        //跳转到编辑页面
+                        Intent intent=new Intent(getActivity(),CreateNoteActivity.class);
+                        intent.putExtra("operation","edit");
+                        intent.putExtra("note",note);
+                        startActivity(intent);
+                        break;
+                    }
+                }
             }
         });
         plus.setOnClickListener(new View.OnClickListener() {
@@ -138,18 +210,19 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent);
             }
         });
+        note_sync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //同步方法 调用同步接口
+
+
+            }
+        });
         return rootView;
     }
 
     @Override
     public void onClick(View v) {
-        //获取你选中的item
-        Map<Integer, Boolean> map = adapter.getMap();
-        for (int i = 0; i < map.size(); i++) {
-            if (map.get(i)) {
-                Log.d("TAG", "你选了第：" + i + "项");
-            }
-        }
     }
 
     @Override
@@ -185,18 +258,14 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
      * 为列表添加测试数据
      */
     private void initData() {
-        noteList=new ArrayList<>();
-        for (int i=0;i<100;i++) {
-            //noteList.add("当前条目是"+i);
-        }
+        noteList = GlobalVariable.getNoteDatabaseHolder().searchNote(0,0);
     }
 
     @Override
     public void onStart()
     {
         super.onStart();
-        noteList = databaseHolder.searchNote(0,0);
-        adapter.notifyDataSetChanged();
+
     }
 
 }

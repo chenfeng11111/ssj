@@ -94,4 +94,16 @@ public class NoteUtils {
         }
         return transferHtml;
     }
+    public static String deleteFile(Context context,String fileName)
+    {
+        File file = new File(allNotePath+File.separator+fileName);
+        //获取文件夹下所有文件
+        File[] files = file.listFiles();
+        for (File pic:files){
+            pic.delete();
+        }
+        //删除文件夹
+        file.delete();
+        return "删除成功";
+    }
 }

@@ -140,7 +140,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         if(operation == null || operation.equalsIgnoreCase("create"))
         {
             isCreator = true;
-            originNote = getIntent().getParcelableExtra("note");
+            originNote = (Note) getIntent().getSerializableExtra("note");
         }
         else
         {

@@ -1,6 +1,7 @@
 package com.example.a526.ssj.mainactivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,11 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.createactivity.WebDataActivity;
+import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +32,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.noteLi
 
     private List<Note> noteList;
 
-    private boolean isshowBox = true;
+    private boolean isshowBox = false;
     // 存储勾选框状态的map集合
     private Map<Integer, Boolean> map = new HashMap<>();
     //接口实例
@@ -58,15 +62,20 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.noteLi
         return vh;
     }
 
+    public void setisshowBox(boolean flag )
+    {
+        isshowBox = flag;
+    }
     @Override
     public void onBindViewHolder(noteListViewHolder holder, final int position) {
         holder.noteTitle.setText(noteList.get(position).getTitle());
-        holder.noteContent.setText(noteList.get(position).getContent());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        holder.noteContent.setText(dateFormat.format(noteList.get(position).getSaveTime()));
         //长按显示/隐藏
         if (isshowBox) {
             holder.checkbox.setVisibility(View.VISIBLE);
         } else {
-            holder.checkbox.setVisibility(View.GONE);
+            holder.checkbox.setVisibility(View.INVISIBLE);
         }
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.note_list_anim);
         //设置checkBox显示的动画
@@ -83,11 +92,20 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.noteLi
                 map.put(position, isChecked);
             }
         });
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Note note = noteList.get(position);
+                Intent intent = new Intent(context, WebDataActivity.class);
+                intent.putExtra("html",note.getContent());
+                context.startActivity(intent);
+            }
+        });
         // 设置CheckBox的状态
         if (map.get(position) == null) {
             map.put(position, false);
         }
-        holder.checkbox.setChecked(map.get(position));
+        holder.checkbox.setChecked(map.get(position)) ;
     }
 
     @Override
@@ -100,11 +118,13 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.noteLi
     public void addData(int position,Note note)
     {
         noteList.add(position,note);
+        GlobalVariable.getNoteDatabaseHolder().insertNote(note);
         notifyItemInserted(position);
     }
 
     public void removeData(int postion)
     {
+        GlobalVariable.getNoteDatabaseHolder().deleteNote(noteList.get(postion).getId());
         noteList.remove(postion);
         notifyItemRemoved(postion);
         notifyDataSetChanged();
@@ -121,7 +141,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.noteLi
             this.rootView = view;
             this.noteContent = (TextView)rootView.findViewById(R.id.note_content);
             this.noteTitle = (TextView)rootView.findViewById(R.id.note_title);
-            this.checkbox = (CheckBox)rootView.findViewById(R.id.checkbox);
+            this.checkbox = (CheckBox)rootView.findViewById(R.id.cb);
         }
     }
 
@@ -131,6 +151,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.noteLi
         if (onItemClickListener != null) {
             //注意这里使用getTag方法获取数据
             onItemClickListener.onItemClickListener(v, (Integer) v.getTag());
+            setisshowBox(false);
         }
     }
 

@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by 仲夏丶我们一起 on 2019/5/29.
@@ -72,14 +73,14 @@ public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.cloc
 
     public void addData(int position,Clock clock)
     {
-        clockList.add(position,clock);
+        clockList.add(clock);
         notifyItemInserted(position);
     }
 
-    public void removeData(int postion)
+    public void removeData(int position)
     {
-        clockList.remove(postion);
-        notifyItemRemoved(postion);
+        clockList.remove(position);
+        notifyItemRemoved(position);
         notifyDataSetChanged();
     }
     private void initTimePicker1() {//选择出生年月日
@@ -87,24 +88,27 @@ public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.cloc
         //因为系统Calendar的月份是从0-11的,所以如果是调用Calendar的set方法来设置时间,月份的范围也要是从0-11
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
         SimpleDateFormat formatter_year = new SimpleDateFormat("yyyy ");
+        formatter_year.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         String year_str = formatter_year.format(curDate);
         int year_int = (int) Double.parseDouble(year_str);
 
 
         SimpleDateFormat formatter_mouth = new SimpleDateFormat("MM ");
+        formatter_mouth.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         String mouth_str = formatter_mouth.format(curDate);
         int mouth_int = (int) Double.parseDouble(mouth_str);
 
         SimpleDateFormat formatter_day = new SimpleDateFormat("dd ");
+        formatter_day.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         String day_str = formatter_day.format(curDate);
         int day_int = (int) Double.parseDouble(day_str);
 
 
-        Calendar selectedDate = Calendar.getInstance();//系统当前时间
+        Calendar selectedDate = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));//系统当前时间
         Calendar startDate = Calendar.getInstance();
         startDate.set(1900, 0, 1);
         Calendar endDate = Calendar.getInstance();
-        endDate.set(year_int, mouth_int - 1, day_int);
+        endDate.set(year_int + 1, mouth_int - 1, day_int);
 
         //时间选择器
         pvTime1 = new TimePickerView.Builder(context, new TimePickerView.OnTimeSelectListener() {
@@ -116,6 +120,7 @@ public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.cloc
                 clockList = databaseHolder.searchClock(0,0);
                 Clock clock = clockList.get(mPosition);
                 removeData(mPosition);
+                date = new Date(date.getTime() - 8 * 60 * 60 * 1000);//转换为东八区时间
                 clock.setTime(date);
                 clock.setRelatedNoteId(-1);
                 addData(mPosition,clock);

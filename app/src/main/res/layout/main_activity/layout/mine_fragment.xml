@@ -48,8 +48,9 @@
             android:layout_height="72dp">
 
             <TextView
+                android:id="@+id/txt_mine_lock"
                 style="@style/usertext"
-                android:text="手势解锁"
+                android:text="设置手势锁"
                 android:textSize="25dp" />
         </LinearLayout>
 

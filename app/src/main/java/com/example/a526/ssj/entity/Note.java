@@ -1,12 +1,13 @@
 package com.example.a526.ssj.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by chenfeng on 2019/5/28.
  */
 
-public class Note {
+public class Note implements Serializable{
     Integer id;//文件ID
     String title;//文件标题
     String content;//文件内容

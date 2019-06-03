@@ -17,8 +17,8 @@
         <TextView
             android:layout_height="match_parent"
             android:layout_width="50dp"
-            android:id="@+id/note_edit"
-            android:text="编辑"
+            android:id="@+id/note_sync"
+            android:text="同步"
             android:textSize="18sp"
             android:textColor="#000"
             android:gravity="center"
@@ -29,7 +29,7 @@
             android:text="笔记"
             android:textColor="#FFF"
             android:textSize="24sp"
-            android:layout_marginLeft="110dp"
+            android:layout_marginLeft="120dp"
             android:gravity="center"
             android:textStyle="bold"
             />
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:id="@+id/note_plus"
             android:src="@drawable/plus"
-            android:layout_marginLeft="110dp"
+            android:layout_marginLeft="120dp"
             />
     </android.support.v7.widget.Toolbar>
     <RelativeLayout
@@ -55,10 +55,11 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_alignParentBottom="true"
-            android:background="#FFF"
+            android:background="#00000000"
             android:gravity="center"
             android:visibility="gone"
             android:orientation="vertical"
+            android:layout_marginBottom="40dp"
             >
             <View
                 android:layout_width="match_parent"

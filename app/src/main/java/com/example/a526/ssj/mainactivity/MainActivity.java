@@ -45,8 +45,7 @@ public class MainActivity extends FragmentActivity implements AlarmFragment.OnFr
     }
 
     private void setAllAlarm() {
-        List<Clock> clocks = GlobalVariable.getClockDatabaseHolder().searchClock(10000, 0);
-        Date curtime = new Date();
+        List<Clock> clocks = GlobalVariable.getClockDatabaseHolder().searchClock(0, 0);
         for (int i = 0; i < clocks.size(); i++) {
             Clock clock = clocks.get(i);
             new ClockUtil().setAlarm(MainActivity.this, clock);
@@ -134,5 +133,4 @@ public class MainActivity extends FragmentActivity implements AlarmFragment.OnFr
         setContentView(R.layout.activity_main);
         mainRadioGroup = findViewById(R.id.main_radio_group);
     }
-
 }

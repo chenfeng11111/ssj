@@ -82,7 +82,6 @@ public class LogUtil {
                     userData.add(user.getState().toString());
                     bundle.putStringArrayList("user", userData);
                 }
-
             }
             else
             {
@@ -159,7 +158,5 @@ public class LogUtil {
         }
         return true;
     }
-
-
 }
 // {"state":"success","message":"登陆成功","user":{"id":1,"name":"user001","password":"123456","email":"123@qq.com","state":1}}
