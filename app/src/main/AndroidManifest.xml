@@ -23,6 +23,8 @@
         <activity android:name=".welcomeactivity.LoginActivity" />
         <activity android:name=".welcomeactivity.InstructActivity" />
         <activity android:name=".mainactivity.MainActivity" />
+        <activity android:name=".createactivity.CreateNoteActivity"/>
+        <activity android:name=".createactivity.WebDataActivity"/>
     </application>
 
 </manifest>
