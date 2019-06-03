@@ -1,13 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <fragment
-        android:id="@+id/mine_fragment"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        style="@style/wrap_layout"
+        android:layout_width="416dp"
+        android:layout_height="540dp"
+        android:layout_marginStart="-2dp"
+        android:layout_marginTop="200dp"
+        android:baselineAligned="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            style="@style/top_layout"
+            android:layout_height="88dp">
+
+            <TextView
+                android:id="@+id/psdchange"
+                style="@style/usertext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="密码修改"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                android:textSize="25dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/mid_layout"
+            android:layout_height="80dp">
+
+            <TextView
+                android:id="@+id/myinformation"
+                style="@style/usertext"
+                android:clickable="true"
+                android:text="我的资料"
+                android:textSize="25dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/bottom_layout"
+            android:layout_height="72dp">
+
+            <TextView
+                style="@style/usertext"
+                android:text="手势解锁"
+                android:textSize="25dp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:backgroundTint="#00C41414"
+            android:text="退出登录"
+            android:textColor="#1A1514"
+            android:textSize="25dp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/mine"
-        android:textSize="30sp" />
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/h_back"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/h_back"
+            tools:layout_editor_absoluteX="32dp"
+            tools:layout_editor_absoluteY="1dp" />
+
+        <ImageView
+            android:id="@+id/h_head"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="43dp"
+            android:background="@drawable/h_head" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="143dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/user_line"
+                android:layout_width="1dp"
+                android:layout_height="25dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="15dp"
+                android:background="@android:color/black" />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="-2dp"
+                android:layout_marginRight="3dp"
+                android:layout_toLeftOf="@id/user_line"
+                android:text="jackson"
+                android:textColor="@android:color/black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/user_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="11dp"
+                android:layout_toRightOf="@id/user_line"
+                android:text="182****5882"
+                android:textColor="@android:color/black"
+                android:textSize="17sp" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>
