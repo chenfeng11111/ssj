@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 
 /**
@@ -77,6 +78,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.noteLi
         //Log.d("12121","onbind");
         holder.noteTitle.setText(noteList.get(position).getTitle());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         holder.noteContent.setText(dateFormat.format(noteList.get(position).getSaveTime()));
         //长按显示/隐藏
         if (isshowBox) {
