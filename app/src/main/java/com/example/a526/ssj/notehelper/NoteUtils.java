@@ -3,7 +3,9 @@ package com.example.a526.ssj.notehelper;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
 
 import org.jsoup.Jsoup;
@@ -20,13 +22,13 @@ import java.util.ArrayList;
  * 本地文件的存储
  */
 public class NoteUtils {
-    private static String allNotePath = "../storefiles";
     //从相册路径拷贝
     //uri图片的相对路径
     //fileName图片
     //函数返回当前文件所在路径
     private static String copyImageFromBlum(Context context,Uri uri,String fileName){
-
+        File allNotePath=GlobalVariable.getFileStorePath();
+        System.out.println(fileName);
         String uriToString = uri.toString();
         //判断当前路径是否是项目目录 如果是 直接返回
         if((allNotePath+File.separator+fileName).equalsIgnoreCase(uriToString.substring(0,uriToString.lastIndexOf('/'))))
@@ -34,10 +36,12 @@ public class NoteUtils {
             return uri.toString();
         }
         String originPath = RealPathFromUriUtils.getRealPathFromUri(context,uri);
+        System.out.println("源路径"+originPath);
         //解析文件名称 最后一个/之后
         String picName = originPath.substring(originPath.lastIndexOf("/")+1);
         //当前文件相对路径
         String picPath = allNotePath+File.separator+fileName+ File.separator+picName;
+        System.out.println("相对路径"+picPath);
         try {
             //文件输入流
             FileInputStream inputeStream = new FileInputStream(originPath);
@@ -56,23 +60,29 @@ public class NoteUtils {
             outputStream.close();
         } catch (Exception e) {
             Log.d("ERROR:","复制源文件到目标位置失败");
+            e.printStackTrace();
             return  null;
         }
-        return picPath;
+        return "file://"+picPath;
     }
     //保存富文本编辑器图片到本地
     public static String savePicAndTransferHtml(Context context, String fileName, String fileContext){
         //主文件夹是否存在 如果不存在 则创建
-        File appFilePath=new File(allNotePath);
+        File allNotePath = GlobalVariable.getFileStorePath();
+        File appFilePath=new File(allNotePath.toString());
         if(!appFilePath.exists()){
+            System.out.println("主文件夹不存在！创建");
             appFilePath.mkdirs();
+            System.out.println(appFilePath.getAbsolutePath());
         }
         //创建保存文件的文件夹
         File noteFilePath =new File(allNotePath+"/"+fileName);
         if(!noteFilePath.exists())
         {
             noteFilePath.mkdirs();
+            System.out.println("创建文件夹:"+noteFilePath);
         }
+        System.out.println("源文件："+fileContext);
         //修改后的Html文档
         String transferHtml = "";
         try {
@@ -84,11 +94,12 @@ public class NoteUtils {
                 //根据地址获取Uri
                 Uri uri = Uri.parse(element.attr("src"));
                 //将所有图片文件拷贝到指定文件夹下
-                String storePath = copyImageFromBlum(context,uri,fileContext);
+                String storePath = copyImageFromBlum(context,uri,fileName);
                 //使用新路径替换当前路径
                 element.attr("src",storePath);
             }
             transferHtml = mDocument.toString();
+
         } catch (Exception e) {
             Log.d("ERROR","打开文件失败！"+e.toString());
         }
@@ -96,11 +107,15 @@ public class NoteUtils {
     }
     public static String deleteFile(Context context,String fileName)
     {
-        File file = new File(allNotePath+File.separator+fileName);
+        File allNotePath = GlobalVariable.getFileStorePath();
+        File file = new File(allNotePath.toString()+File.separator+fileName);
         //获取文件夹下所有文件
         File[] files = file.listFiles();
-        for (File pic:files){
-            pic.delete();
+        if(files!=null)
+        {
+            for (File pic:files){
+                pic.delete();
+            }
         }
         //删除文件夹
         file.delete();

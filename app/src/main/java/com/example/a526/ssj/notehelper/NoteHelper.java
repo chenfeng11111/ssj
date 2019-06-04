@@ -2,6 +2,7 @@ package com.example.a526.ssj.notehelper;
 
 import android.util.Log;
 
+import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
 import com.example.a526.ssj.util.UploadUtil;
 
@@ -20,7 +21,6 @@ import java.io.FileNotFoundException;
  */
 
 public class NoteHelper {
-    private static  String allNotePath = "../storefiles";
     //传入文件所在文件夹路径 将文件上传到服务器端
     public static String uploadFileToServer(Note note,int status){
         //打开路径下的html文件

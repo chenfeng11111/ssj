@@ -105,6 +105,8 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.noteLi
                 Note note = noteList.get(position);
                 Intent intent = new Intent(context, WebDataActivity.class);
                 intent.putExtra("html",note.getContent());
+                intent.putExtra("preview","false");
+                intent.putExtra("file",note.getTitle());
                 context.startActivity(intent);
             }
         });

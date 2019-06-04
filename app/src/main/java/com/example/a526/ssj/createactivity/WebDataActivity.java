@@ -11,6 +11,9 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.entity.GlobalVariable;
+
+import java.io.File;
 
 
 /**
@@ -19,6 +22,7 @@ import com.example.a526.ssj.R;
 
 public class WebDataActivity extends AppCompatActivity {
 
+    private String preview;
     private String dataStr;//根据富文本生成的HTML文件
     //自己制造的一些假数据。外加筛选图片样式
     /****  3333333333 ***************************************************/
@@ -37,6 +41,8 @@ public class WebDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_diarys);
         dataStr = getIntent().getStringExtra("html");
+        preview = getIntent().getStringExtra("preview");
+        System.out.println(dataStr);
         initWebView(dataStr);
     }
 
@@ -46,7 +52,7 @@ public class WebDataActivity extends AppCompatActivity {
 
         //settings.setUseWideViewPort(true);//调整到适合webview的大小，不过尽量不要用，有些手机有问题
         settings.setLoadWithOverviewMode(true);//设置WebView是否使用预览模式加载界面。
-        mWebView.setVerticalScrollBarEnabled(false);//不能垂直滑动
+        mWebView.setVerticalScrollBarEnabled(true);//不能垂直滑动
         mWebView.setHorizontalScrollBarEnabled(false);//不能水平滑动
         settings.setTextSize(WebSettings.TextSize.NORMAL);//通过设置WebSettings，改变HTML中文字的大小
         settings.setJavaScriptCanOpenWindowsAutomatically(true);//支持通过JS打开新窗口
@@ -61,7 +67,15 @@ public class WebDataActivity extends AppCompatActivity {
        // data = "</Div><head><style>img{ width:100% !important;}</style></head>" + data;//给图片设置一个样式，宽满屏
 /******  2222222222  ***********************************************************************/
 
-        mWebView.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
+       /* if(preview==null||"false".equalsIgnoreCase(preview))
+        {
+            String baseUrl = GlobalVariable.getFileStorePath().toString()+getIntent().getStringExtra("file")+ File.separator;
+            System.out.println(baseUrl);
+            mWebView.loadDataWithBaseURL(baseUrl, data, "text/html", "utf-8", null);
+        }
+        else
+        {*/
+            mWebView.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
     }
 
     /**

@@ -9,5 +9,4 @@
         android:id="@+id/no_all"
         android:title="全不选"
         app:showAsAction="always" />
-
 </menu>

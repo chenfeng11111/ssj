@@ -116,32 +116,20 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
                 adapter.notifyDataSetChanged();
                 Map<Integer,Boolean> selectState = adapter.getMap();
                 ArrayList<Integer> noteid = new ArrayList<>();
-                for(int i=0;i<selectState.size();i++) {
-                    if (selectState.get(i))
-                    {
-                        adapter.removeData(i);
-                        Note note = noteList.get(i);
-                        //删除文件夹
-                        NoteUtils.deleteFile(getContext(),note.getTitle());
-                        //删除数据库文件
-                        GlobalVariable.getNoteDatabaseHolder().deleteNote(note.getId());
-                        //从列表中移除
-                        noteList.remove(i);
-                        Toast.makeText(getContext(),"删除成功",Toast.LENGTH_SHORT).show();
-                        noteid.add(noteList.get(i).getId());
-                    }
-                }
                 for(int i=0;i<noteid.size();i++)
                 {
                     int n = noteList.size();
                     for(int j=0;j<n;j++)
                     {
-                        if(noteList.get(j).getId()==noteid.get(i))
+                        Note note=noteList.get(j);
+                        if(note.getId()==noteid.get(i))
                         {
+                            NoteUtils.deleteFile(getContext(),note.getTitle());
                             adapter.removeData(j);
                             break;
                         }
                     }
+                    Toast.makeText(getContext(),"删除成功",Toast.LENGTH_SHORT).show();
                 }
             }
         });
