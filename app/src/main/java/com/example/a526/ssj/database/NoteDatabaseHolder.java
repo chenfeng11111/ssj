@@ -129,8 +129,14 @@ public class NoteDatabaseHolder {
         String[] whereArgs = {String.valueOf(note.getId())};
         noteDatabase.update(noteDatabaseName, values, whereClause, whereArgs);
     }
-    public boolean needToUpdate(Note note){
-        Note note1=searchNote(note.getId());
-        return note1.getVersion() < note.getVersion();
+
+    //返回状态码，0表示无需更新，1表示需要新增一个笔记，2表示需要更新现存笔记
+    public int needToUpdate(Note note){
+        Note noteFromDb=searchNote(note.getId());
+        if(noteFromDb==null)
+            return 1;
+        else if(noteFromDb.getVersion()>=note.getVersion())
+            return 0;
+        else return 2;
     }
 }
