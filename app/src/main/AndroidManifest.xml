@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".welcomeactivity.EnterinActivity">
+        <activity android:name=".welcomeactivity.EnterinActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -24,11 +26,15 @@
         <activity android:name=".lockactivity.LockActivity" />
         <activity android:name=".lockactivity.UnlockActivity" />
         <activity android:name=".welcomeactivity.BaseActivity" />
-        <activity android:name=".welcomeactivity.LoginActivity" />
-        <activity android:name=".welcomeactivity.InstructActivity" />
         <!--<activity android:name=".mainactivity.MainActivity" />-->
         <activity android:name=".mainactivity.myinformationActivity"/>
         <activity android:name=".mainactivity.passwordchangeActivity"/>
+        <activity android:name=".welcomeactivity.LoginActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
+        <activity android:name=".welcomeactivity.InstructActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
         <activity android:name=".mainactivity.MainActivity"
             android:launchMode="singleTask"
             />

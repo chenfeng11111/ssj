@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/login_layout"
     tools:context="com.example.a526.ssj.welcomeactivity.LoginActivity">
 
     <LinearLayout
@@ -12,7 +14,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="130dp"
         android:background="@drawable/input_bg"
         android:gravity="left|center_horizontal"
         android:orientation="horizontal"
@@ -53,7 +55,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/input_bg"
         android:gravity="left|center_horizontal"
         android:orientation="horizontal"
@@ -96,7 +98,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/login_ripple"
         android:text="登陆"
         android:textColor="#FFF"
@@ -107,13 +109,13 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="250dp">
+        android:layout_marginTop="230dp">
 
         <TextView
             android:id="@+id/find_password"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="115dp"
+            android:layout_marginLeft="110dp"
             android:layout_marginRight="20dp"
             android:text="找回密码"
             android:textColor="@color/not_selected" />
