@@ -48,7 +48,9 @@ public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.cloc
     public void onBindViewHolder(clockListViewHolder holder,final int position)
     {
         holder.itemView.apply();
-        holder.clockText.setText(clockList.get(position).getTime().toString());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        holder.clockText.setText(dateFormat.format(clockList.get(position).getTime().toString()));
         holder.delItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

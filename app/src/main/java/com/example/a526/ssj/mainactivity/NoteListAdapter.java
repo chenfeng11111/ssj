@@ -3,6 +3,7 @@ package com.example.a526.ssj.mainactivity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,11 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.noteLi
         }
     }
 
+    private void setMap(Map<Integer,Boolean> newMap)
+    {
+        map = newMap;
+    }
+
     @Override
     public noteListViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
@@ -68,6 +74,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.noteLi
     }
     @Override
     public void onBindViewHolder(noteListViewHolder holder, final int position) {
+        //Log.d("12121","onbind");
         holder.noteTitle.setText(noteList.get(position).getTitle());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         holder.noteContent.setText(dateFormat.format(noteList.get(position).getSaveTime()));
@@ -151,7 +158,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.noteLi
         if (onItemClickListener != null) {
             //注意这里使用getTag方法获取数据
             onItemClickListener.onItemClickListener(v, (Integer) v.getTag());
-            setisshowBox(false);
+            //setisshowBox(false);
         }
     }
 

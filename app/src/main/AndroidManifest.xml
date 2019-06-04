@@ -25,7 +25,9 @@
         <activity android:name=".welcomeactivity.BaseActivity" />
         <activity android:name=".welcomeactivity.LoginActivity" />
         <activity android:name=".welcomeactivity.InstructActivity" />
-        <activity android:name=".mainactivity.MainActivity" />
+        <activity android:name=".mainactivity.MainActivity"
+            android:launchMode="singleTask"
+            />
         <activity
             android:name=".clockservice.ClockActivity"
             android:theme="@style/transparent_activity" />

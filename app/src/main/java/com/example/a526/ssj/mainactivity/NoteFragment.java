@@ -34,6 +34,7 @@ import com.example.a526.ssj.util.UploadUtil;
 import java.util.ArrayList;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +55,7 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
     private Button note_share;
     private Button note_edit;
     private NoteDatabaseHolder databaseHolder;
+    private boolean started = false;
     public NoteFragment() {
         // Required empty public constructor
     }
@@ -66,6 +68,8 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("121211211","oncreateview");
+        started = true;
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.clockTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View rootView = localInflater.inflate(R.layout.note_fragment, container, false);
@@ -225,34 +229,7 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.note_list_menu, menu);
-        super.onCreateOptionsMenu(menu,menuInflater);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            //全选
-            case R.id.all:
-                Map<Integer, Boolean> map = adapter.getMap();
-                for (int i = 0; i < map.size(); i++) {
-                    map.put(i, true);
-                    adapter.notifyDataSetChanged();
-                }
-                break;
-            //全不选
-            case R.id.no_all:
-                Map<Integer, Boolean> m = adapter.getMap();
-                for (int i = 0; i < m.size(); i++) {
-                    m.put(i, false);
-                    adapter.notifyDataSetChanged();
-                }
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     /**
      * 为列表添加测试数据
@@ -262,10 +239,30 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public void onStart()
+    public void onResume()
     {
-        super.onStart();
+        super.onResume();
+        if(started)
+        {
+            noteList.clear();
+            noteList.addAll(GlobalVariable.getNoteDatabaseHolder().searchNote(0,0));
+            for (int i = 0; i < noteList.size(); i++) {
+                if(!(adapter.getMap().containsKey(i)))
+                {
+                    adapter.getMap().put(i,false);
+                }
+
+            }
+            adapter.notifyDataSetChanged();
+        }
+        //Log.d("121211211","onresume");
 
     }
 
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        //Log.d("121211211","onstart");
+    }
 }
