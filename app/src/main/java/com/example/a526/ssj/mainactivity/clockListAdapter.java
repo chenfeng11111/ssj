@@ -12,6 +12,7 @@ import com.bigkoo.pickerview.TimePickerView;
 import com.example.a526.ssj.R;
 import com.example.a526.ssj.database.ClockDatabaseHolder;
 import com.example.a526.ssj.entity.Clock;
+import com.example.a526.ssj.entity.GlobalVariable;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -82,6 +83,7 @@ public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.cloc
 
     public void removeData(int position)
     {
+        GlobalVariable.getClockDatabaseHolder().deleteClock(clockList.get(position).getId());
         clockList.remove(position);
         notifyItemRemoved(position);
         notifyDataSetChanged();
