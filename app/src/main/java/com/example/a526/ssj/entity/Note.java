@@ -18,6 +18,11 @@ public class Note implements Serializable{
     String code;//笔记的唯一标识符，生成规则是userID+savetime，由数据库工具自动生成
     int version;//笔记的版本，由数据库工具自动生成
 
+    public String toString()
+    {
+        return "title: " + title + ", content: " + content;
+    }
+
     public int getVersion() {
         return version;
     }

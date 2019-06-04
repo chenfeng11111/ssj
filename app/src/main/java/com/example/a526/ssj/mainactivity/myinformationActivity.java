@@ -30,7 +30,7 @@ public class myinformationActivity extends AppCompatActivity {
         name = (TextView)findViewById(R.id.name);
         gender = (TextView)findViewById(R.id.gender);
         birth = (TextView)findViewById(R.id.birth);
-        quit = (TextView)findViewById(R.id.quit);
+        quit = (TextView)findViewById(R.id.btn_myifo_quit);
         if(user != null)
         {
          name.setText(user.getName());

@@ -23,6 +23,7 @@ import com.example.a526.ssj.entity.Clock;
 import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
 import com.example.a526.ssj.listener.OnTouchListenerAdapter;
+import com.example.a526.ssj.lockactivity.UnlockActivity;
 
 import java.nio.charset.MalformedInputException;
 import java.text.SimpleDateFormat;
@@ -64,7 +65,15 @@ public class MainActivity extends FragmentActivity implements AlarmFragment.OnFr
     private void setListener() {
         mainRadioGroup.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
         //添加手势锁监听
-        mainRadioGroup.setOnTouchListener(new OnTouchListenerAdapter(this, 0));
+       // mainRadioGroup.setOnTouchListener(new OnTouchListenerAdapter(this, 0));
+        mainRadioGroup.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent intent = new Intent(MainActivity.this,UnlockActivity.class);
+                startActivity(intent);
+                return false;
+            }
+        });
         //首次启动默认显示笔记界面
         switchFragment(0);
     }

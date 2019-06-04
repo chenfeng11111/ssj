@@ -1,6 +1,7 @@
 package com.example.a526.ssj.mainactivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,11 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.createactivity.WebDataActivity;
 import com.example.a526.ssj.entity.Note;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -20,7 +23,7 @@ import java.util.TimeZone;
  */
 
 public class SqureListAdapter extends BaseAdapter {
-    private List<Note> data;
+    private List<Note> data; // = new ArrayList<>();
     private Context context;
     private TextView squre_title;
     private TextView squre_content;
@@ -36,7 +39,7 @@ public class SqureListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View view;
 
@@ -57,7 +60,12 @@ public class SqureListAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Note note = data.get(position);
+                Intent intent = new Intent(context, WebDataActivity.class);
+                intent.putExtra("html",note.getContent());
+                intent.putExtra("preview","false");
+                intent.putExtra("file",note.getTitle());
+                context.startActivity(intent);
             }
         });
         return view;

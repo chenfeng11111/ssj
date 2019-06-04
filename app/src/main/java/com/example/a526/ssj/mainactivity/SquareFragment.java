@@ -5,8 +5,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,10 +20,14 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.createactivity.CreateNoteActivity;
 import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
+import com.example.a526.ssj.notehelper.NoteHelper;
+import com.example.a526.ssj.util.UploadUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,11 +52,12 @@ public class SquareFragment extends Fragment {
     private ProgressBar progressBar;
     private ImageButton btnBack;
     private List<Note> data;
-    private Handler handler = new Handler();
     private SqureListAdapter adapter;
     private StoreHouseHeader storeHouseHeader;
     private MaterialHeader materialHeader;
     private PtrClassicDefaultHeader ptrClassicDefaultHeader;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -154,8 +161,36 @@ public class SquareFragment extends Fragment {
 
     //第二步：
     private void initData() {
-        data = GlobalVariable.getNoteDatabaseHolder().searchNote(0,0);
-        adapter = new SqureListAdapter(data,getContext());
-        listView.setAdapter(adapter);
+        new Thread(new Runnable(){
+            @Override
+            public void run(){
+                //进行访问网络操作
+                Message msg = Message.obtain();
+                Bundle bundle = new Bundle();
+                Log.d("diaoyong square", "doing--------------------");
+                ArrayList<Note> remoteNotes = UploadUtil.square();
+//                         data.putString("successful", successful? "1" : "0");
+                bundle.putSerializable("result", remoteNotes);
+                msg.setData(bundle);
+                handler.sendMessage(msg);
+            }
+        }
+        ).start();
+
+//        if(data == null)
+//        {
+//            Log.d("data:", "data is null-----------------------------");
+//        }
+//        adapter = new SqureListAdapter(data, getContext());
+//        listView.setAdapter(adapter);
     }
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            Bundle bundle = msg.getData();
+            //从data中拿出存的数据
+            data = (ArrayList<Note>) bundle.getSerializable("result");
+        }
+    };
 }

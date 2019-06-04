@@ -132,6 +132,7 @@ public class LogUtil {
             dos.close();
 
             int code = conn.getResponseCode();
+
             System.out.println("code:" + code);
             if (code == HttpURLConnection.HTTP_OK) {
                 // 读取数据

@@ -169,7 +169,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         mEditor = findViewById(R.id.re_main_editor);
         //mEditor.setEditorHeight(400);
         //输入框显示字体的大小
-        mEditor.setEditorFontSize(18);
+        mEditor.setEditorFontSize(20);
         //输入框显示字体的颜色
         mEditor.setEditorFontColor(Color.BLACK);
         //输入框背景设置

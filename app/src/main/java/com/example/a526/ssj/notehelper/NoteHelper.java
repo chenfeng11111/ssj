@@ -49,6 +49,7 @@ public class NoteHelper {
                 picInputStream.read(bytes);
                 //调用网络接口向服务器上传图片文件 获取返回的服务器路径
                 String serverPicPath = UploadUtil.uploadImg(picName,bytes);
+                System.out.println("网络路径:"+serverPicPath);
                 if("".equalsIgnoreCase(serverPicPath))
                 {
                     return "上传文件失败！！！";
@@ -60,9 +61,10 @@ public class NoteHelper {
             //所有标签替换完成后，将Document转化为字节流 发送到服务器端
             String serverHtml = jsoupDocument.toString();
             note.setContent(serverHtml);
+            System.out.println(note);
             //此处调用网络接口将HTML文本发送到服务器
             /***********************************************/
-
+            UploadUtil.updateArticle(note);
         } catch (Exception e) {
             Log.d("ERROR:上传文件","打开文件失败");
             return "打开文件失败";

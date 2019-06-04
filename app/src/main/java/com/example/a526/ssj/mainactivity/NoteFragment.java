@@ -76,7 +76,6 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("121211211","oncreateview");
         started = true;
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.clockTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
@@ -145,6 +144,7 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
         note_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("......................update");
                 menu.setVisibility(View.GONE);
                 adapter.setisshowBox(false);
                 adapter.notifyDataSetChanged();
