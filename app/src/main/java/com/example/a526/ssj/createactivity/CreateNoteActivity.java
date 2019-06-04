@@ -41,6 +41,7 @@ import com.example.a526.ssj.notehelper.NoteUtils;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 
 public class CreateNoteActivity extends AppCompatActivity implements View.OnClickListener {
@@ -452,11 +453,14 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                          final TimePickerView tvTime = new TimePickerView.Builder(CreateNoteActivity.this, new TimePickerView.OnTimeSelectListener() {
                             @Override
                             public void onTimeSelect(Date date, View v) {
+                                date = new Date(date.getTime() - 8 * 60 * 60 * 1000);//转换为东八区时间
                                 relativeData = date;
+                                System.out.println(date);
                               //  Toast.makeText(getApplication(),date.toString(),Toast.LENGTH_SHORT).show();
                             }
                         }).build();
-                         tvTime.setDate(Calendar.getInstance());
+                        Calendar date = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
+                         tvTime.setDate(date);
                          tvTime.show();
                     }break;
                     case R.id.menu_action_save:{

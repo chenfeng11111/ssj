@@ -50,7 +50,8 @@ public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.cloc
         holder.itemView.apply();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-        holder.clockText.setText(dateFormat.format(clockList.get(position).getTime().toString()));
+        System.out.println("show "+clockList.get(position).getId()+" "+clockList.get(position).getTime());
+        holder.clockText.setText(dateFormat.format(clockList.get(position).getTime()));
         holder.delItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

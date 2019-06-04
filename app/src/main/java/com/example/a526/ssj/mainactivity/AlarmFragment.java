@@ -148,6 +148,7 @@ public class AlarmFragment extends Fragment {
                 // 这里回调过来的v,就是show()方法里面所添加的 View 参数，如果show的时候没有添加参数，v则为null
                 //clockList.add(getTime(date));
                 Clock clock = new Clock();
+                System.out.println(date);
                 //clock.setId(clockList.size());
                 clock.setRelatedNoteId(-1);
                 date = new Date(date.getTime() - 8 * 60 * 60 * 1000);//转换为东八区时间
