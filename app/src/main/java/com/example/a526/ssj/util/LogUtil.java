@@ -125,7 +125,7 @@ public class LogUtil {
             // conn.connect();
 
             // 输入数据
-            String data = "userid=" + userid + "&oldpassword=" + oldpassword + "newpassword=" + newpassword;
+            String data = "userid=" + userid + "&oldpassword=" + oldpassword + "&newpassword=" + newpassword;
             DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
             dos.writeBytes(data);
             dos.flush();

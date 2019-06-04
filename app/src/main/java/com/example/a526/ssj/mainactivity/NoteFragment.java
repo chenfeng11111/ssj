@@ -152,11 +152,23 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
                 for(int i=0;i<selectState.size();i++) {
                     if (selectState.get(i))
                     {
-                        Note note = noteList.get(i);
+                        final Note note = noteList.get(i);
                         note.setUpload(true);
                         //调用上传接口
-                        String result = NoteHelper.uploadFileToServer(note,0);
-                        Toast.makeText(getContext(),result,Toast.LENGTH_SHORT).show();
+                        new Thread(new Runnable(){
+                            @Override
+                            public void run(){
+                                //进行访问网络操作
+                                Message msg = Message.obtain();
+                                Bundle data = new Bundle();
+                                String successful = NoteHelper.uploadFileToServer(note,0);
+//                         data.putString("successful", successful? "1" : "0");
+                                data.putString("message", successful);  //实际使用的时候使用上一行代码
+                                msg.setData(data);
+                                handler.sendMessage(msg);
+                            }
+                        }
+                        ).start();
                     }
                 }
             }

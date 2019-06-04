@@ -1,10 +1,12 @@
 package com.example.a526.ssj.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by 10902 on 2019/5/29.
  */
 
-public class User {
+public class User implements Serializable{
 
     private Integer id;
 

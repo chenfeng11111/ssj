@@ -148,8 +148,8 @@ public class LoginActivity extends BaseActivity {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
-//                GlobalVariable.setCurrentUserId(Integer.parseInt(data.getStringArrayList("user").get(0)));
-                GlobalVariable.setCurrentUserId(1);
+                GlobalVariable.setCurrentUserId(Integer.parseInt(data.getStringArrayList("user").get(0)));
+//                GlobalVariable.setCurrentUserId(1);
             } else {
                 Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_LONG).show();
             }

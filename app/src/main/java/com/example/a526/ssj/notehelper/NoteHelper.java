@@ -27,6 +27,7 @@ import java.util.List;
 public class NoteHelper {
     //传入文件所在文件夹路径 将文件上传到服务器端
     public static String uploadFileToServer(Note note,int status){
+        System.out.println(note.getContent());
         System.out.println("NoteHelper processing...");
         //打开路径下的html文件
         String htmlDocument = note.getContent();
