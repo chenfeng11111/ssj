@@ -1,40 +1,37 @@
 package com.example.a526.ssj.mainactivity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.a526.ssj.R;
-import com.example.a526.ssj.clockservice.ClockReceiver;
 import com.example.a526.ssj.clockservice.ClockUtil;
 import com.example.a526.ssj.entity.Clock;
 import com.example.a526.ssj.entity.GlobalVariable;
-import com.example.a526.ssj.entity.Note;
-import com.example.a526.ssj.listener.OnTouchListenerAdapter;
 import com.example.a526.ssj.lockactivity.UnlockActivity;
 
-import java.nio.charset.MalformedInputException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity implements AlarmFragment.OnFragmentInteractionListener {
     private RadioGroup mainRadioGroup;//主界面的radio group
     private List<Fragment> mainFragmentList; //主界面的fragment集合
+    private RadioButton radioButtonNote;
+    private RadioButton radioButtonClock;
+    private RadioButton radioButtonSquare;
+    private RadioButton radioButtonMine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +64,38 @@ public class MainActivity extends FragmentActivity implements AlarmFragment.OnFr
         //添加手势锁监听
        // mainRadioGroup.setOnTouchListener(new OnTouchListenerAdapter(this, 0));
         mainRadioGroup.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent intent = new Intent(MainActivity.this,UnlockActivity.class);
+                startActivity(intent);
+                return false;
+            }
+        });
+        radioButtonNote.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent intent = new Intent(MainActivity.this,UnlockActivity.class);
+                startActivity(intent);
+                return false;
+            }
+        });
+        radioButtonClock.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent intent = new Intent(MainActivity.this,UnlockActivity.class);
+                startActivity(intent);
+                return false;
+            }
+        });
+        radioButtonSquare.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent intent = new Intent(MainActivity.this,UnlockActivity.class);
+                startActivity(intent);
+                return false;
+            }
+        });
+        radioButtonMine.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 Intent intent = new Intent(MainActivity.this,UnlockActivity.class);
@@ -150,6 +179,10 @@ public class MainActivity extends FragmentActivity implements AlarmFragment.OnFr
     private void initView() {
         setContentView(R.layout.activity_main);
         mainRadioGroup = findViewById(R.id.main_radio_group);
+        radioButtonNote=(RadioButton)findViewById(R.id.radio_button_note);
+        radioButtonClock=(RadioButton)findViewById(R.id.radio_button_alarm);
+        radioButtonSquare=(RadioButton)findViewById(R.id.radio_button_square);
+        radioButtonMine=(RadioButton)findViewById(R.id.radio_button_mine);
     }
     private void makeStatusBarTransparent() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

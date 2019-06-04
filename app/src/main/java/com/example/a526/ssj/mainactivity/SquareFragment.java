@@ -141,7 +141,7 @@ public class SquareFragment extends Fragment {
 
     //第3.2步：
     private void updateData(boolean addToTop) {
-        data = GlobalVariable.getNoteDatabaseHolder().searchNote(0,0);
+        initData();
         adapter.notifyDataSetChanged();
         progressBar.setVisibility(View.GONE);
         ptrFrameLayout.refreshComplete();
@@ -177,12 +177,6 @@ public class SquareFragment extends Fragment {
         }
         ).start();
 
-//        if(data == null)
-//        {
-//            Log.d("data:", "data is null-----------------------------");
-//        }
-//        adapter = new SqureListAdapter(data, getContext());
-//        listView.setAdapter(adapter);
     }
 
     private Handler handler = new Handler(){
@@ -190,7 +184,13 @@ public class SquareFragment extends Fragment {
         public void handleMessage(Message msg){
             Bundle bundle = msg.getData();
             //从data中拿出存的数据
+            System.out.println("---------------------------------------------cong bundle qu shuju");
             data = (ArrayList<Note>) bundle.getSerializable("result");
+            adapter = new SqureListAdapter(data, getContext());
+            listView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+            progressBar.setVisibility(View.GONE);
+            ptrFrameLayout.refreshComplete();
         }
     };
 }
