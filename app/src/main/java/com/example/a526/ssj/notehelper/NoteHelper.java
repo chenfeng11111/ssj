@@ -1,6 +1,8 @@
 package com.example.a526.ssj.notehelper;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
@@ -14,6 +16,7 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.List;
 
 /**
@@ -68,8 +71,75 @@ public class NoteHelper {
     }
     public static String syncFileToLocal()
     {
+        //获取本地文件存储路径
+        String allNotePath = GlobalVariable.getFileStorePath().toString();
         List<Note> remoteNoteList = UploadUtil.downloadArticle(GlobalVariable.getCurrentUserId());
-
+        for(Note note:remoteNoteList)
+        {
+            //保存文件到本地
+            int status = GlobalVariable.getNoteDatabaseHolder().needToUpdate(note);
+            if(status != 0)
+            {
+                //获取文件名
+                String fileName = note.getTitle();
+                File file = new File(allNotePath + File.separator + fileName);
+                if(!file.exists())
+                {
+                    file.mkdirs();
+                }
+                //解析图片文件
+                Document mDoucument = Jsoup.parse(note.getContent());
+                Elements elements = mDoucument.select("img[src]");
+                for(Element element:elements)
+                {
+                    String remotePicPath = element.attr("src");
+                    String localPicPath = copyPicFormServer(remotePicPath,fileName);
+                    if("".equalsIgnoreCase(localPicPath)){
+                        return "下载图片文件失败"+ remotePicPath;
+                    }
+                    element.attr("src",localPicPath);
+                }
+                //解析完成后，存储到数据库
+                note.setContent(mDoucument.toString());
+                if(1 == status)
+                {
+                    GlobalVariable.getNoteDatabaseHolder().insertNote(note);
+                }
+                else if(2 == status)
+                {
+                    GlobalVariable.getNoteDatabaseHolder().updateNote(note);
+                }
+            }
+        }
         return "成功";
+    }
+    private static String copyPicFormServer(String uri,String fileName)
+    {
+        //获取所有文件路径
+        String allNotePath = GlobalVariable.getFileStorePath().toString();
+        //读取图片文件名称
+        String picRemoteName = uri.substring(uri.lastIndexOf('/')+1);
+        //图片保存路径
+        String picLocalPath = allNotePath + File.separator+fileName+File.separator+picRemoteName;
+        //读取网络输入流
+        byte[] data = UploadUtil.downloadImage(uri);
+        if(data==null)
+        {
+            return "";
+        }
+        else
+        {
+            //保存文件
+            try {
+                FileOutputStream output = new FileOutputStream(picLocalPath);
+                output.write(data);
+                output.flush();
+                output.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "";
+            }
+        }
+        return "file://"+picLocalPath;
     }
 }

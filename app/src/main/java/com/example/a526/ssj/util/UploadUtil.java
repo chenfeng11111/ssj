@@ -262,38 +262,27 @@ public class UploadUtil {
         return null;
     }
 
-    public static void downloadImage(String path, String localPath, Bundle bundle)
+    public static byte[]  downloadImage(String path)
     {
         try
         {
-            URL url = new URL(host + path);
+            URL url = new URL( path);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setDoInput(true);
             conn.connect();
             if(conn.getResponseCode() == HttpURLConnection.HTTP_OK)
             {
                 InputStream is = conn.getInputStream();
-                String filename = path.substring(path.lastIndexOf("/"));
-                File file = new File(filename);
-                FileOutputStream fos = new FileOutputStream(file);
-                byte[] data = new byte[1024];
-                while(is.read(data) > 0)
-                {
-                    fos.write(data);
-                }
+                byte[] data = new byte[is.available()];
+                is.read(data);
                 is.close();
-                fos.close();
-                bundle.putString("state", "success");
-                bundle.putString("message", "下载成功");
-                bundle.putString("filename", filename);
+                return data;
             }
-            bundle.putString("state", "fail");
-            bundle.putString("message", "下载失败");
         } catch (Exception e) {
             e.printStackTrace();
-            bundle.putString("state", "fail");
-            bundle.putString("message", "下载失败");
+            return null;
         }
+        return null;
     }
 }
 

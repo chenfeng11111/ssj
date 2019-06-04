@@ -10,6 +10,9 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.entity.GlobalVariable;
+import com.example.a526.ssj.entity.User;
+import com.example.a526.ssj.util.LogUtil;
 
 public class myinformationActivity extends AppCompatActivity {
 
@@ -17,15 +20,21 @@ public class myinformationActivity extends AppCompatActivity {
     private TextView gender;
     private TextView birth;
     private TextView quit;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myinfo_layout);
+        user = new LogUtil().findUserById(GlobalVariable.getCurrentUserId(),new Bundle());
         name = (TextView)findViewById(R.id.name);
         gender = (TextView)findViewById(R.id.gender);
         birth = (TextView)findViewById(R.id.birth);
         quit = (TextView)findViewById(R.id.quit);
+        if(user != null)
+        {
+         name.setText(user.getName());
+        }
 
         makeStatusBarTransparent();
         name.setOnClickListener(new View.OnClickListener() {

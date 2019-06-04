@@ -4,6 +4,8 @@ package com.example.a526.ssj.mainactivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +22,6 @@ import android.widget.Toast;
 
 import com.example.a526.ssj.R;
 import com.example.a526.ssj.createactivity.CreateNoteActivity;
-import com.example.a526.ssj.createactivity.WebDataActivity;
 import com.example.a526.ssj.database.NoteDatabaseHolder;
 import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
@@ -53,6 +54,17 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
     private Button note_edit;
     private NoteDatabaseHolder databaseHolder;
     private boolean started = false;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            Bundle data = msg.getData();
+            //从data中拿出存的数据
+            String val = data.getString("value");
+            //将数据进行显示到界面等操作
+            String successful = data.getString("message");
+            Toast.makeText(getActivity(),successful,Toast.LENGTH_LONG).show();
+        }
+    };
     public NoteFragment() {
         // Required empty public constructor
     }
@@ -203,8 +215,20 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View view) {
                 //同步方法 调用同步接口
-
-
+                new Thread(new Runnable(){
+                    @Override
+                    public void run(){
+                        //进行访问网络操作
+                        Message msg = Message.obtain();
+                        Bundle data = new Bundle();
+                        String successful = NoteHelper.syncFileToLocal();
+//                         data.putString("successful", successful? "1" : "0");
+                        data.putString("message", successful);  //实际使用的时候使用上一行代码
+                        msg.setData(data);
+                        handler.sendMessage(msg);
+                    }
+                }
+                ).start();
             }
         });
         return rootView;
