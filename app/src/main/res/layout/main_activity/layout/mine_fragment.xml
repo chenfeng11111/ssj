@@ -60,6 +60,7 @@
             android:layout_height="76dp"
             android:backgroundTint="#00C41414"
             android:text="退出登录"
+            android:gravity="center"
             android:textColor="#1A1514"
             android:textSize="25dp" />
     </LinearLayout>

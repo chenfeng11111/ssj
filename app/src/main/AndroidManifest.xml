@@ -27,8 +27,12 @@
         <activity android:name=".lockactivity.UnlockActivity" />
         <activity android:name=".welcomeactivity.BaseActivity" />
         <!--<activity android:name=".mainactivity.MainActivity" />-->
-        <activity android:name=".mainactivity.myinformationActivity"/>
-        <activity android:name=".mainactivity.passwordchangeActivity"/>
+        <activity android:name=".mainactivity.myinformationActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
+        <activity android:name=".mainactivity.passwordchangeActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
         <activity android:name=".welcomeactivity.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             />
@@ -48,7 +52,9 @@
         </receiver>
         <activity android:name=".createactivity.CreateNoteActivity"/>
         <activity android:name=".createactivity.WebDataActivity"/>
-        <activity android:name=".welcomeactivity.RegisterActivity" />
+        <activity android:name=".welcomeactivity.RegisterActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
     </application>
 
 </manifest>
