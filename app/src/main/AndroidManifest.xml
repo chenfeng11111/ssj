@@ -38,6 +38,7 @@
         </receiver>
         <activity android:name=".createactivity.CreateNoteActivity"/>
         <activity android:name=".createactivity.WebDataActivity"/>
+        <activity android:name=".welcomeactivity.RegisterActivity" />
     </application>
 
 </manifest>
