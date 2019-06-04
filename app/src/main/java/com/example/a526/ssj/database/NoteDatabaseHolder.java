@@ -129,4 +129,8 @@ public class NoteDatabaseHolder {
         String[] whereArgs = {String.valueOf(note.getId())};
         noteDatabase.update(noteDatabaseName, values, whereClause, whereArgs);
     }
+    public boolean needToUpdate(Note note){
+        Note note1=searchNote(note.getId());
+        return note1.getVersion() < note.getVersion();
+    }
 }
