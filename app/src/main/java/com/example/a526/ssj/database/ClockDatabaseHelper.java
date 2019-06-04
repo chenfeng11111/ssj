@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 /*
   表结构
   clockId integer 自增变量
-  time varchar 设定的时间
+  time integer 设定的时间的毫秒数
   relatedNoteID integer  与该闹钟关联的笔记的ID
  */
 public class ClockDatabaseHelper extends SQLiteOpenHelper{
@@ -25,7 +25,7 @@ public class ClockDatabaseHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS clock (" +
                 "clockId integer primary key autoincrement, " +
-                "time varchar(100), " +
+                "time integer, " +
                 "relatedNoteID integer)");
     }
 

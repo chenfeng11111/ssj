@@ -26,7 +26,6 @@ public class ClockDatabaseHolder {
     private ClockDatabaseHelper clockDatabaseHelper;
     private SQLiteDatabase clockDatabase;
     private final String clockDatabaseName = "clock";
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(" yyyy-MM-dd HH:mm:ss ");
 
     public ClockDatabaseHolder(Context context) {
         clockDatabaseHelper = new ClockDatabaseHelper(context, clockDatabaseName, 1);
@@ -36,8 +35,8 @@ public class ClockDatabaseHolder {
     public int insertClock(Clock clock) {
         ContentValues values = new ContentValues();
         values.put("relatedNoteID", clock.getRelatedNoteId());
-        String time = simpleDateFormat.format(clock.getTime());
-        values.put("time", time);
+        System.out.println("insert "+clock.getTime().getTime());
+        values.put("time", clock.getTime().getTime());
         //数据库执行插入命令
         return (int) clockDatabase.insert(clockDatabaseName, null, values);
     }
@@ -60,13 +59,9 @@ public class ClockDatabaseHolder {
         if (cursor.moveToFirst()) {
             clock = new Clock();
             clock.setId(cursor.getInt(0));
-            String str = cursor.getString(1);
-            Date date = new Date();
-            try {
-                date = simpleDateFormat.parse(str);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            long l = cursor.getLong(1);
+            System.out.println("search "+l);
+            Date date = new Date(l);
             clock.setTime(date);
             clock.setRelatedNoteId(cursor.getInt(2));
         }
@@ -77,7 +72,7 @@ public class ClockDatabaseHolder {
     public List<Clock> searchClock(int number, int offest) {
         boolean all = number == 0;
         Cursor cursor = clockDatabase.query(clockDatabaseName, null, null,
-                null, null, null, "clockId desc", null);
+                null, null, null, "clockId", null);
         List<Clock> list = new ArrayList<>();
         //判断游标是否为空
         if (cursor.moveToFirst()) {
@@ -85,13 +80,9 @@ public class ClockDatabaseHolder {
             do {
                 Clock clock = new Clock();
                 clock.setId(cursor.getInt(0));
-                String str = cursor.getString(1);
-                Date date = new Date();
-                try {
-                    date = simpleDateFormat.parse(str);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                long l = cursor.getLong(1);
+                System.out.println("search "+l);
+                Date date = new Date(l);
                 clock.setTime(date);
                 clock.setRelatedNoteId(cursor.getInt(2));
                 list.add(clock);
@@ -104,8 +95,7 @@ public class ClockDatabaseHolder {
     public void updateClock(Clock clock) {
         ContentValues values = new ContentValues();
         values.put("relatedNoteID", clock.getRelatedNoteId());
-        String time = simpleDateFormat.format(clock.getTime());
-        values.put("time", time);
+        values.put("time", clock.getTime().getTime());
         String whereClause = "clockId=?";
         String[] whereArgs = {String.valueOf(clock.getId())};
         clockDatabase.update(clockDatabaseName, values, whereClause, whereArgs);

@@ -38,13 +38,12 @@ import com.example.a526.ssj.createactivity.view.RichEditor;
 import com.example.a526.ssj.entity.Clock;
 import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
-import com.example.a526.ssj.mainactivity.MainActivity;
 import com.example.a526.ssj.notehelper.NoteHelper;
 import com.example.a526.ssj.notehelper.NoteUtils;
-import com.example.a526.ssj.welcomeactivity.LoginActivity;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 
 public class CreateNoteActivity extends AppCompatActivity implements View.OnClickListener {
@@ -456,7 +455,9 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                          final TimePickerView tvTime = new TimePickerView.Builder(CreateNoteActivity.this, new TimePickerView.OnTimeSelectListener() {
                             @Override
                             public void onTimeSelect(Date date, View v) {
+                                date = new Date(date.getTime() - 8 * 60 * 60 * 1000);//转换为东八区时间
                                 relativeData = date;
+                                System.out.println(date);
                               //  Toast.makeText(getApplication(),date.toString(),Toast.LENGTH_SHORT).show();
                             }
                         }).setType(new boolean[]{ true, true, true,true,true,false}) //年月日时分秒 的显示与否，不设置则默认全部显示
@@ -467,7 +468,8 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                                  .setTextColorOut(Color.BLUE)//设置没有被选中项的颜色
                                  .setSubmitText("存储")
                                  .setCancelText("取消").build();
-                         tvTime.setDate(Calendar.getInstance());
+                        Calendar date = Calendar.getInstance(TimeZone.getTimeZone("GMT+8"));
+                         tvTime.setDate(date);
                          tvTime.show();
                     }break;
                     case R.id.menu_action_save:{

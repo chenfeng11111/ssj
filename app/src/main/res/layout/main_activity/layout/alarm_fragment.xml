@@ -19,7 +19,7 @@
             android:layout_width="50dp"
             android:text="闹钟"
             android:textColor="#FFF"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:layout_marginLeft="155dp"
             android:gravity="center"
             android:textStyle="bold"
