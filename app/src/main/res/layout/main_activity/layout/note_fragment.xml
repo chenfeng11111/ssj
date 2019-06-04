@@ -17,13 +17,11 @@
         android:layout_height="50dp"
         android:background="@color/colorPrimary"
         >
-        <TextView
-            android:layout_height="match_parent"
-            android:layout_width="50dp"
+        <ImageView
+            android:layout_height="40dp"
+            android:layout_width="40dp"
             android:id="@+id/note_sync"
-            android:text="同步"
-            android:textSize="18sp"
-            android:textColor="#000"
+            android:src="@drawable/sync"
             android:gravity="center"
             />
         <TextView
@@ -32,16 +30,16 @@
             android:text="笔记"
             android:textColor="#FFF"
             android:textSize="24sp"
-            android:layout_marginLeft="120dp"
+            android:layout_marginLeft="115dp"
             android:gravity="center"
             android:textStyle="bold"
             />
         <ImageView
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_width="45dp"
             android:id="@+id/note_plus"
             android:src="@drawable/plus"
-            android:layout_marginLeft="120dp"
+           android:layout_marginLeft="110dp"
             />
     </android.support.v7.widget.Toolbar>
     <RelativeLayout

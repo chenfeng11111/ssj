@@ -42,7 +42,7 @@ import java.util.Map;
 
 public class NoteFragment extends Fragment implements View.OnClickListener{
     private ImageView plus;
-    private TextView note_sync;
+    private ImageView note_sync;
     private RecyclerView noteListView;
     private List<Note> noteList=new ArrayList<Note>();
     private NoteListAdapter adapter;
@@ -82,7 +82,7 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         View rootView = localInflater.inflate(R.layout.note_fragment, container, false);
         plus=(ImageView) rootView.findViewById(R.id.note_plus);
-        note_sync = (TextView) rootView.findViewById(R.id.note_sync);
+        note_sync = (ImageView) rootView.findViewById(R.id.note_sync);
         noteListView = (RecyclerView) rootView.findViewById(R.id.note_list);
         menu = (LinearLayout)rootView.findViewById(R.id.menu_layout);
         note_del = (Button) rootView.findViewById(R.id.menu_del);
