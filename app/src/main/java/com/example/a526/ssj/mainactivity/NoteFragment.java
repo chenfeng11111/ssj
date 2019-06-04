@@ -27,7 +27,6 @@ import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
 import com.example.a526.ssj.notehelper.NoteHelper;
 import com.example.a526.ssj.notehelper.NoteUtils;
-import com.example.a526.ssj.util.UploadUtil;
 
 import java.util.ArrayList;
 

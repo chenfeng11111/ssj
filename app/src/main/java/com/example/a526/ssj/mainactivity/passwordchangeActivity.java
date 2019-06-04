@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.a526.ssj.R;
+import com.example.a526.ssj.entity.GlobalVariable;
+import com.example.a526.ssj.util.LogUtil;
 
 public class passwordchangeActivity extends AppCompatActivity {
     private EditText et_original_psw;
@@ -36,7 +38,17 @@ public class passwordchangeActivity extends AppCompatActivity {
                 if(!new_psw.equals(new_psw_again)){
                     Toast.makeText(getApplicationContext(),"两次输入密码不同，请重新输入！",Toast.LENGTH_LONG).show();
                 }
-
+                else{
+                    Bundle bundle = new Bundle();
+                    new LogUtil().updataPassword(GlobalVariable.getCurrentUserId(),original_psw,new_psw,bundle);
+                    if(bundle.getString("state").equalsIgnoreCase("success")){
+                        Toast.makeText(passwordchangeActivity.this,"修改密码成功",Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(passwordchangeActivity.this,bundle.getString("message"),Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
     }
