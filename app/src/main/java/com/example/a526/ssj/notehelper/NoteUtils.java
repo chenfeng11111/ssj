@@ -3,10 +3,8 @@ package com.example.a526.ssj.notehelper;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.a526.ssj.entity.GlobalVariable;
-import com.example.a526.ssj.entity.Note;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -15,7 +13,6 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 
 /**
  * Created by 姜益昭 on 2019/5/30.
