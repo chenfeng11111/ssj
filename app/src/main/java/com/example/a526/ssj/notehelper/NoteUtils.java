@@ -77,9 +77,7 @@ public class NoteUtils {
         if(!noteFilePath.exists())
         {
             noteFilePath.mkdirs();
-            System.out.println("创建文件夹:"+noteFilePath);
         }
-        System.out.println("源文件："+fileContext);
         //修改后的Html文档
         String transferHtml = "";
         try {

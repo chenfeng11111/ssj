@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -36,8 +38,10 @@ import com.example.a526.ssj.createactivity.view.RichEditor;
 import com.example.a526.ssj.entity.Clock;
 import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
+import com.example.a526.ssj.mainactivity.MainActivity;
 import com.example.a526.ssj.notehelper.NoteHelper;
 import com.example.a526.ssj.notehelper.NoteUtils;
+import com.example.a526.ssj.welcomeactivity.LoginActivity;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -455,7 +459,14 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                                 relativeData = date;
                               //  Toast.makeText(getApplication(),date.toString(),Toast.LENGTH_SHORT).show();
                             }
-                        }).build();
+                        }).setType(new boolean[]{ true, true, true,true,true,false}) //年月日时分秒 的显示与否，不设置则默认全部显示
+                                 .setLabel("年", "月", "日", "时", "分", "")//默认设置为年月日时分秒
+                                 .isCenterLabel(false)
+                                 .setDividerColor(Color.RED)
+                                 .setTextColorCenter(Color.RED)//设置选中项的颜色
+                                 .setTextColorOut(Color.BLUE)//设置没有被选中项的颜色
+                                 .setSubmitText("存储")
+                                 .setCancelText("取消").build();
                          tvTime.setDate(Calendar.getInstance());
                          tvTime.show();
                     }break;
@@ -554,7 +565,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     String fileName = mFileName.getText().toString().trim();
                                     String fileContent = mEditor.getHtml();
-                                    Note note = new Note();
+                                    final Note note = new Note();
                                     note.setTitle(fileName);
                                     note.setSaveTime(new Date());
                                     note.setUpload(true);
@@ -568,13 +579,30 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                                     //本地保存
                                     //图片转移
                                     String localTransferHtml = NoteUtils.savePicAndTransferHtml(getApplicationContext(),fileName,fileContent);
+                                    System.out.println("图片转移完成");
                                     //数据库存储
                                     note.setContent(localTransferHtml);
                                     //创建
                                     noteId = GlobalVariable.getNoteDatabaseHolder().insertNote(note);
-                                    //服务器上传 status 0
-                                    String result = NoteHelper.uploadFileToServer(note,0);
-                                    Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
+                                    System.out.println("数据库存储完成");
+                                    //服务器上传 status 0 开启新的线程
+                                    new Thread(new Runnable(){
+                                        @Override
+                                        public void run(){
+                                            //进行访问网络操作
+                                            Message msg = Message.obtain();
+                                            Bundle data = new Bundle();
+                                            String successful = NoteHelper.uploadFileToServer(note,0);
+//                         data.putString("successful", successful? "1" : "0");
+                                            data.putString("message", successful);  //实际使用的时候使用上一行代码
+                                            msg.setData(data);
+                                            handler.sendMessage(msg);
+                                        }
+                                    }
+                                    ).start();
+
+                                  //  String result = NoteHelper.uploadFileToServer(note,0);
+                                  //  Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
                                 }
                             });
                             builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -594,8 +622,20 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                             //本地数据库内容修改
                             GlobalVariable.getNoteDatabaseHolder().updateNote(originNote);
                             //服务器更新 status 1
-                            String result = NoteHelper.uploadFileToServer(originNote,1);
-                            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
+                            new Thread(new Runnable(){
+                                @Override
+                                public void run(){
+                                    //进行访问网络操作
+                                    Message msg = Message.obtain();
+                                    Bundle data = new Bundle();
+                                    String successful = NoteHelper.uploadFileToServer(originNote,0);
+//                         data.putString("successful", successful? "1" : "0");
+                                    data.putString("message", successful);  //实际使用的时候使用上一行代码
+                                    msg.setData(data);
+                                    handler.sendMessage(msg);
+                                }
+                            }
+                            ).start();
                         }
 
                         if(relativeData!=null)
@@ -712,4 +752,16 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
             default:break;
         }
     }
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            Bundle data = msg.getData();
+            //从data中拿出存的数据
+            String val = data.getString("value");
+            //将数据进行显示到界面等操作
+            String successful = data.getString("message");
+            Toast.makeText(CreateNoteActivity.this,successful,Toast.LENGTH_LONG).show();
+            finish();
+        }
+    };
 }

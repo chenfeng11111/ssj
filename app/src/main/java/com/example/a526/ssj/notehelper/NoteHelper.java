@@ -14,6 +14,7 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 /**
  * Created by 姜益昭 on 2019/5/30.
@@ -23,6 +24,7 @@ import java.io.FileNotFoundException;
 public class NoteHelper {
     //传入文件所在文件夹路径 将文件上传到服务器端
     public static String uploadFileToServer(Note note,int status){
+        System.out.println("NoteHelper processing...");
         //打开路径下的html文件
         String htmlDocument = note.getContent();
         try {
@@ -33,10 +35,13 @@ public class NoteHelper {
             for (Element element : imageSrc){
                 //获取图片路径
                 String picUri = element.attr("src");
+                String picPath = picUri.substring(picUri.indexOf(':')+3);
                 //获取图片名称
-                String picName = picUri.substring(picUri.lastIndexOf('/')+1,picUri.lastIndexOf('.'));
+                String picName = picUri.substring(picUri.lastIndexOf('/')+1);
+                System.out.println("图片名称："+picName);
+                System.out.println("图片路径:"+picPath);
                 //打开文件输入流
-                FileInputStream picInputStream = new FileInputStream(picUri);
+                FileInputStream picInputStream = new FileInputStream(picPath);
                 byte[] bytes = new byte[picInputStream.available()];
                 picInputStream.read(bytes);
                 //调用网络接口向服务器上传图片文件 获取返回的服务器路径
@@ -60,5 +65,11 @@ public class NoteHelper {
             return "打开文件失败";
         }
         return "上传成功";
+    }
+    public static String syncFileToLocal()
+    {
+        List<Note> remoteNoteList = UploadUtil.downloadArticle(GlobalVariable.getCurrentUserId());
+
+        return "成功";
     }
 }

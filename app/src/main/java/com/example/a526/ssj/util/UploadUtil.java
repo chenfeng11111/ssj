@@ -35,37 +35,38 @@ public class UploadUtil {
 
     public static String uploadImg(String filename, byte[] data) throws IOException {
         URL url = new URL(host + "/file/upload/image");
-        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
         // 设置连接
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-        conn.setUseCaches(false);
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("User-Agent","Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; KB974487)");
-        conn.setRequestProperty("Content-Type", "multipart/form-data;file="+ filename);
+        httpURLConnection.setDoInput(true);
+        httpURLConnection.setDoOutput(true);
+        httpURLConnection.setUseCaches(false);
+        httpURLConnection.setRequestMethod("POST");
+        httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
+        httpURLConnection.setRequestProperty("Charset", "UTF-8");
+        String boundary = "---------------------------823928434";
+        httpURLConnection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
 
         // 建立连接
-        conn.connect();
+        httpURLConnection.connect();
 
         // 传输数据
-        OutputStream out = new DataOutputStream(conn.getOutputStream());
-//        DataInputStream in = new DataInputStream(new FileInputStream(uri));
-        out.write(data);
-        out.flush();
-        out.close();
-//        int bytes = 0;
-//        byte[] bufferOut = new byte[2048];
-//        while ((bytes = in.read(bufferOut)) != -1) {
-//            out.write(bufferOut, 0, bytes);
-//        }
-//        in.close();
+        String end = "\r\n";
+        String twoHyphens = "--";
+        DataOutputStream dos = new DataOutputStream(httpURLConnection.getOutputStream());
+        dos.writeBytes(twoHyphens + boundary + end);
+        dos.writeBytes("Content-Disposition: form-data; name=\"file\"; filename=\"" + filename + "\"" + end);
+        dos.writeBytes(end);
+        dos.write(data);
+        dos.writeBytes(end);
+        dos.writeBytes(twoHyphens + boundary + twoHyphens + end);
+        dos.flush();
 
-        if(conn.getResponseCode() == HttpURLConnection.HTTP_OK)
+        if(httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK)
         {
             StringBuffer sb=new StringBuffer();
             String readLine;
-            BufferedReader responseReader=new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
+            BufferedReader responseReader=new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream(),"UTF-8"));
             while((readLine=responseReader.readLine())!=null){
                 sb.append(readLine).append("\n");
             }
@@ -75,7 +76,7 @@ public class UploadUtil {
                 JSONObject jsonObject = new JSONObject(sb.toString());
                 String preFilename = jsonObject.getString("filename");
                 String path = jsonObject.getString("path");
-                return path;
+                return host+path;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
