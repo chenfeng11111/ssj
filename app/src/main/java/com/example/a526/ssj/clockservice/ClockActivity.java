@@ -24,14 +24,17 @@ public class ClockActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_remind_activity);
+        //播放音乐
         mediaPlayer = mediaPlayer.create(this, R.raw.music);
         mediaPlayer.start();
         //创建一个闹钟提醒的对话框,点击确定关闭铃声与页面
         final Intent intent = getIntent();
+        //将信息放到弹出对话框中
         new AlertDialog.Builder(ClockActivity.this).setTitle("闹钟").setMessage(intent.getStringExtra("title"))
                 .setPositiveButton("关闭闹铃", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //音乐播放停止
                         mediaPlayer.stop();
                         GlobalVariable.getClockDatabaseHolder().deleteClock(intent.getIntExtra("ID", 1));//删除闹钟
                         ClockActivity.this.finish();

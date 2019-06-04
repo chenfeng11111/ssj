@@ -74,9 +74,9 @@ public class LogTest {
         user.setName("user123");
         user.setPassword("123456");
         user.setState(1);
-        HashMap<String, Object> map = new HashMap<>();
-        logUtil.register(user.getName(), user.getPassword(), user.getEmail(), map);
-        User serverUser = (User) map.get("user");
-        System.out.println(serverUser);
+        //HashMap<String, Object> map = new HashMap<>();
+        //logUtil.register(user.getName(), user.getPassword(), user.getEmail(), map);
+        //User serverUser = (User) map.get("user");
+        //System.out.println(serverUser);
     }
 }

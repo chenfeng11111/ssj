@@ -1,5 +1,7 @@
 package com.example.a526.ssj.util;
 
+import android.os.Bundle;
+
 import com.example.a526.ssj.entity.Note;
 import com.example.a526.ssj.entity.User;
 
@@ -10,12 +12,15 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +31,7 @@ import java.util.List;
  */
 
 public class UploadUtil {
-    public static String host = "http://10.120.174.168:8080";
+    public static String host = "http://10.0.2.2:8080";
 
     public static String uploadImg(String filename, byte[] data) throws IOException {
         URL url = new URL(host + "/file/upload/image");
@@ -254,6 +259,40 @@ public class UploadUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void downloadImage(String path, String localPath, Bundle bundle)
+    {
+        try
+        {
+            URL url = new URL(host + path);
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            conn.setDoInput(true);
+            conn.connect();
+            if(conn.getResponseCode() == HttpURLConnection.HTTP_OK)
+            {
+                InputStream is = conn.getInputStream();
+                String filename = path.substring(path.lastIndexOf("/"));
+                File file = new File(filename);
+                FileOutputStream fos = new FileOutputStream(file);
+                byte[] data = new byte[1024];
+                while(is.read(data) > 0)
+                {
+                    fos.write(data);
+                }
+                is.close();
+                fos.close();
+                bundle.putString("state", "success");
+                bundle.putString("message", "下载成功");
+                bundle.putString("filename", filename);
+            }
+            bundle.putString("state", "fail");
+            bundle.putString("message", "下载失败");
+        } catch (Exception e) {
+            e.printStackTrace();
+            bundle.putString("state", "fail");
+            bundle.putString("message", "下载失败");
+        }
     }
 }
 

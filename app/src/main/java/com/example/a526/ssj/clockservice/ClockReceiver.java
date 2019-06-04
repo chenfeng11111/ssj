@@ -12,6 +12,7 @@ public class ClockReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction() != null && intent.getAction().equals("alarm")) {
+            //获取传递的信息
             String msg = intent.getStringExtra("title");
             intent = new Intent(context, ClockActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
