@@ -143,11 +143,11 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         if(operation == null || operation.equalsIgnoreCase("create"))
         {
             isCreator = true;
-            originNote = (Note) getIntent().getSerializableExtra("note");
         }
         else
         {
             isCreator = false;
+            originNote = (Note) getIntent().getSerializableExtra("note");
         }
         initView();
         initClickListener();
@@ -169,7 +169,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
         mEditor = findViewById(R.id.re_main_editor);
         //mEditor.setEditorHeight(400);
         //输入框显示字体的大小
-        mEditor.setEditorFontSize(20);
+        mEditor.setEditorFontSize(28);
         //输入框显示字体的颜色
         mEditor.setEditorFontColor(Color.BLACK);
         //输入框背景设置
@@ -507,15 +507,25 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                                     note.setContent(transHtml);
                                     //调用数据库接口
                                     noteId = GlobalVariable.getNoteDatabaseHolder().insertNote(note);
+                                    System.out.println("------shuchu-----"+noteId);
                                     //提示保存状态
                                     if(noteId>0)
                                     {
                                         //关闭当前页面
                                         Toast.makeText(getApplicationContext(),"成功",Toast.LENGTH_SHORT).show();
+                                        if(relativeData!=null)
+                                        {
+                                            //创建一个闹钟
+                                            Clock clock = new Clock();
+                                            clock.setRelatedNoteId(noteId);
+                                            System.out.println(noteId);
+                                            clock.setTime(relativeData);
+                                            ClockUtil.saveAlarm(getApplicationContext(),clock);
+                                        }
                                         finish();
                                     }
                                     else{
-                                        Toast.makeText(getApplicationContext(),"成功",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(),"失败",Toast.LENGTH_SHORT).show();
                                     }
 
 
@@ -537,16 +547,18 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                             noteId = originNote.getUserId();
                             //数据库内容修改
                             GlobalVariable.getNoteDatabaseHolder().updateNote(originNote);
+                            if(relativeData!=null)
+                            {
+                                //创建一个闹钟
+                                Clock clock = new Clock();
+                                clock.setRelatedNoteId(noteId);
+                                System.out.println(noteId);
+                                clock.setTime(relativeData);
+                                ClockUtil.saveAlarm(getApplicationContext(),clock);
+                            }
                             Toast.makeText(getApplicationContext(),"成功",Toast.LENGTH_SHORT).show();
                         }
-                        if(relativeData!=null)
-                        {
-                            //创建一个闹钟
-                            Clock clock = new Clock();
-                            clock.setRelatedNoteId(noteId);
-                            clock.setTime(relativeData);
-                            ClockUtil.saveAlarm(getApplicationContext(),clock);
-                        }
+
                     }break;
                     case R.id.menu_action_upload:{
                         if(isCreator)
@@ -586,6 +598,14 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                                     note.setContent(localTransferHtml);
                                     //创建
                                     noteId = GlobalVariable.getNoteDatabaseHolder().insertNote(note);
+                                    if(relativeData!=null)
+                                    {
+                                        //创建一个闹钟
+                                        Clock clock = new Clock();
+                                        clock.setRelatedNoteId(noteId);
+                                        clock.setTime(relativeData);
+                                        ClockUtil.saveAlarm(getApplicationContext(),clock);
+                                    }
                                     System.out.println("数据库存储完成");
                                     //服务器上传 status 0 开启新的线程
                                     new Thread(new Runnable(){
@@ -623,6 +643,14 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                             noteId = originNote.getId();
                             //本地数据库内容修改
                             GlobalVariable.getNoteDatabaseHolder().updateNote(originNote);
+                            if(relativeData!=null)
+                            {
+                                //创建一个闹钟
+                                Clock clock = new Clock();
+                                clock.setRelatedNoteId(noteId);
+                                clock.setTime(relativeData);
+                                ClockUtil.saveAlarm(getApplicationContext(),clock);
+                            }
                             //服务器更新 status 1
                             new Thread(new Runnable(){
                                 @Override
@@ -640,14 +668,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                             ).start();
                         }
 
-                        if(relativeData!=null)
-                        {
-                            //创建一个闹钟
-                            Clock clock = new Clock();
-                            clock.setRelatedNoteId(noteId);
-                            clock.setTime(relativeData);
-                            ClockUtil.saveAlarm(getApplicationContext(),clock);
-                        }
+
                     }break;
                 }
                 return false;

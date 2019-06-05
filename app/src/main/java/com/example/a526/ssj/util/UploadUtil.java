@@ -23,6 +23,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -106,13 +107,14 @@ public class UploadUtil {
 
             // 传输数据
             String data = "title=" + note.getTitle() +
-                    "content=" + note.getContent() +
-                    "userid=" + note.getUserId() +
-                    "isupload=" + note.getUpload() +
-                    "isshared=" + note.getShare() +
-                    "savetime" + note.getSaveTime().toString() +
-                    "version" + note.getVersion() +
-                    "code" + note.getCode();
+                    "&content=" + URLEncoder.encode(note.getContent()) +
+                    "&userid=" + note.getUserId() +
+                    "&isupload=" + (note.getUpload() ? "1" : "0") +
+                    "&isshared=" + (note.getShare() ? "1" : "0") +
+                    "&savetime=" + URLEncoder.encode(note.getSaveTime().toString()) +
+                    "&version=" + note.getVersion() +
+                    "&code=" + note.getCode();
+            System.out.println(data);
             DataOutputStream out = new DataOutputStream(conn.getOutputStream());
             out.writeBytes(data);
             out.flush();
@@ -164,13 +166,14 @@ public class UploadUtil {
 
             // 传输数据
             String data = "title=" + note.getTitle() +
-                    "content=" + note.getContent() +
-                    "userid=" + note.getUserId() +
-                    "isupload=" + note.getUpload() +
-                    "isshared=" + note.getShare() +
-                    "savetime" + note.getSaveTime().toString() +
-                    "version" + note.getVersion() +
-                    "code" + note.getCode();
+                    "&content=" + URLEncoder.encode(note.getContent()) +
+                    "&userid=" + note.getUserId() +
+                    "&isupload=" + (note.getUpload() ? "1" : "0") +
+                    "&isshared=" + (note.getShare() ? "1" : "0") +
+                    "&savetime=" + URLEncoder.encode(note.getSaveTime().toString()) +
+                    "&version=" + note.getVersion() +
+                    "&code=" + note.getCode();
+            System.out.println(data);
             DataOutputStream out = new DataOutputStream(conn.getOutputStream());
             out.writeBytes(data);
             out.flush();
@@ -239,7 +242,10 @@ public class UploadUtil {
                 }
                 responseReader.close();
                 System.out.println(sb.toString());
-                JSONArray jsonArray = new JSONArray(sb.toString());
+                JSONObject jsonObject = new JSONObject(sb.toString());
+                System.out.println(jsonObject.get("articlelist"));
+                JSONArray jsonArray = new JSONArray(jsonObject.getString("articlelist"));
+                System.out.println(jsonArray.toString());
                 noteList = new ArrayList<>();
                 for(int i = 0; i < jsonArray.length(); i++)
                 {
@@ -249,7 +255,7 @@ public class UploadUtil {
                     note.setContent(articleJSON.getString("content"));
                     note.setUserId(articleJSON.getInt("userid"));
                     note.setUpload(articleJSON.getString("isupload").equals("1"));
-                    note.setShare(articleJSON.getString("isshared").equals("1"));
+                    note.setShare(articleJSON.getString("isShared").equals("1"));
                     note.setSaveTime(new Date(articleJSON.getString("savetime")));
                     note.setVersion(articleJSON.getInt("version"));
                     note.setCode(articleJSON.getString("code"));

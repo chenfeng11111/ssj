@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.a526.ssj.entity.Note;
 
@@ -55,7 +56,7 @@ public class NoteDatabaseHolder {
     //单独查询一个note，如果没有查询到结果，返回null
     public Note searchNote(int noteId) {
         Cursor cursor = noteDatabase.query(noteDatabaseName, null, "noteId=?", new String[]{String.valueOf(noteId)},
-                null, null, "noteId desc", null);
+                null, null, null, null);
         Note note = null;
         if (cursor.moveToFirst()) {
             note = new Note();
@@ -122,21 +123,45 @@ public class NoteDatabaseHolder {
         String time = simpleDateFormat.format(note.getSaveTime());
         values.put("saveTime", time);
         values.put("userId", note.getUserId());
-        values.put("code", note.getCode());
         values.put("version", note.getVersion());
         //数据库执行插入位置
-        String whereClause = "noteId=?";
-        String[] whereArgs = {String.valueOf(note.getId())};
+        String whereClause = "code=?";
+        String[] whereArgs = {note.getCode()};
         noteDatabase.update(noteDatabaseName, values, whereClause, whereArgs);
     }
 
     //返回状态码，0表示无需更新，1表示需要新增一个笔记，2表示需要更新现存笔记
     public int needToUpdate(Note note){
-        Note noteFromDb=searchNote(note.getId());
+        Note noteFromDb=searchByCode(note.getCode());
         if(noteFromDb==null)
             return 1;
         else if(noteFromDb.getVersion()>=note.getVersion())
             return 0;
         else return 2;
+    }
+    public Note searchByCode(String code){
+        Cursor cursor = noteDatabase.query(noteDatabaseName, null, "code=?", new String[]{code},
+                null, null, null, null);
+        Note note = null;
+        if (cursor.moveToFirst()) {
+            note = new Note();
+            note.setId(cursor.getInt(0));
+            note.setTitle(cursor.getString(1));
+            note.setContent(cursor.getString(2));
+            note.setUpload(cursor.getInt(3) == 1);
+            note.setShare(cursor.getInt(4) == 1);
+            String str = cursor.getString(5);
+            Date date = new Date();
+            try {
+                date = simpleDateFormat.parse(str);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            note.setSaveTime(date);
+            note.setUserId(cursor.getInt(6));
+            note.setCode(cursor.getString(7));
+            note.setVersion(cursor.getInt(8));
+        }
+        return note;
     }
 }

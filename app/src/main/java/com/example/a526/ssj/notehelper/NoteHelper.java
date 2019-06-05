@@ -65,7 +65,7 @@ public class NoteHelper {
             System.out.println(note);
             //此处调用网络接口将HTML文本发送到服务器
             /***********************************************/
-            UploadUtil.updateArticle(note);
+            UploadUtil.uploadArticle(note);
         } catch (Exception e) {
             Log.d("ERROR:上传文件","打开文件失败");
             return "打开文件失败";

@@ -28,6 +28,7 @@ public class ClockUtil {
         if (clock.getTime().after(curtime)) {//如果闹钟时间晚于当前时间则创建闹钟
             Intent intent = new Intent(context, ClockReceiver.class);
             intent.setAction("alarm");
+            System.out.println(clock.getRelatedNoteId());
             if (clock.getRelatedNoteId() != -1) {//如果ID大于-1，表示有笔记与之关联，获取关联笔记的标题并传递消息至闹钟处显示
                 Note note = GlobalVariable.getNoteDatabaseHolder().searchNote(clock.getRelatedNoteId());
                 intent.putExtra("title", note.getTitle());

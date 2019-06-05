@@ -52,6 +52,8 @@ public class WebDataActivity extends AppCompatActivity {
 
         //settings.setUseWideViewPort(true);//调整到适合webview的大小，不过尽量不要用，有些手机有问题
         settings.setLoadWithOverviewMode(true);//设置WebView是否使用预览模式加载界面。
+        settings.setTextZoom(100);
+        settings.setSupportZoom(true);
         mWebView.setVerticalScrollBarEnabled(true);//不能垂直滑动
         mWebView.setHorizontalScrollBarEnabled(false);//不能水平滑动
         settings.setTextSize(WebSettings.TextSize.NORMAL);//通过设置WebSettings，改变HTML中文字的大小

@@ -27,6 +27,7 @@ import com.example.a526.ssj.entity.GlobalVariable;
 import com.example.a526.ssj.entity.Note;
 import com.example.a526.ssj.notehelper.NoteHelper;
 import com.example.a526.ssj.notehelper.NoteUtils;
+import com.example.a526.ssj.util.UploadUtil;
 
 import java.util.ArrayList;
 
@@ -62,6 +63,17 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
             //将数据进行显示到界面等操作
             String successful = data.getString("message");
             Toast.makeText(getActivity(),successful,Toast.LENGTH_LONG).show();
+            noteList.clear();
+            noteList.addAll(GlobalVariable.getNoteDatabaseHolder().searchNote(0,0));
+            for (int i = 0; i < noteList.size(); i++) {
+                if(!(adapter.getMap().containsKey(i)))
+                {
+                    adapter.getMap().put(i,false);
+                }
+
+            }
+            System.out.println("handle 同步方法返回:"+noteList);
+            adapter.notifyDataSetChanged();
         }
     };
     public NoteFragment() {
@@ -121,13 +133,14 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
                 menu.setVisibility(View.GONE);
                 adapter.setisshowBox(false);
                 adapter.notifyDataSetChanged();
+                System.out.println("删除文件");
                 Map<Integer,Boolean> selectState = adapter.getMap();
                 ArrayList<Integer> noteid = new ArrayList<>();
                 for(int i:selectState.keySet())
                 {
                     if(selectState.get(i))
                     {
-                        noteid.add(i);
+                        noteid.add(noteList.get(i).getId());
                     }
                 }
 
@@ -137,8 +150,10 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
                     for(int j=0;j<n;j++)
                     {
                         Note note=noteList.get(j);
+                        System.out.println(note);
                         if(note.getId()==noteid.get(i))
                         {
+                            System.out.println("删除笔记");
                             NoteUtils.deleteFile(getContext(),note.getTitle());
                             adapter.removeData(j);
                             break;
@@ -191,10 +206,26 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
                 for(int i=0;i<selectState.size();i++) {
                 if (selectState.get(i))
                 {
-                    Note note = noteList.get(i);
+                    final Note note = noteList.get(i);
+                    if(!note.getShare()){
+                        //首先进行上传
+                    }
                     note.setShare(true);
-                    String result = NoteHelper.uploadFileToServer(note,2);
-                    Toast.makeText(getContext(),result,Toast.LENGTH_SHORT).show();
+                    //调用上传接口
+                    new Thread(new Runnable(){
+                        @Override
+                        public void run(){
+                            //进行访问网络操作
+                            Message msg = Message.obtain();
+                            Bundle data = new Bundle();
+                            String successful= NoteHelper.uploadFileToServer(note, 1);
+//                         data.putString("successful", successful? "1" : "0");
+                            data.putString("message", successful);  //实际使用的时候使用上一行代码
+                            msg.setData(data);
+                            handler.sendMessage(msg);
+                        }
+                    }
+                    ).start();
                 }
             }
         }
@@ -233,6 +264,7 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
         note_sync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("同步点击监听");
                 //同步方法 调用同步接口
                 new Thread(new Runnable(){
                     @Override

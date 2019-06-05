@@ -127,7 +127,7 @@ public class RegisterActivity extends BaseActivity {
                             //进行访问网络操作
                             Message msg = Message.obtain();
                             Bundle data = new Bundle();
-                            boolean successful = loginUtil.register(name.getText().toString(), account.getText().toString(), password.getText().toString(), data);
+                            boolean successful = loginUtil.register(name.getText().toString(), password.getText().toString(), account.getText().toString(), data);
                             data.putString("successful", successful ? "1" : "0");
                             data.putString("successful", "1");  //实际使用的时候使用上一行代码
                             msg.setData(data);

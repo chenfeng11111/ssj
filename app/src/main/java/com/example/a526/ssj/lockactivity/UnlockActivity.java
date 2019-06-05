@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.a526.ssj.R;
 import com.example.a526.ssj.mainactivity.MainActivity;
+import com.example.a526.ssj.welcomeactivity.LoginActivity;
 import com.wangnan.library.GestureLockView;
 import com.wangnan.library.listener.OnGestureLockListener;
 
@@ -89,10 +90,9 @@ public class UnlockActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //跳转到登录页面
-                /*
-                Intent intent = new Intent();
+                Intent intent = new Intent(UnlockActivity.this,LoginActivity.class);
+                finish();
                 startActivity(intent);
-                */
             }
         });
     }
