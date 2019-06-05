@@ -118,7 +118,7 @@
             android:layout_marginLeft="110dp"
             android:layout_marginRight="20dp"
             android:text="找回密码"
-            android:textColor="@color/not_selected" />
+            android:textColor="#000" />
 
         <ImageView
             android:layout_width="1dp"
@@ -131,6 +131,6 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:text="注册账号"
-            android:textColor="@color/not_selected" />
+            android:textColor="#000" />
     </LinearLayout>
 </LinearLayout>

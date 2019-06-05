@@ -29,7 +29,7 @@
             android:layout_width="45dp"
             android:id="@+id/plus"
             android:src="@drawable/plus"
-            android:layout_marginLeft="110dp"
+            android:layout_marginLeft="130dp"
             />
     </android.support.v7.widget.Toolbar>
     <android.support.v7.widget.RecyclerView

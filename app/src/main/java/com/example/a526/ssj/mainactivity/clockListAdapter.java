@@ -78,6 +78,7 @@ public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.cloc
     public void addData(int position,Clock clock)
     {
         clockList.add(clock);
+        GlobalVariable.getClockDatabaseHolder().insertClock(clock);
         notifyItemInserted(position);
     }
 
@@ -122,14 +123,14 @@ public class clockListAdapter extends RecyclerView.Adapter<clockListAdapter.cloc
                 // 这里回调过来的v,就是show()方法里面所添加的 View 参数，如果show的时候没有添加参数，v则为null
                 //clockList.add(getTime(date));
                 //SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");\
-                clockList = databaseHolder.searchClock(0,0);
+                clockList = GlobalVariable.getClockDatabaseHolder().searchClock(0,0);
                 Clock clock = clockList.get(mPosition);
                 removeData(mPosition);
                 date = new Date(date.getTime() - 8 * 60 * 60 * 1000);//转换为东八区时间
                 clock.setTime(date);
                 clock.setRelatedNoteId(-1);
                 addData(mPosition,clock);
-                databaseHolder.updateClock(clock);
+                GlobalVariable.getClockDatabaseHolder().updateClock(clock);
             }
         })
 

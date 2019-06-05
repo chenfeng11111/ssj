@@ -557,6 +557,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                                 ClockUtil.saveAlarm(getApplicationContext(),clock);
                             }
                             Toast.makeText(getApplicationContext(),"成功",Toast.LENGTH_SHORT).show();
+                            finish();
                         }
 
                     }break;
@@ -622,7 +623,7 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                                         }
                                     }
                                     ).start();
-
+                                    finish();
                                   //  String result = NoteHelper.uploadFileToServer(note,0);
                                   //  Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
                                 }
@@ -666,9 +667,8 @@ public class CreateNoteActivity extends AppCompatActivity implements View.OnClic
                                 }
                             }
                             ).start();
+                            finish();
                         }
-
-
                     }break;
                 }
                 return false;

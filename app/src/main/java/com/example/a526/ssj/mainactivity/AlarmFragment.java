@@ -43,6 +43,8 @@ public class AlarmFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private boolean started = false;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -88,6 +90,7 @@ public class AlarmFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        started = true;
         initTimePicker1();
         final Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.clockTheme);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
@@ -206,7 +209,17 @@ public class AlarmFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if(started)
+        {
+            clockList.clear();
+            clockList.addAll(GlobalVariable.getClockDatabaseHolder().searchClock(0,0));
+            adapter.notifyDataSetChanged();
+        }
+    }
 
     /**
      * This interface must be implemented by activities that contain this

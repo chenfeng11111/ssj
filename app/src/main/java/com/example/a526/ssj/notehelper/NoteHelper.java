@@ -130,31 +130,14 @@ public class NoteHelper {
         //图片保存路径
         String picLocalPath = allNotePath + File.separator+fileName+File.separator+picRemoteName;
         //读取网络输入流
-        byte[] data = UploadUtil.downloadImage(uri);
-        System.out.println("数据流长度:"+data.length);
-        if(data==null)
+        String result = UploadUtil.downloadImage(uri,picLocalPath);
+        if("success".equalsIgnoreCase(result))
         {
-            return "";
+            return "file:///"+picLocalPath;
         }
         else
         {
-            //保存文件
-            try {
-                System.out.println("保存图片"+picLocalPath);
-                FileOutputStream output = new FileOutputStream(picLocalPath);
-                output.write(data);
-                output.flush();
-                output.close();
-                File file = new File(picLocalPath);
-                if(!file.exists())
-                {
-                    System.out.println("文件不存在");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "";
-            }
+           return result;
         }
-        return "file://"+picLocalPath;
     }
 }

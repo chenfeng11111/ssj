@@ -345,27 +345,41 @@ public class UploadUtil {
         return noteList;
     }
 
-    public static byte[]  downloadImage(String path)
+    public static String  downloadImage(String remotePicPath,String localStorePath)
     {
         try
         {
-            URL url = new URL( path);
+            URL url = new URL( remotePicPath);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setDoInput(true);
+            conn.setDoOutput(false);
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(3000);
+            conn.setUseCaches(false);
+
             conn.connect();
+            System.out.println(conn.getResponseCode() + "----------------------------");
             if(conn.getResponseCode() == HttpURLConnection.HTTP_OK)
             {
                 InputStream is = conn.getInputStream();
-                byte[] data = new byte[is.available()];
-                is.read(data);
+                System.out.println(conn.getContentLength() + "----------------------------");
+                FileOutputStream outputStream = new FileOutputStream(localStorePath);
+                byte[] data = new byte[10240];
+                int len = 0;
+                while(-1!=(len=is.read(data)))
+                {
+                    outputStream.write(data,0,len);
+                }
+                outputStream.flush();
                 is.close();
-                return data;
+                outputStream.close();
+                return "success";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return e.toString();
         }
-        return null;
+        return "success";
     }
 }
 
