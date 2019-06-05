@@ -325,7 +325,6 @@ public class UploadUtil {
                     note.setVersion(articleJSON.getInt("version"));
                     note.setCode(articleJSON.getString("code"));
                     noteList.add(note);
-                    System.out.println(note);
                 }
                 return noteList;
             }
@@ -343,7 +342,6 @@ public class UploadUtil {
         note.setCode("this is test");
         note.setTitle("title");
         noteList.add(note);
-        Log.d("square", "doing------------" + noteList.size());
         return noteList;
     }
 

@@ -18,7 +18,7 @@
 
         <LinearLayout
             style="@style/top_layout"
-            android:layout_height="88dp">
+            android:layout_height="60dp">
 
             <TextView
                 android:id="@+id/psdchange"
@@ -28,41 +28,43 @@
                 android:clickable="true"
                 android:text="密码修改"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-                android:textSize="25dp" />
+                android:textSize="20dp" />
         </LinearLayout>
 
         <LinearLayout
             style="@style/mid_layout"
-            android:layout_height="80dp">
+            android:layout_height="60dp">
 
             <TextView
                 android:id="@+id/myinformation"
                 style="@style/usertext"
                 android:clickable="true"
                 android:text="我的资料"
-                android:textSize="25dp" />
+                android:textSize="20dp" />
         </LinearLayout>
 
         <LinearLayout
             style="@style/bottom_layout"
-            android:layout_height="72dp">
+            android:layout_height="60dp">
 
             <TextView
                 android:id="@+id/txt_mine_lock"
                 style="@style/usertext"
                 android:text="设置手势锁"
-                android:textSize="25dp" />
+                android:textSize="20dp" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btn_mine_quit"
-            android:layout_width="match_parent"
-            android:layout_height="76dp"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="60dp"
+            android:rotation="15dp"
             android:backgroundTint="#00C41414"
             android:text="退出登录"
             android:gravity="center"
-            android:textColor="#1A1514"
-            android:textSize="25dp" />
+            android:textColor="#FF0000"
+            android:textSize="22dp" />
     </LinearLayout>
 
     <RelativeLayout

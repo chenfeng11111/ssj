@@ -42,7 +42,6 @@ public class WebDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_diarys);
         dataStr = getIntent().getStringExtra("html");
         preview = getIntent().getStringExtra("preview");
-        System.out.println(dataStr);
         initWebView(dataStr);
     }
 

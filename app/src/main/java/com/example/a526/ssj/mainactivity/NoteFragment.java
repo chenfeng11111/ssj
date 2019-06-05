@@ -72,7 +72,6 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
                 }
 
             }
-            System.out.println("handle 同步方法返回:"+noteList);
             adapter.notifyDataSetChanged();
         }
     };
@@ -133,7 +132,6 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
                 menu.setVisibility(View.GONE);
                 adapter.setisshowBox(false);
                 adapter.notifyDataSetChanged();
-                System.out.println("删除文件");
                 Map<Integer,Boolean> selectState = adapter.getMap();
                 ArrayList<Integer> noteid = new ArrayList<>();
                 for(int i:selectState.keySet())
@@ -150,10 +148,8 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
                     for(int j=0;j<n;j++)
                     {
                         Note note=noteList.get(j);
-                        System.out.println(note);
                         if(note.getId()==noteid.get(i))
                         {
-                            System.out.println("删除笔记");
                             NoteUtils.deleteFile(getContext(),note.getTitle());
                             adapter.removeData(j);
                             break;
@@ -204,6 +200,7 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
         note_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("分享......");
                 menu.setVisibility(View.GONE);
                 adapter.setisshowBox(false);
                 adapter.notifyDataSetChanged();
@@ -214,6 +211,7 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
                     final Note note = noteList.get(i);
                     if(!note.getShare()){
                         //首先进行上传
+                        note.setShare(true);
                     }
                     note.setShare(true);
                     //调用上传接口

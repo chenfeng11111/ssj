@@ -79,6 +79,7 @@ public class NoteHelper {
         List<Note> remoteNoteList = UploadUtil.downloadArticle(GlobalVariable.getCurrentUserId());
         for(Note note:remoteNoteList)
         {
+            System.out.println("服务器文本："+note.getContent());
             //保存文件到本地
             int status = GlobalVariable.getNoteDatabaseHolder().needToUpdate(note);
             if(status != 0)
@@ -97,6 +98,8 @@ public class NoteHelper {
                 {
                     String remotePicPath = element.attr("src");
                     String localPicPath = copyPicFormServer(remotePicPath,fileName);
+                    System.out.println("服务器图片:"+remotePicPath);
+                    System.out.println("下载图片路径:"+localPicPath);
                     if("".equalsIgnoreCase(localPicPath)){
                         return "下载图片文件失败"+ remotePicPath;
                     }
@@ -104,6 +107,7 @@ public class NoteHelper {
                 }
                 //解析完成后，存储到数据库
                 note.setContent(mDoucument.toString());
+                System.out.println("解析文本:"+mDoucument.toString());
                 if(1 == status)
                 {
                     GlobalVariable.getNoteDatabaseHolder().insertNote(note);
@@ -118,6 +122,7 @@ public class NoteHelper {
     }
     private static String copyPicFormServer(String uri,String fileName)
     {
+        System.out.println("从服务器下载图片");
         //获取所有文件路径
         String allNotePath = GlobalVariable.getFileStorePath().toString();
         //读取图片文件名称
@@ -126,6 +131,7 @@ public class NoteHelper {
         String picLocalPath = allNotePath + File.separator+fileName+File.separator+picRemoteName;
         //读取网络输入流
         byte[] data = UploadUtil.downloadImage(uri);
+        System.out.println("数据流长度:"+data.length);
         if(data==null)
         {
             return "";
@@ -134,10 +140,16 @@ public class NoteHelper {
         {
             //保存文件
             try {
+                System.out.println("保存图片"+picLocalPath);
                 FileOutputStream output = new FileOutputStream(picLocalPath);
                 output.write(data);
                 output.flush();
                 output.close();
+                File file = new File(picLocalPath);
+                if(!file.exists())
+                {
+                    System.out.println("文件不存在");
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return "";
