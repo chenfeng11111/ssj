@@ -123,6 +123,14 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
                 adapter.notifyDataSetChanged();
                 Map<Integer,Boolean> selectState = adapter.getMap();
                 ArrayList<Integer> noteid = new ArrayList<>();
+                for(int i:selectState.keySet())
+                {
+                    if(selectState.get(i))
+                    {
+                        noteid.add(i);
+                    }
+                }
+
                 for(int i=0;i<noteid.size();i++)
                 {
                     int n = noteList.size();
