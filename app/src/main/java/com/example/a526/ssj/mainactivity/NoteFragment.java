@@ -161,6 +161,11 @@ public class NoteFragment extends Fragment implements View.OnClickListener{
                     }
                     Toast.makeText(getContext(),"删除成功",Toast.LENGTH_SHORT).show();
                 }
+                selectState.clear();
+                for(int i=0;i<noteList.size();i++)
+                {
+                    selectState.put(i,false);
+                }
             }
         });
 
